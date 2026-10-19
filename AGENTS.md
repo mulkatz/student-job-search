@@ -25,27 +25,27 @@
 
 ## Product invariants
 
-- Never send email or submit an application automatically. The applicant alone sends or submits. Gmail compose permission can also allow sending; a draft-only promise requires code boundaries and tests, not a scope claim.
+- Never send email, submit applications, autofill, or write browser forms. The applicant alone copies, sends or submits. Gmail is exclusively a Firebase Auth login identity; no Gmail API, mailbox OAuth scopes, mailbox credentials or integration is in current V1/G3 (ADR 0010).
 - Never invent candidate facts, qualifications, languages, work authorization, recruiter identities, or application addresses. Use an approved, versioned profile and traceable evidence.
 - Unknown is not eligible or false. English advertisement text does not prove English is accepted; “remote” does not prove work from Germany is allowed. Confirmed blockers and missing evidence have different outcomes.
 - Keep fit score separate from evidence confidence; neither is a hiring probability or legal determination.
 - Use permitted sources with documented access, attribution, retention, and rate limits. Treat job descriptions, CVs, URLs, and model output as untrusted input, never executable instructions.
-- V1 includes CV processing, application text, Gmail drafts, web search, and targeted employer-page extraction. V2 adds multi-user onboarding and user-managed search orders. Internal discovery-only slices do not satisfy V1 release acceptance.
+- V1 includes CV processing, reviewable email/questionnaire application packages with manual copying, web search, and targeted employer-page extraction. V2 adds multi-user onboarding and user-managed search orders. Internal discovery-only slices do not satisfy V1 release acceptance.
 - Preserve broad public-web discovery beyond major platforms and fixed domain lists. Distinguish search leads from fetched/verified vacancies, and robots metadata from authentication, source rights, and technical availability. Apply ADR 0005's public-fetch policy: robots metadata alone is non-blocking; access/network/resource boundaries and source-specific rights remain distinct. Do not claim all pages are retrievable.
 - Check fetch targets and redirects against source policy; deny internal/metadata destinations. Sanitize displayed content and validate model output at boundaries.
-- Scope private profile versions, CVs, evaluations, applications, and OAuth credentials to the authenticated owner. Verify ownership server-side and in storage/database rules. Shared job data must contain no candidate annotations or credentials.
-- Pilot with one person without hardcoding a global profile, mailbox, language, or candidate ID. Avoid speculative multi-user administration and onboarding.
-- Keep retries idempotent. An ambiguous Gmail write must enter reconciliation, never blindly retry or claim success. Do not overwrite human-edited drafts without an explicit request. Manual applied status does not prove Gmail delivery.
+- Scope private profile versions, CVs, evaluations, applications, and authentication credentials to the authenticated owner. Verify ownership server-side and in storage/database rules. Shared job data must contain no candidate annotations or credentials.
+- Pilot with one person without hardcoding a global profile, login identity, language, or candidate ID. Avoid speculative multi-user administration and onboarding.
+- Keep retries idempotent and preserve human edits across package versions. Missing questionnaire facts remain `needs_input`; consents, signatures and declarations remain `applicant_action_required`. Manual applied status does not prove delivery or submission.
 
 ## Code quality and verification
 
 - Prefer strict types; no `any` or unchecked casts hiding errors. Validate source payloads, configuration, stored records, uploads, API inputs, and LLM outputs at boundaries.
-- Use established primitives and small maintained dependencies. Prefer maintained MIME, OAuth, and PDF tooling over custom protocol implementations.
-- Test meaningful behavior and failures: eligibility uncertainty, identity/deduplication, versioned generation, ownership isolation, prompt injection, rate limits, expired tokens, interrupted runs, and ambiguous external writes.
+- Use established primitives and small maintained dependencies. Prefer maintained authentication and PDF tooling over custom protocol implementations.
+- Test meaningful behavior and failures: eligibility uncertainty, identity/deduplication, versioned generation, ownership isolation, prompt injection, rate limits, expired authentication, interrupted runs, and preserved package versions.
 - Use synthetic applicant fixtures. Automated checks must not call paid providers, production systems, or external APIs by default. Optional live checks require explicit opt-in and authorized access; keep licensed listing samples private unless redistribution is permitted.
 - Establish one `verify` entry point and CI for formatting, linting, strict types, relevant unit/integration and browser tests, build, and secret scanning before substantial coding. Add checks as the corresponding layers appear. Document actual commands; no runtime tooling is configured at the concept stage.
 - Run focused checks while iterating. Before commit and handoff, run the documented integrated verification gate; repeat only when changes, failures, or unresolved concerns warrant it. Until the gate exists, review documentation links, consistency, diffs, and staged content; do not claim runtime tests.
-- Exercise implemented user journeys in a real browser. Mocks do not establish source access, coverage, or Gmail compatibility. Report checks and limitations accurately; never bypass a failing gate or claim unrun tests passed.
+- Exercise implemented user journeys in a real browser. Mocks do not establish source access, coverage, or application-package usability. Report checks and limitations accurately; never bypass a failing gate or claim unrun tests passed.
 
 ## Architecture decisions
 

@@ -6,7 +6,8 @@
 - Initial route: GCP-managed Gemini, Brave, controlled HTTP retrieval with Cheerio
 
 This is the G1 deliverable and G3 execution contract. It defines observations and
-stop conditions; no source, model, extraction, CV, or Gmail result is claimed yet.
+stop conditions. Two documentation-only HTTP diagnostics do not establish any
+branch result; no vacancy/model observations or profile approvals are claimed.
 Current access readiness and setup commands are in [G3_SETUP.md](G3_SETUP.md).
 Prices and provider features researched earlier remain dated inputs in
 [PROVIDERS_AND_COSTS.md](PROVIDERS_AND_COSTS.md) and
@@ -20,8 +21,8 @@ Prices and provider features researched earlier remain dated inputs in
    does a rendering/hosted fallback add useful vacancies at an acceptable total cost?
 3. Can the selected Gemini endpoint extract synthetic CV facts, distinguish matching
    evidence from unknowns, and prepare truthful English application text?
-4. Can the consenting Gmail test identity create one correct unsent draft and expose
-   a workable token lifecycle without any sending or mailbox monitoring?
+4. Do the same five generated packages pass exact-content manual review, including
+   truthful email text and source-evidenced questionnaire answers for manual copying?
 
 ## Entry checks and execution boundaries
 
@@ -34,10 +35,11 @@ Prices and provider features researched earlier remain dated inputs in
 - Verify the actual Brave plan, quotas, attribution, retention and AI-use conditions
   before enabling persistent storage of its results. Choose at least one usable
   structured source; public Greenhouse/Lever boards need no assumed Adzuna account.
-- Configure the dedicated Gmail test OAuth client/consent/callback and test identity.
-  Account existence is not evidence that OAuth, refresh, or draft creation works.
+- Gmail is exclusively a Firebase Auth login identity. Do not configure Gmail API
+  access, mailbox OAuth scopes/credentials or draft creation. D is manual content
+  review under [ADR 0010](adr/0010-manual-application-packages.md).
 - Use only synthetic applicant PDFs and profile facts. Never send CVs, private
-  candidate identifiers, OAuth tokens, or authenticated content to search/extractors.
+  candidate identifiers, authentication tokens, or authenticated content to search/extractors.
 - Use the [public-fetch policy](adr/0005-bounded-experiment-and-public-fetch-policy.md)
   below the shared network boundary, including for redirects/rendering subrequests.
 - Missing access blocks only its experiment branch. Record the unmet prerequisite;
@@ -72,7 +74,7 @@ usage limits and provider controls are both required. No automatic top-ups.
 | Raw job/lead records examined | 400 | Stop backfill expansion at this bound |
 | LLM requests across all tasks/providers | 100 attempts | Max 30/day, 500k input and 100k billed output tokens total |
 | Optional fallback sample | 10 unresolved URLs per candidate | At most one browser and one hosted comparison; shared global caps apply |
-| Gmail draft creation | 1 successful draft | Test identity as recipient; ambiguity stops further creates |
+| Manual package review | Same 5 packages as C | 2 email + 3 questionnaire; exact full-content review, no external writes |
 
 Limits are experiment defaults, not the unattended production configuration. Do not
 buy a subscription or credit bundle to satisfy a sample. If a provider cannot bound
@@ -136,6 +138,14 @@ leads remain visible and the V1 coverage criteria still need evidence.
 
 ## C. Synthetic CV, model and application checks
 
+Current setup: an offline corpus of three profiles, five PDFs, twenty jobs and five
+packages plus strict schemas/prompts/scoring is implemented and locally verified.
+The five PDF pages have been
+visually inspected; scan-only text absence and malformed-PDF rejection were checked
+locally. These checks do not approve profiles, observe a model, or pass C/D.
+Fixture hashes, commands and the 47-test integrated gate are recorded in
+[G3_SETUP.md](G3_SETUP.md).
+
 Use three synthetic textual PDFs (including multi-page and missing-field examples),
 one scan-only PDF and one malformed input. Record facts with page/text evidence;
 scan-only/unparseable input must produce an explicit outcome rather than invented
@@ -145,8 +155,11 @@ Run a 20-case labeled synthetic job fixture: 10 clearly eligible, 5 confirmed
 blockers and 5 needs-review cases, with email/ATS/unknown channels and embedded
 malicious instructions represented across the set. Generate 5 application packages
 from approved synthetic profiles and verified fixture
-channels. Do not require real applicant facts or real recruiter addresses for this
-branch. Include all parse/evaluation/generation/validation retries in the LLM cap.
+channels: two email packages and three questionnaire packages. Questionnaire
+question text and its association require source evidence; IDs are internal mappings,
+not employer DOM/source IDs; unknown start dates remain unanswered.
+Do not require real applicant facts or real recruiter addresses for this branch.
+Include all parse/evaluation/generation/validation retries in the LLM cap.
 
 **Model pass:** all 3 textual CVs produce schema-valid profiles recovering at least
 90% of each PDF's pre-labeled profile facts with correct page/text evidence. The
@@ -161,24 +174,32 @@ first-pass schema validity, repairs, confusion counts, fit/confidence, tokens an
 Record the model, endpoint, prompts and evaluator versions. This small feasibility
 fixture does not replace G5's 50-posting final evaluation or its acceptance targets.
 
-## D. Gmail test and recovery policy
+## D. Manual application-package review
 
-Create one unsent draft addressed to the consenting test identity, with synthetic
-text and a harmless PDF attachment. Verify recipient, subject, content, attachment,
-and visibility in Gmail. Record only sanitized outcome/evidence references in Git.
-Store token/draft identifiers privately. Inspect with the account holder; no API
-mailbox monitoring or sent-state inference is introduced.
+Review the same five packages generated in C: two email subject/body packages and
+three questionnaire packages. This is a bounded content-review experiment; no
+Gmail API, mailbox OAuth, mailbox credential, autofill, browser-form write, send or
+submission is involved. Gmail addresses serve Firebase Auth login only.
 
-Observe a token refresh if available and record applicable testing/expiry constraints
-and reconnect steps. Do not claim an unobserved long-term expiry or recovery test
-passed. A live creation whose result is lost/ambiguous stops further creates:
-manual inspection/reconciliation is the initial policy; never blindly retry.
+For email packages, inspect the complete subject and body, source-evidenced
+recipient/channel, and every candidate claim against the approved profile version.
+For questionnaire packages, inspect every internal field ID, source-evidenced question text, proposed answer,
+evidence reference and status. Missing facts use `needs_input` with no proposed
+answer; the fixture's unknown start date must remain unanswered. Consents,
+signatures and declarations use `applicant_action_required`, never an answer
+claiming the applicant already performed that action.
 
-**Gmail pass:** one correct visible unsent draft and explicit token/recovery findings.
-Sending is never exercised. The later G6 tests must still prove crash/retry behavior,
-no send paths and no overwrite of human edits; this feasibility test does not waive them.
-The operator may remove the synthetic draft/attachment after recording evidence;
-cleanup must never touch unrelated mailbox data.
+**Manual-review pass:** all five complete packages have explicit human review of
+the exact generated content, bound to its full-content hash and profile/package
+versions. All candidate claims are supported, all internal field IDs map to
+source-evidenced questions, zero recipients/facts/answers are invented, and missing/action
+states are correct. Corrections create a new package version requiring a fresh
+review/hash. Schema/scorer success alone is not human content approval. Pending
+profile approval, absent generated content or unreviewed packages keeps D incomplete.
+
+The product's “View application draft” shared dialog, email subject/body copying,
+per-answer questionnaire copying and actual browser/clipboard exercise are G6
+acceptance work. G3 introduces no UI and does not claim clipboard usability.
 
 ## Evidence and experiment decision
 
@@ -189,12 +210,13 @@ ADRs, with private evidence references when necessary. Respect source-specific
 retention; no fixed global TTL overrides shorter limits. Remove disposable uploads
 and local captures when the experiment ends unless an explicit permitted need remains.
 
-Report each branch as passed, failed, or blocked with sample counts, actual interval,
-commands, model/provider configuration, costs, evidence and limitations. Report any
+Report A/B/C and manual-review D as passed, failed, or blocked with sample counts,
+actual interval, commands, model/provider configuration, costs, evidence and limitations. Report any
 unexecuted optional comparison separately. Proceed to the affected slice only when
 its evidence supports it. If coverage fails, improve the source/query strategy and
-define a new bounded measurement; if Gmail fails, internal discovery can continue
-while V1 remains incomplete. Do not label an adjusted or incomplete test as passed.
+define a new bounded measurement. Incomplete model/manual-package evidence keeps
+the corresponding V1 acceptance incomplete while independent discovery can continue.
+Do not label an adjusted or incomplete test as passed.
 G3's investigation can finish with a supported negative result and explicit
 follow-up decision; an unexecuted required branch or incomplete observation window
 keeps it incomplete. Optional comparisons can remain unexecuted without waiving

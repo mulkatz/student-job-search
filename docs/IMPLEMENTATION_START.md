@@ -2,25 +2,28 @@
 
 Updated: 2026-10-19. **G1 and G2 are complete; G3 setup is in progress.**
 G2 is locally verified with synthetic data. [G3 setup](G3_SETUP.md) has offline
-controls and a documentation-only HTTP probe; no vacancy/source/model/CV/Gmail
-integration acceptance is established.
+controls and two documentation-only HTTP probes; no vacancy/source/model/manual-
+package acceptance is established. Offline C fixtures/schemas/scoring are in
+progress; the current integrated gate and actual profile approval remain pending.
 
 ## Accepted baseline and handoff state
 
 The V1/V2 boundary is agreed in [CONCEPT.md](../CONCEPT.md). The user accepted the
 recommended initial route: GCP-managed Gemini, Brave, and controlled HTTP retrieval
-with Cheerio behind replaceable boundaries. CV processing, application text and
-Gmail drafts remain V1 requirements; the interface stays table-first.
+with Cheerio behind replaceable boundaries. CV processing and manually reviewed
+email/questionnaire packages remain V1 requirements; the interface stays table-first.
+[ADR 0010](adr/0010-manual-application-packages.md) makes Gmail exclusively a
+Firebase Auth login identity, without Gmail API/mailbox OAuth integration.
 
 | Item | State | Needed for |
 | --- | --- | --- |
 | V1 scope, ownership, pilot language/location | Agreed; private preferences may remain unknown | All work |
 | Operating ceiling | EUR 50/month total; experiment planning sublimit EUR 5 | Costed G3 execution and operation |
 | Baseline providers | GCP-managed Gemini, existing Brave, HTTP/Cheerio; optional alternatives/fallbacks need measured benefit | G3 and affected slices |
-| Available accounts | Firebase/Blaze, Gmail test account and Brave reported available | Verify actual access/configuration during G3 |
-| Source/model/extraction/Gmail test contract | Defined in FEASIBILITY.md; no execution evidence yet | G3 |
+| Access | Intended GCP/Firebase project designated privately; EU preferred; read-only metadata check denied; Brave key/plan missing | Verify actual IAM/ADC/API/billing and source rights during G3 |
+| Source/model/extraction/manual-package contract | Defined in FEASIBILITY.md; no branch acceptance yet | G3 |
 | Public-page fetch policy | ADR 0005; robots metadata alone does not exclude leads or block public fetches | G3 fetching and G4 |
-| Exact model/region, plans, IAM/OAuth and source rights | Live prerequisites explicitly recorded, not assumed verified | The affected G3 branch |
+| Exact model/region, plans, IAM/ADC and source rights | Live prerequisites explicitly recorded, not assumed verified | The affected G3 branch |
 | Data/version/state schemas | Resolve Q5 before the affected persistence/side-effect slice | G4–G6 |
 | Runtime/package versions and executable commands | Pinned and locally verified in G2 | Offline development foundation |
 
@@ -33,7 +36,7 @@ extraction research remain reference snapshots, not compatibility tests.
 
 The readiness check distinguishes a complete brief from an executed experiment.
 Missing live access does not block G2. G3 must verify current prices/terms, operator
-access, privacy/region and OAuth conditions, then explicitly opt into live work;
+access and privacy/region conditions, then explicitly opt into live work;
 this handoff does not request subscriptions, purchases, deployment or real CV use.
 Candidate-specific facts/preferences remain private onboarding inputs. Unknowns
 must remain visible and cannot be invented to satisfy eligibility or package tests.
@@ -43,6 +46,9 @@ and model gates were resolved by adding minimum successful samples, recall/cover
 positive-case outcomes and bounded repairs. Live results are still pending G3.
 
 ## First fresh-session goal: G2
+
+Historical G2 contract below: its Gmail references were superseded by ADR 0010;
+they do not authorize or require mailbox integration in the current product.
 
 Completed 2026-10-19. This section retains the execution contract. Actual commands,
 clean-clone/failure evidence, independent review and limits are in

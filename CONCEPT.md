@@ -3,7 +3,7 @@
 - Status: agreed product baseline; technical feasibility not yet validated
 - Updated: 2026-10-19
 - Pilot: one student based in Berlin; English as working language
-- V1: one-person discovery and application assistant, including CV and Gmail
+- V1: one-person discovery and application assistant, including CV and manual-copy packages
 - V2: multi-user use and user-managed search orders/configuration
 
 ## Document authority
@@ -22,27 +22,27 @@ The tool discovers relevant opportunities, explains suitability using evidence,
 and prepares applications for the applicant to review and send.
 
 Success means a repeatable daily shortlist of new, traceable opportunities and
-truthful application packages. V1 includes CV processing, application text, and
-unsent Gmail drafts. Discovery remains usable during integration failures, but
-discovery alone does not complete V1. A shortlist is not a promise of a job offer
+truthful application packages. V1 includes CV processing and reviewable email or
+questionnaire application packages with manual copying. Discovery remains usable
+during integration failures, but discovery alone does not complete V1. A shortlist is not a promise of a job offer
 or a legal assessment of the candidate's right to work.
 
 ## Pilot and later reuse
 
 The user agreed to a one-person pilot with explicit ownership from the start.
 Use an authenticated owner identity and candidate ID for private records. Profiles,
-profile versions, CV assets, evaluations, applications, and OAuth credentials must
+profile versions, CV assets, evaluations, applications and authentication records must
 never be selected through an unscoped global “current candidate.” Shared source
 listings may be separate from private assessments and annotations.
 
 For the pilot, one account has one active candidate profile. Languages, location,
-availability, work preferences, and mailbox connection are profile/configuration
+availability and work preferences are profile/configuration
 values, not global assumptions. The first interface can be provisioned privately.
 Cross-owner denial is tested with synthetic users even during the one-person pilot.
 
 Public signup, account administration, invitations, shared profile access, billing,
 and a general service for multiple users are deferred to V2. Explicit ownership reduces
-later restructuring; it does not complete multi-user onboarding, OAuth readiness,
+later restructuring; it does not complete multi-user onboarding, authentication readiness,
 capacity planning, or privacy obligations. See [ADR 0002](docs/adr/0002-pilot-and-ownership.md).
 
 V1 uses operator-configured search streams and one daily schedule. The candidate
@@ -62,8 +62,8 @@ require a general search-order management interface.
   decisive evidence. English listing text and an unspecified remote location are
   insufficient evidence of suitability.
 - Missing salary alone is not a rejection. Hours, location, language requirements,
-  and work authorization uncertainty must remain visible and prevent automatic
-  drafting where decisive conditions are unresolved.
+  and work authorization uncertainty must remain visible and prevent a ready-to-use
+  package where decisive conditions are unresolved.
 - Employment limits and legal eligibility are not decided by an LLM. Verify current
   official rules before implementing date-dependent checks; no legal thresholds
   are adopted from the original proposal without that validation.
@@ -83,45 +83,53 @@ by the candidate. Do not assume nationality, residence status, or authorization.
    fit score and evidence confidence remain separate and explainable.
 4. A login-protected, table-first UI sorted by match score, with title, employer,
    location/remote, employment type, freshness, and original application links.
-   Provide concise evidence/unknowns, profile correction, prepared text/draft
-   access, and manual application status without a complex dashboard.
+   Provide concise evidence/unknowns, profile correction, a “View application draft”
+   action opening the shared review/copy dialog, and manual application status.
 5. A daily bounded pipeline, run diagnostics, isolated source failures, and
    restart/retry behavior that avoids duplicate processing and side effects.
-6. English application text using only approved candidate facts and verified job
-   details. A verified recruitment email can receive an unsent Gmail draft with
-   the approved CV; an ATS role gets text and the verified original application URL.
-7. Disconnect/reconnect, ownership enforcement, private storage, retention,
+6. English application packages using only approved candidate facts and verified
+   job details: email subject/body or source-evidenced questionnaire answers, with
+   per-answer copying. The applicant alone transfers text and approved attachments.
+7. Authentication recovery, ownership enforcement, private storage, retention,
    export/deletion, cost controls, and operating documentation.
 
 Delivery is incremental. Discovery, matching, and application slices are internal
-V1 milestones. CV processing, application text, and Gmail drafts are required for
+V1 milestones. CV processing and reviewable application packages are required for
 the V1 release; an integration-blocked discovery slice is not a finished V1.
 
 ## Application controls
 
-The applicant alone sends or submits. There is no automatic email sending, ATS
-submission, recruiter email guessing, or mailbox monitoring. Applied status is
-manually reported and does not establish Gmail delivery.
+The applicant alone sends or submits. The product prepares text for review and
+copying; it never sends email, submits applications, fills forms, writes browser
+forms, guesses recruiters or monitors a mailbox. A manual applied status is the
+applicant's report, not proof of delivery or submission.
 
-Use a verified recruitment channel from the original posting or trusted company
-source. Unknown channels cannot create email drafts. Preserve candidate/job/evaluator
-versions and evidence used to generate each package. Never overwrite an edited
-Gmail draft automatically. An ambiguous draft creation result requires reconciliation
-instead of an immediate retry.
+The table action “View application draft” opens a shared dialog. Email applications
+show subject and body; questionnaire applications show stable internal field IDs,
+source-evidenced question text and proposed answers, each with its own copy action
+and original form link. Internal IDs do not claim to be employer DOM/source IDs.
+Candidate claims must trace to approved immutable profile facts and job evidence.
+Missing facts use `needs_input` with no invented answer; an unknown start date stays
+unanswered. Consents, signatures and declarations use `applicant_action_required`
+and are completed by the applicant. Generation never impersonates that action.
 
-Manual generation must work before optional automatic draft preparation is enabled.
-The pilot starts with automatic drafting disabled. Later opt-in can use the original
-proposal's provisional thresholds (fit >= 80, confidence >= 0.85, fresh verification,
-approved profile, no unresolved decisive eligibility, verified email) only after
-evaluation. These are policy defaults to validate, not calibrated probabilities.
+Use a verified application channel from the original posting or trusted company
+source. Unknown channels remain review leads; never invent a recipient or form URL.
+
+Preserve candidate/job/evaluator/package versions and evidence. Regeneration creates
+a distinct version and must preserve user edits. Review the exact full package
+content before use; a reviewed hash identifies that content, not a later revision.
+Decisive unresolved eligibility prevents a ready-to-use package. No automatic
+mailbox draft creation or automatic copying/submission is part of the workflow.
 
 ## Technical direction and feasibility
 
 The proposed stack is TypeScript, React, Cloud Run Job/API, Firebase Auth/Hosting,
 Firestore, private Cloud Storage, Secret Manager, and a replaceable LLM adapter.
-Firebase/Blaze, a Gmail test account, and Brave API access are user-reported available;
-their integration/configuration remains unverified. GCP-managed Gemini is the
-accepted first LLM route, with OpenRouter as an alternative behind the same
+A GCP/Firebase project has been designated privately with an EU preference; read-only
+metadata checks failed, so API enablement, IAM, ADC and actual billing remain
+unverified. Brave credentials and the exact storage-rights plan remain missing.
+GCP-managed Gemini is the accepted first LLM route, with OpenRouter as an alternative behind the same
 boundary; the exact model/endpoint remains unselected. See
 [provider options and cost model](docs/PROVIDERS_AND_COSTS.md).
 
@@ -145,7 +153,8 @@ separate search/fetch/extraction stages, and the source-policy questions.
 The accepted initial extraction approach is controlled HTTP retrieval plus Cheerio. Compare
 Playwright rendering with Firecrawl only where static extraction misses useful
 vacancies, and choose at most one additional fallback based on measured benefit.
-Cheerio is selected for the first implementation; no extraction integration is tested.
+Cheerio has an offline-tested bounded implementation; two documentation-only HTTP
+diagnostics do not establish vacancy extraction accuracy.
 See the delegated
 [extraction market research](docs/EXTRACTION_OPTIONS.md).
 
@@ -158,10 +167,10 @@ No universal retrieval guarantee, credential bypass, CAPTCHA evasion, or unlimit
 retry/traffic mode is part of V1. Unretrieved leads remain visible with a link and
 unknown evidence; they cannot trigger unsupported matches or draft generation.
 
-Gmail OAuth scope, verification/testing constraints, refresh behavior, draft access,
-and recovery must be checked against current official documentation and a real test.
-The intended compose scope also allows sending; tests and code boundaries must
-enforce the draft-only design. No OAuth connection or exemption is assumed.
+A Gmail address is used exclusively for Firebase Auth login. Gmail API access,
+mailbox OAuth scopes, mailbox credentials and mailbox integration are outside the
+current V1/G3 contract; no later integration is promised. See
+[ADR 0010](docs/adr/0010-manual-application-packages.md).
 
 ## Acceptance and measurement
 
@@ -185,17 +194,19 @@ V1 is complete only when the following have recorded evidence:
 - [ ] The labeled fixture has >= 90% eligible-shortlist precision and > 95% successful
       processing of valid supported samples; counts and label definitions are reported.
 - [ ] Evaluated packages contain no unsupported candidate claims; no known blocker
-      or unverified recipient can enter automatic drafting.
-- [ ] Email applications produce correct unsent drafts and approved attachments;
-      ATS-only roles produce text packages and verified links.
-- [ ] No send/submission path exists in the product; checks enforce the policy.
-- [ ] OAuth expiry/revocation, source failure, and ambiguous draft creation have
-      verified recovery paths without silent duplicate drafts.
-- [ ] Candidate can manually mark applied/ignored and distinguish that from API state.
+      or unverified/invented recipient can enter a ready-to-use package.
+- [ ] “View application draft” opens one shared review/copy dialog with email
+      subject/body or questionnaire answers mapped by internal IDs to source-evidenced questions; each
+      answer can be copied separately and missing facts remain unanswered.
+- [ ] No send/submission, autofill or browser-form-write path exists; checks enforce
+      the policy and consents/signatures/declarations require applicant action.
+- [ ] Authentication expiry/revocation, source failure and interrupted generation
+      have verified recovery paths without silent package replacement.
+- [ ] Candidate can manually mark applied/ignored without implying delivery/submission.
 - [ ] The authenticated job table is sorted by match score, explains decisive
       unknowns, opens original application URLs, and exposes prepared text/drafts.
 - [ ] Unauthorized users cannot read or mutate another owner's private records,
-      files, evaluations, applications, or Gmail credentials.
+      files, evaluations or applications.
 - [ ] Data export/deletion, retention, privacy controls, and cost/run diagnostics
       are implemented and documented before unattended operation with real data.
 
@@ -206,7 +217,7 @@ do not promise recurring market-wide coverage or a fixed daily shortlist volume.
 ## V2 direction
 
 Make the tool available to additional users with onboarding, per-owner profiles,
-CVs, credentials, quotas, and data lifecycle. Add user-managed search orders with
+CVs, authentication, quotas, and data lifecycle. Add user-managed search orders with
 individual keywords, geography, employment preferences, frequency, and active/paused
 state. These are a V2 direction, not a completed design or a V1 dependency.
 See [ADR 0003](docs/adr/0003-release-scope-and-web-discovery.md).
@@ -226,5 +237,7 @@ synthetic boundary tests, Biome, build, secret scanning and configured CI; see
 [the delivery evidence](docs/PLAN.md#g2-development-foundation--complete).
 G3's bounded feasibility experiment is in setup; live observations have not
 started. [Current readiness](docs/G3_SETUP.md) distinguishes local control tests
-from the source/model/Gmail evidence still needed. Operator access, current
-provider conditions, model/region and account consent remain live entry checks. G2 authorizes no subscriptions, deployment or real CV use.
+from the source/model/manual-package evidence still needed. Offline C corpus and
+validation work is in progress; no model observations or profile approvals exist.
+Operator access, provider conditions and model/region remain live entry checks.
+G2 authorizes no subscriptions, deployment or real CV use.

@@ -2,6 +2,8 @@
 
 - Status: accepted for release boundaries and discovery architecture; crawl policy remains Q7
 - Date: 2026-10-19
+- Partially superseded: Gmail/mailbox integration clauses only by
+  [ADR 0010](0010-manual-application-packages.md); other decisions remain accepted.
 
 ## Context
 

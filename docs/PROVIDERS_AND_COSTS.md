@@ -4,7 +4,15 @@ Updated/researched: 2026-10-19. The user accepted GCP/Gemini, Brave and HTTP/Che
 as the initial route. Alternatives and published price examples below are not live
 integration results, selected subscriptions, or a complete monthly quote.
 
-## Available access
+Current-scope update: [ADR 0010](adr/0010-manual-application-packages.md) removes
+Gmail API/mailbox OAuth from V1/G3. Gmail is Firebase Auth login only; application
+packages are reviewed and copied manually. Gmail-related access/research below
+is historical, not a current prerequisite. Current access evidence is in
+[G3_SETUP.md](G3_SETUP.md): a privately designated GCP project with EU preference,
+permission-denied metadata checks, unverified API/billing/ADC, and missing Brave
+key/storage-rights plan. No model access or profile approval is established.
+
+## Available access (historical research snapshot)
 
 User-reported: Firebase project with Blaze enabled, a Gmail test account, and Brave
 Search API access. These are available for future integration work, not verified

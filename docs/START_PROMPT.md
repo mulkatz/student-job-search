@@ -4,6 +4,10 @@ Status: G2 completed and locally verified on 2026-10-19; G3 setup is in progress
 [PLAN.md](PLAN.md#g2-development-foundation--complete) for executed evidence and
 limitations. Live-access prerequisites and explicit opt-in remain G3 checks.
 
+Current scope is [ADR 0010](adr/0010-manual-application-packages.md): Gmail is
+Firebase Auth login only; V1/G3 use manual-copy email/questionnaire packages.
+Gmail requirements in the historical contract below are superseded.
+
 The following is the completed G2 execution contract, retained for traceability.
 Do not restart G2 from it. For G3, select the bounded experiment and prerequisites
 from [PLAN.md](PLAN.md#g3-feasibility-experiment) and [FEASIBILITY.md](FEASIBILITY.md).

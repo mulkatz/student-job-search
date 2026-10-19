@@ -5,13 +5,14 @@ Germany. Review the evidence, prepare an application, and send it yourself.
 
 **Status:** G2's offline TypeScript foundation is complete and locally verified.
 G3's bounded feasibility experiment is in setup; see [current readiness](docs/G3_SETUP.md).
-No deployed application, verified vacancy-source integration or Gmail connection
-is available. No cloud resources have been provisioned.
+No deployed application or verified vacancy-source/model integration is available.
+Gmail is exclusively a Firebase Auth login identity; mailbox integration is outside
+the current V1/G3 contract ([ADR 0010](docs/adr/0010-manual-application-packages.md)). No cloud resources have been provisioned.
 
 The first pilot serves one person. Candidate data has explicit ownership from the
 start so other people can use the tool later without rebuilding the core model.
 Public onboarding and a multi-user service belong to V2. V1 includes CV processing,
-application text, and unsent Gmail drafts as well as job discovery.
+reviewable email/questionnaire packages with manual copying as well as job discovery.
 
 ## Start here
 
@@ -26,6 +27,7 @@ application text, and unsent Gmail drafts as well as job discovery.
 - [Development workflow decision](docs/adr/0001-development-workflow.md)
 - [Pilot scope and ownership decision](docs/adr/0002-pilot-and-ownership.md)
 - [V1/V2 and broader discovery decision](docs/adr/0003-release-scope-and-web-discovery.md)
+- [Manual application packages and login-only Gmail identity](docs/adr/0010-manual-application-packages.md)
 - [Web search and direct-page discovery](docs/SOURCE_DISCOVERY.md)
 - [Provider options and pilot cost model](docs/PROVIDERS_AND_COSTS.md)
 - [Page-extraction market research](docs/EXTRACTION_OPTIONS.md)
@@ -41,11 +43,14 @@ Conflicts and unresolved design details are tracked in the documents above.
 - The pilot profile uses English as its working language; other profiles can
   specify different languages, availability, and preferences later.
 - Distinguish confirmed suitability, uncertainty requiring review, and blockers.
-- Prepare fact-grounded application packages and unsent Gmail drafts when the
-  recruitment address is verified. The applicant sends or submits applications.
+- Prepare fact-grounded email subject/body or questionnaire answers. “View application
+  draft” opens the shared review/copy dialog, with a copy action for each answer.
+  Missing facts remain `needs_input`; consents, signatures and declarations remain
+  `applicant_action_required`. Only the applicant copies, sends or submits.
 - Discover jobs through structured sources, web search, and targeted employer-page
   retrieval, including smaller businesses outside the major job platforms.
-- Keep discovery usable during Gmail outages; Gmail remains a V1 release requirement.
+- Use a Gmail address only for Firebase Auth login; no Gmail API, mailbox OAuth,
+  autofill, browser-form writing or sending/submission integration is included.
 
 V1 has one pilot profile, a login, a table sorted by match score, original application
 links, and operator-configured daily searches. V2 adds use by multiple people and
@@ -59,9 +64,10 @@ V1; it does not need a complex dashboard to include a useful application assista
 2. Completed: establish the offline TypeScript workspace, one locally verified gate,
    and configured CI with Biome, strict types, tests, build and secret scanning.
 3. In progress: prepare and validate source/API access, web search/page extraction, Berlin/Germany
-   coverage, and Gmail OAuth/draft behavior with authorized test access.
+   coverage, synthetic CV/model behavior and manual package review. The offline
+   corpus/schema/scorer work is in progress; model observations and approvals are pending.
 4. Build discovery, CV/profile matching, and applications as internal slices of V1.
-5. Release V1 after Gmail, privacy, recovery, and operating acceptance pass; scope
+5. Release V1 after package review/copy, privacy, recovery and operating acceptance pass; scope
    multi-user use and user-managed search orders as V2.
 
 Each goal has a measurable outcome, scoped tasks, and recorded verification.

@@ -11,9 +11,12 @@ Keep personal candidate answers in private configuration rather than this file.
 - Pilot working language: English; scope: Berlin and Germany-compatible remote work.
 - Minijob, part-time, working-student, and short-term roles; no freelance-only or
   inflexible full-time roles for the pilot.
-- Applicant sends/submits; the system prepares packages and unsent drafts.
-- Automatic drafting starts disabled; matching and generation use approved facts.
-- V1 includes CV processing, application text, Gmail drafts, web search, and direct
+- Applicant copies/sends/submits; the system prepares reviewable email or questionnaire
+  packages. Missing facts are `needs_input`; consents/signatures/declarations require
+  `applicant_action_required`. Matching and generation use approved versioned facts.
+- Gmail is exclusively a Firebase Auth login identity; no mailbox integration is
+  included in current V1/G3 or promised for V2 (ADR 0010).
+- V1 includes CV processing, manual-copy application packages, web search, and direct
   employer-page extraction. V2 adds multi-user use and user-managed search orders.
 - The user created `mulkatz/student-job-search` and authorized the first pushes;
   `main` tracks `origin/main`. Runtime deployment is not part of that action.
@@ -28,7 +31,7 @@ Also confirm whether broader student work should receive the same ranking priori
 as Minijobs. The current scope includes both; no hidden preference is assumed.
 
 **Current handling:** unknown values remain unknown, no invented work authorization,
-and decisive missing evidence prevents automatic drafting. The original proposal's
+and decisive missing evidence prevents a ready-to-use application package. The original proposal's
 “confirmed” profile assumptions still require candidate review before live use.
 
 ## Q2: operating budget, access, and data processing
@@ -41,19 +44,19 @@ resource provisioning is requested by the conception/setup task.
 The G3 experiment has a EUR 5 planning sublimit and shared work caps in
 [FEASIBILITY.md](FEASIBILITY.md); live execution still needs its entry checks and opt-in.
 
-**Available, user-reported:** Firebase project with Blaze enabled, Gmail test account,
-and Brave Search API. No live connection, model endpoint, OAuth client/refresh flow,
-or Brave storage-rights plan has been verified. Project/IAM/region details and other
-provider accounts remain unspecified.
+**Current access:** a GCP/Firebase project was designated privately, with an EU
+preference. Read-only metadata checks failed; IAM, ADC, API enablement, actual
+billing and model endpoint remain unverified. Brave key and storage-rights plan
+remain missing. Account/project identifiers stay private.
 
-Verify operator/project access, OAuth setup, actual source
+Verify operator/project access, authentication setup, actual source
 plan/credentials configuration, and who may access candidate data. Decide LLM
 provider/data handling and retention before sending real CV-derived facts.
 Include search-provider queries and page-fetch limits in the cost
 ceiling. Candidate consent is separate from the developer requesting work.
 
 **Current handling:** documentation and offline synthetic setup can continue. No
-unreported provider account, spend, OAuth consent, or personal-data access is assumed.
+unreported provider account, spend, or personal-data access is assumed.
 The original 400 listings / 40 evaluations / 5 drafts caps are proposals, not spending
 authorization or a validated budget.
 
@@ -82,23 +85,20 @@ sample results, duplicate rate, language/location uncertainty, source health, an
 manually reviewed role suitability. Store only samples allowed by the source policy.
 If coverage is poor, revisit permitted sources before expanding the dashboard.
 
-## Q4: Gmail feasibility and ambiguous-write recovery
+## Q4: manual application-package review and copying — scope resolved
 
-**Needed before:** unattended drafts; investigate in the early feasibility experiment.
+**Decision:** [ADR 0010](adr/0010-manual-application-packages.md) replaces Gmail
+integration in V1/G3. Gmail is exclusively the Firebase Auth login identity.
+There is no Gmail API, mailbox OAuth, credential storage, draft creation or sending.
+No automatic future integration is promised.
 
-Validate current compose-scope classification, consent/test/verification constraints,
-refresh behavior, and reconnect. The proposed scope also permits sending; code and
-tests must enforce the narrower product behavior. Do not assume verification
-exemptions, seven-day token behavior, or a sender identity without checking.
-
-The initial policy is manual inspection/reconciliation after an ambiguous Gmail
-write, as ADR 0005 records. Do not blindly retry or add mailbox monitoring. Exact
-stale-pending transitions and crash tests remain G6 work; OAuth refresh/reconnect
-and actual draft compatibility are G3 observations, not inferred from the account.
-
-**Degraded operation:** discovery and application text packages remain usable.
-Gmail acceptance stays incomplete until tested; V1 cannot be declared complete
-without working Gmail drafts. This is not a feature deferred to V2.
+G3 D manually reviews the same five packages as C: two email and three
+questionnaire packages. Review exact full content and record its hash; bind
+questionnaire answers to internal field IDs mapped to source-evidenced question text. Unknown start dates
+remain unanswered, and consents/signatures/declarations require applicant action.
+Pending synthetic profile approval or unreviewed package content keeps this branch
+incomplete. G6 will implement and exercise the shared dialog, per-answer clipboard
+copying and manual application workflow in a real browser; no UI exists now.
 
 ## Q5: identity, versions, and state contracts
 
@@ -117,14 +117,14 @@ an ADR, rather than copying the sample types as final contracts:
   canonical job identity. Define canonical IDs, aliases/merges, and revision history.
 - `applications/{candidateId_jobId}` and per-profile-version idempotency need distinct
   parent/application and package/generation-attempt records. Define which version
-  changes permit a new package and whether a new external draft needs user action.
+  changes permit a new package and how review hashes and user edits bind to versions.
 - Content freshness, publication age, source check time, and successful recruitment-
   channel verification are distinct timestamps. A fresh fetch cannot make an old
   listing new or prove its application channel is verified.
-- UI status, generation status, and external-write/reconciliation status are separate
+- UI status, generation/review status and manual application status are separate
   state machines; a flat `pending` string or unbounded event array is insufficient.
 - Owner-scoped reads/writes must be enforced by API, database/storage rules, and
-  server credential resolution, not only by adding `candidateId` fields.
+  authenticated owner resolution, not only by adding `candidateId` fields.
 
 ## Q6: thresholds, tooling, and wider distribution
 
@@ -145,8 +145,7 @@ an ADR, rather than copying the sample types as final contracts:
   fit/confidence thresholds against it.
 - Select a license and attribution before public distribution. The reference
   repository's intended MIT license does not automatically decide this project's.
-- Broader use needs its own scope: onboarding, account lifecycle, OAuth production
-  readiness, per-owner quotas/deletion, support, abuse prevention, and privacy review.
+- Broader use needs its own scope: onboarding, authentication/account lifecycle, per-owner quotas/deletion, support, abuse prevention, and privacy review.
 
 ## Q7: broad public-page crawl policy — resolved for initial implementation
 
@@ -158,4 +157,4 @@ Source-specific terms, storage rights and actual hosted-provider behavior remain
 G3 checks. Known conflicting restrictions need resolution for that use. This is
 an operating policy, not a universal extraction/permission guarantee. Preserve
 unavailable or policy-unresolved leads where retention permits, without fabricated
-facts or automatic drafts. Tests must cover the policy when fetches are implemented.
+facts or ready-to-use application packages. Tests must cover the policy when fetches are implemented.

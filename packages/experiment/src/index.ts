@@ -1,5 +1,8 @@
 export * from "./extract.js";
 export { berlinDate, manifestHash } from "./ledger.js";
+export * from "./model-corpus.js";
+export * from "./model-prompts.js";
+export * from "./model-scoring.js";
 export * from "./public-fetch.js";
 export type {
   Attempt,

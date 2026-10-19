@@ -2,6 +2,8 @@
 
 - Status: accepted
 - Date: 2026-10-19
+- Partially superseded: Gmail feasibility priority only by
+  [ADR 0010](0010-manual-application-packages.md); other workflow decisions remain accepted.
 
 ## Context
 

@@ -1,7 +1,9 @@
 # G3 setup and resumable experiment
 
 Status: setup in progress, 2026-10-19. G3 is not complete. No vacancy discovery,
-vacancy extraction, model call or Gmail write has run. Two public-documentation
+vacancy extraction, model call or Gmail write has run. Gmail now serves Firebase
+Auth login only under [ADR 0010](adr/0010-manual-application-packages.md); no mailbox
+API/OAuth integration is part of current V1/G3. Two public-documentation
 HTTP diagnostics are recorded below; neither is a vacancy observation. The
 seven-day observation window has not started. [FEASIBILITY.md](FEASIBILITY.md)
 remains the experiment contract.
@@ -12,16 +14,28 @@ remains the experiment contract.
 | --- | --- | --- |
 | A: discovery | Twenty non-personal queries frozen by the private ledger; official Brave/Greenhouse documentation checked | Intended Brave key and exact plan/storage entitlement; source-specific rights and up to five useful initial boards; reviewed live runner |
 | B: extraction | Implemented/offline-reviewed bounded HTTP/Cheerio library; counted documentation-only transport smoke | Thirty labeled vacancy/career/negative URLs, source-specific rights/retention, orchestration and measured live extraction accuracy |
-| C: model | Provisional EU Gemini candidate and dated price/retention documentation below | Intended project, region/endpoint, ADC, IAM, enabled API, actual billing/terms and synthetic fixture approval; reviewed live runner |
-| D: Gmail | Current compose/draft/OAuth documentation checked | Dedicated OAuth client/callback, consenting test identity, local token setup, draft-only code/tests and account-holder inspection |
+| C: model | Provisional EU Gemini candidate; implemented/offline-verified 3-profile/5-PDF/20-job/5-package corpus, strict schemas/prompts/scorer; local PDF text/page checks | Intended privately designated project access, region/endpoint, ADC/IAM/API/billing/terms; explicit profile approval and reviewed live runner |
+| D: manual packages | Revised bounded rubric for same 5 C packages (2 email + 3 questionnaire) | Generated full content, source-evidenced questions mapped by internal IDs, supported claims, exact reviewed content hashes and explicit human review; no UI/clipboard acceptance yet |
 
-The local Google Cloud CLI has an active account and configured project, and an
-ADC credential file exists locally (not validated). This does not establish that
-these credentials belong to this experiment, that ADC works, or that any
-API is enabled. No account/project identifiers or credentials are recorded here.
-Do not use an unrelated default project or mailbox. The user has been asked to
-identify the intended project/region and local credential-file locations privately.
-Never paste keys, tokens or OAuth client secrets into chat or Git.
+The user designated the intended GCP/Firebase project privately, preferring an EU
+region. A read-only project metadata check failed with a permission-denied result;
+project access is not established. Local CLI login/configuration and an ADC file
+are not proof of valid ADC, IAM, enabled APIs or actual billing. None of these
+checks authorized provisioning or established model access. Account/project IDs,
+credential paths and raw diagnostic output remain private. Brave key and exact
+storage-rights plan are still missing. Never paste keys or tokens into chat or Git.
+
+The offline synthetic corpus has three profiles, three textual PDFs, one scan-only
+PDF, one malformed PDF, twenty labeled jobs and five package cases. The five pages
+across valid PDFs were visually inspected and their page/text behavior checked;
+the scan has no extractable text and the malformed input fails local parsing.
+The strict corpus, prompts and report scorer are implemented and locally verified.
+The parsed corpus SHA-256 is
+`46d5eae10c2d38673429817e9da772ca9e14cb975825561a1a7a52697a160df3`.
+No model output or actual profile/package approval exists. Final private PDFs,
+page-text JSON and the source-hash manifest are under
+`.local/g3/model-fixtures-v1-final/`; their five PDFs are byte-identical to the
+visually inspected inputs. The final manifest matches the current corpus file.
 
 ## Runner boundary
 
@@ -42,12 +56,50 @@ freezes the twenty-query manifest and allocations but does not start day one or
 make a provider call. The example allocates EUR 1 each to discovery and model work,
 inside EUR 5; it contains no credentials or live-provider configuration.
 
-The CLI rebuilds the experiment package before execution. It exposes only init
-and read-only status; no cloud schedule or browser job is installed. Library
+The CLI rebuilds the experiment package before execution. It exposes init, read-only
+status, offline fixture validation and scoring of private observed reports; no cloud
+schedule or browser job is installed. Library
 reservations account for aggregate/daily requests, upper token/record counts and
 conservative branch cost before a future dispatch. Pending/ambiguous reservations
-remain counted across restarts; an overrun blocks new work. No command can mark
+remain counted across restarts; an overrun blocks new work. Persisted version-1
+state/config may contain dormant zero-valued Gmail allocation/count controls from
+the historical contract. Preserve cumulative state; those controls neither
+authorize mailbox access nor impose a current Gmail requirement. No command can mark
 G3 passed. Status reports attempted observation dates, next due date and gaps.
+
+Validate the versioned synthetic corpus without provider calls:
+
+```sh
+npm run experiment -- fixture-check
+```
+
+Score an actual private observed report; approval and run configuration are optional
+inputs, and absent approval cannot yield a passing approved-profile result:
+
+```sh
+npm run experiment -- score --report .local/g3/model-report.json
+npm run experiment -- score --report .local/g3/model-report.json --approval .local/g3/profile-approval.json --run-config .local/g3/model-run-config.json
+```
+
+These inputs must be owner-only regular JSON files under `.local/`, without symlink
+traversal. Use the versioned schemas; do not manufacture observations or approvals.
+The scorer does not call a model, approve profiles or replace exact-content review.
+
+Optional local PDF authoring uses Python 3.12.10 and four pinned dependencies in
+`scripts/g3/requirements.txt`. Create the environment only if it is absent, then
+install its locked requirements and generate into a new exclusive output directory:
+
+```sh
+# Only if .local/g3/pdf-tools does not already exist:
+uv venv --python 3.12.10 .local/g3/pdf-tools
+uv pip install --python .local/g3/pdf-tools/bin/python -r scripts/g3/requirements.txt
+.local/g3/pdf-tools/bin/python scripts/g3/generate_pdfs.py --output .local/g3/model-fixtures-v1-final
+```
+
+Never overwrite an existing environment or evidence directory; choose a new output
+path when it exists. The generator creates five PDF inputs, actual-page JSON evidence
+and a manifest; it performs no OCR or model calls. Generated PDFs/evidence stay
+ignored and private. Rendering inspection and profile/content approval are separate.
 
 Provider-specific pricing/rights checks, search follow-up selection and its eight
 requests/day protocol, retry/fallback URL limits, sample labels/metrics and all
@@ -76,7 +128,7 @@ Store experiment state, credentials and permitted captures only under ignored
 owner-readable, retain only needed evidence, and follow shorter provider retention
 limits. A Git ignore rule is not authorization, encryption or deletion assurance.
 Do not delete/reset the cumulative ledger between sessions. Investigate outstanding
-or ambiguous writes and locks before resuming; never blindly repeat a Gmail create.
+or ambiguous writes and locks before resuming; preserve cumulative accounting.
 
 ## Executed evidence and next observation
 
@@ -111,7 +163,7 @@ Paid provider calls: zero; counted HTTP attempts: two; incremental paid API spen
 EUR 0. The EUR 2 allocation is a reservation envelope, not spent money. Existing
 account billing was not inspected. No A-window clock or vacancy/sample count started.
 
-The integrated `npm run verify` passed with strict types, Biome, 33 offline tests,
+The historical setup integrated `npm run verify` passed with strict types, Biome, 33 offline tests,
 both workspace builds and Secretlint. A fresh local clone of setup commit
 `9009001` also passed `npm ci` and `npm run verify` with the pinned runtime;
 its tracked worktree stayed clean. Installation reported no audit findings and
@@ -120,10 +172,24 @@ Independent review separately ran experiment and affected network tests; the con
 and rechecked. Markdown/YAML and relative documentation links were reviewed
 manually. CI remains configured; no remote CI run or push is claimed.
 
+The current follow-up `npm run verify` also passed: Biome, strict workspace types,
+47 offline tests (5 core, 39 experiment, 3 secret-scanner), both builds and
+Secretlint. `npm run experiment -- fixture-check` validates the actual corpus and
+reports `approval_pending_model_not_run`. Python source syntax, relative document
+links, whitespace, and private PDF file/directory modes were checked separately.
+The optional generator verified actual page quotes, scan-only absence of text and
+malformed-input rejection without OCR. These are local checks, not model results,
+profile approval, manual package-content review or a browser dialog test.
+Independent review rechecked the corpus, approval gates, prompt isolation, scorer,
+private-input boundary, generator and current scope documentation; strict types
+and all fourteen model tests passed independently. Question/source and channel/source
+binding findings and the generator identifier-path guard were fixed and rechecked;
+no material findings remain.
+
 All four required experiment branches remain unexecuted against their acceptance
-samples. The transport smoke is not a passed source, extraction, model or Gmail
-branch. Configure the intended private accounts/rights, finish the actual live
-adapters and fixtures, then start the seven-day coverage window with the frozen
+samples. The transport smoke is not a passed source, extraction, model or manual
+package-review branch. Configure the intended private accounts/rights, finish the actual live
+adapters and fixture approvals, then start the seven-day coverage window with the frozen
 queries. After that first discovery dispatch, use `status` for the next due Berlin
 date and record gaps; do not keep an agent waiting for calendar time.
 
@@ -160,14 +226,11 @@ results. Existing subscriptions, credits, quotas, IAM and billing are unverified
   also apply. Use only synthetic facts and GenerateContent without additional
   grounding/storage features. [Retention](https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention).
   CLI login does not establish ADC. [Local ADC setup](https://docs.cloud.google.com/docs/authentication/set-up-adc-local-dev-environment).
-- Gmail's `gmail.compose` scope is restricted and permits sending as well as draft
-  management. No sending method is allowed in the experiment. Dedicated draft-only
-  code boundaries and tests are required before a write; account-holder consent is
-  separate from the developer's G3 request. [Scopes](https://developers.google.com/workspace/gmail/api/auth/scopes),
-  [draft creation](https://developers.google.com/workspace/gmail/api/reference/rest/v1/users.drafts/create).
-  External OAuth apps in Testing normally receive seven-day refresh tokens for
-  Gmail scopes. Verify the actual app state and document unobserved expiry behavior
-  as unobserved. [OAuth token expiry](https://developers.google.com/identity/protocols/oauth2#expiration).
+Historical Gmail scope research and the documentation URL in the smoke table are
+retained as investigation history, not an integration prerequisite. ADR 0010
+replaces that branch with manual package review; do not request mailbox scopes,
+credentials, client setup or test-draft access. Actual review/copy dialog and
+clipboard behavior are G6 work, with no autofill or external form writes.
 
 Before paid calls, allocate provider shares inside EUR 5 and the EUR 50/month
 ceiling. A possible conservative reservation uses EUR 1 for discovery and EUR 1

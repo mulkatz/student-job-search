@@ -7,16 +7,17 @@ Updated: 2026-10-19. Status describes evidence, not estimated progress.
 | G0: repository foundation | Complete | Local Git repository, concept, shared agent rules, ADRs, and plan. |
 | G1: feasibility brief | Complete | Accepted baseline, public-fetch policy, bounded experiment and fresh-session handoff. |
 | G2: development foundation | Complete | Reproducible offline TypeScript workspace, synthetic fixtures, verification gate, and configured CI. |
-| G3: feasibility experiment | In progress | Source, web search/page extraction, and Gmail evidence; explicit blockers if a path fails. |
+| G3: feasibility experiment | In progress | Source, web search/page extraction, synthetic model and manual-package evidence; explicit blockers. |
 | G4: discovery slice | Planned | Traceable, deduplicated job discoveries in an authenticated UI and daily pipeline. |
 | G5: profile and matching | Planned | Approved profiles and evidence-based matching meet the fixture targets. |
-| G6: application assistant | Planned | Fact-grounded packages and recoverable, unsent Gmail drafts. |
-| G7: V1 release and handover | Planned | CV, application text, Gmail drafts, and bounded daily discovery meet V1 acceptance. |
+| G6: application assistant | Planned | Fact-grounded email/questionnaire packages in a shared review/copy dialog. |
+| G7: V1 release and handover | Planned | CV, manual-copy application packages and bounded daily discovery meet V1 acceptance. |
 | V2: broader use and search orders | Deferred | Multi-user onboarding and individually managed search orders/schedules. |
 
-G1–G7 deliver V1. Discovery, matching, and application slices are internal delivery
-milestones, not a split that moves CV or Gmail to V2. A Gmail blocker may permit
-continued discovery development but prevents claiming V1 complete.
+G1–G7 deliver V1. Discovery, matching and application packages remain required
+internal milestones. [ADR 0010](adr/0010-manual-application-packages.md) replaces the
+historical Gmail clauses below with manual review/copy packages; Gmail now serves
+Firebase Auth login only. No later mailbox integration is promised.
 
 ## Working method
 
@@ -116,8 +117,8 @@ no browser check applies yet. Secret scanning covers selected working-tree files
 not Git history or runtime artifacts. License choice remains pending publication.
 
 Next: G3's bounded feasibility experiment. Its model/region, access, source rights,
-OAuth, privacy and budget checks and explicit live opt-in remain prerequisites in
-[FEASIBILITY.md](FEASIBILITY.md). Q5's persistence/version/external-write contracts
+privacy and budget checks and explicit live opt-in remain prerequisites in
+[FEASIBILITY.md](FEASIBILITY.md). Q5's persistence/version/package-review contracts
 remain for G4–G6. G2 does not authorize live execution, spending or deployment.
 
 ## G3: feasibility experiment
@@ -158,38 +159,48 @@ A fresh local clone of setup commit `9009001` passed `npm ci` and the same
 33-test `npm run verify` gate with no tracked changes. No remote CI run or push
 was performed; live account setup and all branch measurements remain pending.
 
-Still needed: intended GCP project/region and actual ADC/IAM/API/terms, Brave key
-and storage-rights plan, consenting Gmail OAuth/test identity, reviewed live
-adapters, labeled samples and all seven observation days. Provider credentials
-were not supplied in this session; the access question is pending. No paid
-provider call, vacancy discovery, model request, real CV processing or Gmail write
-has run. Optional alternative providers/renderers remain unexecuted. G3 stays
-in progress; no branch acceptance or V1 completion is claimed.
+Current follow-up: the user designated the intended GCP/Firebase project privately
+with an EU preference. Read-only metadata checks failed, leaving actual API
+availability, billing, ADC/IAM and endpoint access unverified. Brave key and exact
+storage-rights plan are still missing; no project/account IDs belong in Git.
+Offline C corpus work is implemented and locally verified: three synthetic profiles,
+five PDF inputs, twenty labeled jobs, five packages, strict schemas, prompts and scoring.
+Five valid PDF
+pages were visually inspected, scan-only text absence checked and malformed input
+rejected locally. The final corpus hash and private artifact references are in
+[G3_SETUP.md](G3_SETUP.md). The follow-up integrated gate passed Biome, strict types,
+47 offline tests, builds and Secretlint. No generated model observations or actual profile/content approvals
+exist; fixture/scorer code does not establish C or D acceptance.
 
-- [ ] Verify the current provider/model/region, source rights/plan and operator/OAuth
-      prerequisites; reserve within the experiment caps before live execution.
-- [ ] Review source terms, attribution, storage/retention, quotas, endpoints, and
+No paid provider call, vacancy discovery, model request, real CV processing or Gmail
+write has run. The two historical documentation HTTP diagnostics are the only
+counted transport probes; no seven-day observation window has started. Optional
+alternative providers/renderers remain unexecuted. The original 33-test setup gate
+above is historical evidence; the separate 47-test gate covers this follow-up.
+
+- [ ] Verify current provider/model/region, source rights/plan and operator access;
+      reserve within the experiment caps before live execution.
+- [ ] Review source terms, attribution, storage/retention, quotas, endpoints and
       redirects. Record source-policy evidence and enable only permitted sources.
-- [ ] Fetch bounded samples; curate five employer boards if available and measure
-      real coverage against G1's threshold, not just HTTP success.
-- [ ] Test search-query → employer career page → individual vacancy extraction on
-      smaller local employers; distinguish leads, blocked/unavailable pages, and
-      confirmed vacancies. Measure additional unique jobs beyond API/board samples.
-- [ ] Check current Gmail/OAuth requirements and create one synthetic draft addressed
-      to the consenting test account with a test attachment. Never send it.
-- [ ] Check token lifecycle/reconnect and document recovery constraints. Keep tokens,
-      captures, account identifiers, and provider-controlled private data out of Git.
-- [ ] Execute the synthetic CV, 20-case matching and 5-package model branch with
-      the positive/negative-case and repair limits from FEASIBILITY.md.
-- [ ] Report all four required branches with counts, evidence, costs and decisions;
-      distinguish optional unexecuted comparisons from required missing observations.
+- [ ] Fetch bounded samples; curate up to five employer boards and measure real
+      coverage against G1's threshold, not just HTTP success.
+- [ ] Test search-query → employer career page → vacancy extraction on smaller local
+      employers; measure additional unique vacancies beyond structured samples.
+- [x] Implement offline C corpus, schemas, prompts and scorer; run the integrated gate.
+- [ ] Obtain explicit synthetic profile approval and execute the synthetic CV,
+      twenty-case matching and five-package model branch within the repair caps.
+- [ ] Manually review those same five full packages: two email and three questionnaire
+      packages, internal field IDs mapped to source-evidenced question text, correct missing/action states,
+      no unsupported claims, and exact reviewed full-content hashes (ADR 0010).
+- [ ] Report A/B/C and manual-review D with counts, evidence, costs and decisions;
+      distinguish optional comparisons from required missing observations.
 
-Exit: the required seven-day observations and source/extraction/model/Gmail branches
-have executed findings and explicit decisions. A supported negative finding can
-complete the investigation but is not a passed criterion; revise the affected
-delivery plan. A required branch blocked before observation keeps G3 incomplete.
-Independent work may continue, but source success cannot imply Gmail success or
-V1 release readiness. Optional comparisons are reported separately.
+Exit: required seven-day observations and source/extraction/model/manual-package
+branches have executed findings and explicit decisions. A supported negative result
+can complete investigation but is not a passing criterion. A required branch blocked
+before observation, pending profile approval or unreviewed generated package content
+keeps G3 incomplete. Independent source success cannot establish model/package or
+V1 release readiness. The shared dialog and browser/clipboard checks belong to G6.
 
 ## G4: discovery slice
 
@@ -223,38 +234,43 @@ uncertain eligibility does not become confirmed through scoring.
 
 ## G6: application assistant
 
-Dependencies: G5, verified channels, and the Gmail branch of G3 for draft features.
+Dependencies: G5, verified channels and G3's model/manual-package evidence.
 
-- [ ] Resolve application/package/generation-attempt identities and state contracts
-      (Q5) before implementing their persistence and external writes.
-- [ ] Generate fact-grounded text packages and verified email/ATS routes.
-- [ ] Add manual Gmail creation, attachment checks, token disconnect/reconnect,
-      ambiguous-write recovery, and manual applied/ignored status.
-- [ ] Test absent send paths and crashes around external writes; validate opt-in
-      auto-drafting separately after the manual path meets acceptance criteria.
+- [ ] Resolve application/package/generation-attempt identities, immutable versions,
+      review hashes and preservation of human edits before persistence (Q5).
+- [ ] Generate fact-grounded email subject/body or questionnaire packages; bind every
+      proposed answer by a stable internal ID to source-evidenced question text and approved candidate facts.
+- [ ] Add “View application draft” to the table, opening one shared review/copy dialog
+      with email text or per-field proposed answers and a copy action per answer.
+- [ ] Show `needs_input` for missing facts and `applicant_action_required` for
+      consents/signatures/declarations. Unknown start dates stay unanswered.
+- [ ] Exercise the actual dialog and clipboard in a real browser, plus manual
+      applied/ignored status. Verify no autofill, form-write, send or submit paths.
+- [ ] Test interrupted/regenerated packages, preserved edits, ownership and version
+      invalidation; do not imply copying proves an application was sent.
 
-Exit: verified end-to-end packages/drafts contain supported claims, sending remains
-manual, and retries cannot silently create duplicate drafts. Gmail blockers leave
-packages available but do not satisfy V1's Gmail criteria.
+Exit: reviewed packages contain supported claims, missing/action states remain
+explicit, and browser copying works. The applicant alone transfers text, attaches
+files and sends/submits. Gmail is Firebase Auth login only; no Gmail integration.
 
 ## G7: V1 release and operational handover
 
-Dependencies: all preceding V1 slices, including CV processing and Gmail; review
-every V1 criterion. An incomplete discovery slice cannot pass this goal.
+Dependencies: all preceding V1 slices, including CV processing and manual-copy
+packages; review every V1 criterion. Discovery alone cannot pass this goal.
 
-- [ ] Verify retention, export/deletion, ownership enforcement, and minimal telemetry.
-- [ ] Exercise cost caps, source/token failures, alerts, and recovery; write a runbook.
-- [ ] Demonstrate the real-browser review-to-manual-application workflow with safe data.
+- [ ] Verify retention, export/deletion, ownership enforcement and minimal telemetry.
+- [ ] Exercise cost caps, source/authentication failures, alerts and recovery; write a runbook.
+- [ ] Demonstrate the real-browser review/copy-to-manual-application workflow with safe data.
 - [ ] Record acceptance evidence and limitations; scope a separate goal for broader use.
 
-Exit: every V1 criterion in `CONCEPT.md` has evidence. Missing CV, application text,
-or Gmail acceptance keeps V1 incomplete. No general multi-user availability is implied.
+Exit: every V1 criterion in `CONCEPT.md` has evidence. Missing CV, package review/copy
+or discovery acceptance keeps V1 incomplete. No multi-user availability is implied.
 
 ## V2: broader use and user-managed search orders — deferred
 
 Dependencies: a useful, accepted V1; define a new bounded goal before implementation.
 
-- [ ] Design onboarding and account lifecycle for additional owners, OAuth production
+- [ ] Design onboarding and account lifecycle for additional owners, authentication
       readiness, per-owner quotas, privacy, deletion, and support.
 - [ ] Add user-managed search orders: create/edit, geography/keywords/preferences,
       active/paused state, and individual schedules.
