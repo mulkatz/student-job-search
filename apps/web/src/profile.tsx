@@ -275,6 +275,21 @@ export function ProfilePanel({
                         }
                       />
                     </label>
+                    {fact.category === "working_language" && (
+                      <small>
+                        Declare each language explicitly, such as English,
+                        German B2, Russian fluent, or German not spoken. Missing
+                        proficiency stays unknown; fluent and CEFR levels are
+                        not interchangeable.
+                      </small>
+                    )}
+                    {fact.category === "location_preference" && (
+                      <small>
+                        Include city and country, such as Leipzig, Germany, or
+                        Remote from Germany. On-site and hybrid preferences can
+                        be explicit. Unsupported wording remains unknown.
+                      </small>
+                    )}
                     {fact.category === "weekly_availability_hours" && (
                       <small>
                         Use a numeric number of available hours, such as 16 or
@@ -409,8 +424,10 @@ export function ProfilePanel({
           <p>
             Fit measures approved-skill overlap with the evidenced title.
             Evidence confidence measures supported conditions; neither is a
-            hiring probability or legal determination. Human benchmark review
-            remains pending.
+            hiring probability or legal determination. Independent agent review
+            accepted the 50-case synthetic benchmark (49 distinct jobs). Human
+            review was not performed. Real-market results and full release
+            readiness remain unestablished.
           </p>
         </div>
       )}

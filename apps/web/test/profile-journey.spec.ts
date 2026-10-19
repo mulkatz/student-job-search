@@ -107,6 +107,24 @@ test("synthetic PDF upload, provenance correction, immutable approval, private m
   await expect(page.getByRole("row").nth(1).getByRole("heading")).toHaveText(
     "Synthetic Data Analysis Assistant",
   );
+  await supported.getByText("Evidence & details", { exact: true }).click();
+  await expect(
+    supported.getByText("Complete language requirements", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    supported
+      .getByText(
+        "English is the only required working language. No other languages are required.",
+        { exact: true },
+      )
+      .first(),
+  ).toBeVisible();
+  await expect(
+    supported.getByText("Complete work arrangements", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    supported.getByText("on site · Berlin, DE", { exact: true }),
+  ).toBeVisible();
   const row = page.getByRole("row").filter({
     has: page.getByRole("heading", {
       name: "Working Student — Analytics",
@@ -121,7 +139,9 @@ test("synthetic PDF upload, provenance correction, immutable approval, private m
   ).toBeVisible();
   await row.getByText("Evidence & details", { exact: true }).click();
   await expect(
-    row.getByText("language unknown · unknown", { exact: true }),
+    row.getByText("language requirements incomplete · unknown", {
+      exact: true,
+    }),
   ).toBeVisible();
   await expect(row.getByText(/Evidence confidence:/).first()).toBeVisible();
   await page.screenshot({

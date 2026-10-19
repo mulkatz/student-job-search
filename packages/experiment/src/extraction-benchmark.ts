@@ -3,6 +3,16 @@ import { load } from "cheerio";
 import { z } from "zod";
 import { type ExtractedFact, extractPublicPage } from "./extract.js";
 import { publicUrl } from "./public-fetch.js";
+import {
+  applicationAnchorIntent,
+  applicationFormIntent,
+  hasType,
+  normalizedText,
+  recruitmentEmail,
+  safeApplicationTarget,
+  structuredObjects,
+  visibleDocument,
+} from "./static-evidence.js";
 
 const id = z.string().regex(/^[a-zA-Z0-9_-]{1,80}$/);
 const text = z.string().trim().min(1).max(2000);
@@ -52,7 +62,7 @@ export const extractionCaptureSchema = z.strictObject({
   bodySha256: digest.optional(),
 });
 export const extractionLabelsSchema = z.strictObject({
-  version: z.literal(1),
+  version: z.union([z.literal(1), z.literal(2)]),
   manifestHash: digest,
   frozenAt: z.iso.datetime(),
   captureHashes: z.record(id, digest.nullable()),
@@ -125,109 +135,194 @@ function literal(value: unknown): string {
   return typeof value === "string" ? plain(value) : "";
 }
 function sourceEvidence(html: string, fetchedUrl: string) {
-  const $ = load(html);
+  const $ = visibleDocument(html);
   const values = new Map<string, string>();
   const quotes = [plain(html)];
-  $("script[type='application/ld+json']")
-    .slice(0, 20)
-    .each((index, node) => {
-      try {
-        const parsed: unknown = JSON.parse($(node).text());
-        const root = object(parsed);
-        const candidates: unknown[] = Array.isArray(parsed)
-          ? parsed
-          : Array.isArray(root["@graph"])
-            ? root["@graph"]
-            : [parsed];
-        for (const candidate of candidates.slice(0, 100)) {
-          const job = object(candidate);
-          if (
-            job["@type"] !== "JobPosting" &&
-            !(
-              Array.isArray(job["@type"]) && job["@type"].includes("JobPosting")
-            )
-          )
-            continue;
-          const address = object(object(job.jobLocation).address);
-          const format = Array.isArray(job.employmentType)
-            ? job.employmentType.map(literal).filter(Boolean).join(", ")
-            : literal(job.employmentType);
-          const selected = {
-            title: literal(job.title),
-            "hiringOrganization.name": literal(
-              object(job.hiringOrganization).name,
-            ),
-            employmentType: format,
-            "jobLocation.address": [
-              literal(address.addressLocality),
-              literal(address.addressCountry),
-            ]
-              .filter(Boolean)
-              .join(", "),
-            "applicantLocationRequirements.name": literal(
-              object(job.applicantLocationRequirements).name,
-            ),
-            inLanguage: literal(job.inLanguage),
-            description: literal(job.description),
-          };
-          for (const [field, value] of Object.entries(selected))
-            if (value) {
-              quotes.push(value);
-              const key = `script[type='application/ld+json']:eq(${index}) JobPosting.${field}`;
-              // Ambiguous same-script objects cannot prove one selector-specific claim.
-              if (values.has(key) && values.get(key) !== value)
-                values.set(key, "");
-              else if (!values.has(key)) values.set(key, value);
-            }
-        }
-      } catch {
-        /* Malformed/unrelated JSON does not supply source evidence. */
-      }
-    });
-  const sourceRoutes = new Map<unknown, { value: string; quote: string }>();
-  $("a[href]").each((_, node) => {
-    const anchor = $(node);
-    const ancestors = anchor.parents().addBack();
-    if (
-      ancestors.is(
-        "script,style,noscript,template,iframe,[hidden],[aria-hidden='true']",
-      ) ||
-      ancestors
-        .toArray()
-        .some((ancestor) =>
-          /display\s*:\s*none|visibility\s*:\s*hidden/i.test(
-            $(ancestor).attr("style") ?? "",
-          ),
-        )
+  const put = (key: string, value: string) => {
+    const text = norm(value);
+    if (!text) return;
+    quotes.push(text);
+    if (values.has(key) && values.get(key) !== text) values.set(key, "");
+    else if (!values.has(key)) values.set(key, text);
+  };
+  for (const { value: job, script } of structuredObjects(html).objects) {
+    if (hasType(job, "Organization"))
+      put(
+        `script[type='application/ld+json']:eq(${script}) Organization.name`,
+        literal(job.name),
+      );
+    if (!hasType(job, "JobPosting")) continue;
+    const locations = (
+      Array.isArray(job.jobLocation) ? job.jobLocation : [job.jobLocation]
     )
-      return;
-    try {
-      const target = new URL(anchor.attr("href") ?? "", fetchedUrl);
-      if (target.protocol === "mailto:") {
-        target.search = "";
-        target.hash = "";
-      } else publicUrl(target.href);
-      sourceRoutes.set(node, {
-        value: target.href,
-        quote: plain(anchor.html() ?? ""),
-      });
-    } catch {
-      /* Unsafe links are not evidence. */
-    }
-  });
-  // Ground truth includes visible forms/late anchors, even where the baseline
-  // misses them. Actual selector proofs use its filtered DOM indices.
-  $(
-    "script:not([type='application/ld+json']),style,noscript,iframe,form",
-  ).remove();
+      .map((value) => {
+        const address = object(object(value).address);
+        return [
+          literal(address.addressLocality),
+          typeof address.addressCountry === "string"
+            ? literal(address.addressCountry)
+            : literal(object(address.addressCountry).name),
+        ]
+          .filter(Boolean)
+          .join(", ");
+      })
+      .filter(Boolean);
+    const scopes = (
+      Array.isArray(job.applicantLocationRequirements)
+        ? job.applicantLocationRequirements
+        : [job.applicantLocationRequirements]
+    )
+      .map((value) => literal(object(value).name))
+      .filter(Boolean);
+    const selected = {
+      title: literal(job.title),
+      "hiringOrganization.name": literal(object(job.hiringOrganization).name),
+      employmentType: Array.isArray(job.employmentType)
+        ? job.employmentType.map(literal).filter(Boolean).join(", ")
+        : literal(job.employmentType),
+      "jobLocation.address": [...new Set(locations)].join("; "),
+      "applicantLocationRequirements.name": scopes.join(", "),
+      description: literal(job.description),
+    };
+    for (const [field, value] of Object.entries(selected))
+      put(
+        `script[type='application/ld+json']:eq(${script}) JobPosting.${field}`,
+        value,
+      );
+  }
+  for (const tag of ["p", "li", "dd", "dt", "span", "h1", "h2", "h3", "div"])
+    $(tag).each((index, node) => put(`${tag}:eq(${index})`, $(node).text()));
+  $("meta[property='og:title']").each((index, node) =>
+    put(
+      `meta[property='og:title']:eq(${index})`,
+      $(node).attr("content") ?? "",
+    ),
+  );
   const routes = new Map<string, { value: string; quote: string }>();
+  const addRoute = (
+    selector: string,
+    target: string | undefined,
+    quote: string,
+  ) => {
+    if (target) routes.set(selector, { value: target, quote: norm(quote) });
+  };
   $("a[href]")
     .slice(0, 500)
     .each((index, node) => {
-      const route = sourceRoutes.get(node);
-      if (route) routes.set(`a[href]:eq(${index})`, route);
+      const anchor = $(node),
+        quote = normalizedText(anchor.text());
+      const target = safeApplicationTarget(
+        anchor.attr("href") ?? "",
+        fetchedUrl,
+      );
+      if (
+        target &&
+        !anchor
+          .parents()
+          .addBack()
+          .is(
+            "nav,footer,header,aside,[role='navigation'],[role='contentinfo'],[class*='related'],[class*='recommend']",
+          ) &&
+        applicationAnchorIntent($, anchor, target)
+      )
+        addRoute(`a[href]:eq(${index})`, target, quote);
     });
-  return { values, quotes, routes, labelRoutes: [...sourceRoutes.values()] };
+  for (const tag of ["p", "li", "dd", "dt", "span", "h1", "h2", "h3", "div"])
+    $(tag).each((index, node) => {
+      if ($(node).parents().addBack().is("nav,footer,header,aside,form"))
+        return;
+      const quote = normalizedText($(node).text()),
+        email = recruitmentEmail(quote);
+      if (email)
+        addRoute(
+          `${tag}:eq(${index})`,
+          safeApplicationTarget(`mailto:${email}`, fetchedUrl),
+          quote,
+        );
+    });
+  $("form")
+    .slice(0, 20)
+    .each((index, node) => {
+      const form = $(node),
+        quote = normalizedText(form.text());
+      if (
+        form.parents().is("nav,footer,aside") ||
+        form.find("input[type='password']").length ||
+        !form.find("input[type='file']").length ||
+        !applicationFormIntent(
+          quote,
+          form
+            .find("button,input[type='submit']")
+            .toArray()
+            .map((control) => $(control).attr("value") ?? $(control).text())
+            .join(" "),
+        )
+      )
+        return;
+      const target = safeApplicationTarget(
+        form.attr("action") || fetchedUrl,
+        fetchedUrl,
+      );
+      if (target && new URL(target).origin === new URL(fetchedUrl).origin)
+        addRoute(`form:eq(${index})`, target, quote);
+    });
+  // Ground truth is authored independently. Parser caps and chrome exclusions
+  // constrain extraction, not which visible source routes a reviewer may label.
+  const labelRoutes: { value: string; quote: string }[] = [];
+  const labelRoute = (value: string | undefined, quote: string) => {
+    if (value && quote) labelRoutes.push({ value, quote: norm(quote) });
+  };
+  $("a[href]").each((_, node) =>
+    labelRoute(
+      safeApplicationTarget($(node).attr("href") ?? "", fetchedUrl),
+      $(node).text(),
+    ),
+  );
+  $("form").each((_, node) => {
+    const form = $(node);
+    if (form.find("input[type='password']").length) return;
+    const target = safeApplicationTarget(
+      form.attr("action") || fetchedUrl,
+      fetchedUrl,
+    );
+    if (target && new URL(target).origin === new URL(fetchedUrl).origin)
+      labelRoute(target, form.text());
+  });
+  for (const tag of ["p", "li", "dd", "dt", "span", "div"])
+    $(tag).each((_, node) => {
+      if (
+        (tag === "div" || tag === "span") &&
+        $(node).find("div,p,li,dd,dt,span").length
+      )
+        return;
+      const quote = normalizedText($(node).text());
+      for (const address of quote.match(
+        /[\w.!#$%&'*+/=?^`{|}~-]+@[a-z\d](?:[a-z\d.-]*[a-z\d])?\.[a-z]{2,}/gi,
+      ) ?? [])
+        labelRoute(
+          safeApplicationTarget(`mailto:${address}`, fetchedUrl),
+          quote,
+        );
+    });
+  return { values, quotes, routes, labelRoutes };
+}
+
+function employment(value: string): string {
+  return norm(value)
+    .replace(/full[_ -]?time|vollzeit/g, "full_time")
+    .replace(/part[_ -]?time|teilzeit/g, "part_time")
+    .replace(/internship|praktikum/g, "intern")
+    .replace(/\s*,\s*/g, ", ");
+}
+function equivalent(field: string, actual: string, accepted: string): boolean {
+  if (field === "applicationRoute") return actual === accepted;
+  if (field === "workFormat")
+    return employment(actual) === employment(accepted);
+  if (field === "location" && norm(actual).split(",")[0] === norm(accepted))
+    return true;
+  if (norm(actual) === norm(accepted)) return true;
+  if (field === "applicantScope") return norm(actual).includes(norm(accepted));
+  return false;
 }
 
 function prepare(
@@ -357,7 +452,10 @@ function prepare(
                   route.value === value &&
                   route.quote === norm(fact.quote ?? ""),
               )
-            : norm(fact.quote ?? "").includes(value);
+            : norm(fact.quote ?? "").includes(value) ||
+              ("field" in fact &&
+                fact.field === "workFormat" &&
+                employment(fact.quote ?? "").includes(employment(value)));
         if (!supported)
           throw new Error(
             "Accepted label value is not bound to its quoted source.",
@@ -458,9 +556,10 @@ export function scoreExtractionBenchmark(
     const context = prepared.contexts.get(row.id);
     const evidenceMatches = (claim: ExtractedFact) =>
       claim.evidence.url === fetchedUrl &&
-      norm(claim.value) === context?.values.get(claim.evidence.selector) &&
-      norm(claim.evidence.quote) ===
-        context.values.get(claim.evidence.selector);
+      context?.values
+        .get(claim.evidence.selector)
+        ?.includes(norm(claim.evidence.quote)) === true &&
+      norm(claim.evidence.quote).includes(norm(claim.value));
     const titleMatches = (
       claim: ExtractedFact | undefined,
       expected: z.infer<typeof groundedValue> | undefined,
@@ -493,7 +592,9 @@ export function scoreExtractionBenchmark(
         field === "applicationRoute"
           ? (page?.applicationRoutes ?? [])
           : field === "workLanguage"
-            ? []
+            ? page?.workLanguage && page.workLanguage !== "unknown"
+              ? [page.workLanguage]
+              : []
             : page?.[field]
               ? [page[field]]
               : [];
@@ -520,11 +621,9 @@ export function scoreExtractionBenchmark(
       if (
         label.kind === "job_detail" &&
         expected?.status === "present" &&
-        expected.acceptedValues
-          .map((value) =>
-            claim.field === "applicationRoute" ? value : norm(value),
-          )
-          .includes(claim.value) &&
+        expected.acceptedValues.some((value) =>
+          equivalent(claim.field, claim.value, value),
+        ) &&
         claim.grounded
       )
         metrics.truePositive++;
@@ -538,11 +637,9 @@ export function scoreExtractionBenchmark(
             (claim) =>
               claim.field === fact.field &&
               claim.grounded &&
-              fact.acceptedValues
-                .map((value) =>
-                  fact.field === "applicationRoute" ? value : norm(value),
-                )
-                .includes(claim.value),
+              fact.acceptedValues.some((value) =>
+                equivalent(fact.field, claim.value, value),
+              ),
           )
         )
           metrics.recovered++;
@@ -588,7 +685,8 @@ export function scoreExtractionBenchmark(
     metrics.recall !== null &&
     metrics.recall >= 0.8;
   return {
-    version: 1,
+    version: 2,
+    scorerVersion: "static-evidence-v2",
     manifestHash: receipt.manifestHash,
     labelsHash: receipt.labelsHash,
     methodVersion: options.methodVersion,

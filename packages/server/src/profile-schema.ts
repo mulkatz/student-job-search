@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const currentEvaluatorVersion = "g5-deterministic-v2";
+
 export const profilePolicy = {
   maximumPdfBytes: 2 * 1024 * 1024,
   maximumPages: 10,
@@ -118,6 +120,9 @@ export const evaluationReasonSchema = z.strictObject({
     "language_unknown",
     "language_incompatible",
     "profile_language_unknown",
+    "language_requirements_incomplete",
+    "language_requirements_conflicting",
+    "language_proficiency_unknown",
     "location_unknown",
     "location_incompatible",
     "germany_remote_unknown",
@@ -125,11 +130,13 @@ export const evaluationReasonSchema = z.strictObject({
     "employment_unknown",
     "employment_incompatible",
     "profile_preferences_unknown",
+    "additional_requirements_unknown",
     "hours_unknown",
     "hours_incompatible",
     "hours_range_unknown",
     "profile_availability_unknown",
     "authorization_unknown",
+    "authorization_country_unknown",
     "authorization_incompatible",
     "profile_authorization_unknown",
     "additional_authorization_restrictions",
@@ -142,6 +149,10 @@ export const evaluationReasonSchema = z.strictObject({
     "kind",
     "expiresAt",
     "englishAccepted",
+    "languageRequirements",
+    "employmentOptions",
+    "workArrangements",
+    "additionalRequirements",
     "remoteFromGermany",
     "location",
     "employmentType",
@@ -159,7 +170,7 @@ export const privateEvaluationSchema = z.strictObject({
   jobRevisionId: z.string().regex(/^rev_[a-f0-9]{64}$/),
   profileVersionId: digest,
   profileHash: digest,
-  evaluatorVersion: z.literal("g5-deterministic-v1"),
+  evaluatorVersion: z.enum(["g5-deterministic-v1", currentEvaluatorVersion]),
   assessment: z
     .strictObject({
       version: z.string().regex(/^[a-zA-Z0-9_-]{1,80}$/),
@@ -211,8 +222,18 @@ export const profileViewSchema = z.strictObject({
     .array(privateEvaluationSchema.extend({ stale: z.boolean() }))
     .max(100),
   benchmark: z.strictObject({
+    status: z.literal("accepted"),
+    reviewerKind: z.literal("independent_agent"),
+    synthetic: z.literal(true),
     syntheticCases: z.literal(50),
-    humanReview: z.literal("pending"),
+    uniqueCanonicalUnits: z.literal(49),
+    uniqueEligibleUnits: z.literal(20),
+    fixtureHash: digest,
+    evaluatorVersion: z.literal(currentEvaluatorVersion),
+    acceptanceReceiptSha256: digest,
+    eligibleShortlistPrecision: z.literal(1),
+    processingSuccess: z.literal(1),
+    humanReview: z.literal("not_performed"),
     releaseAcceptance: z.literal("not_established"),
   }),
 });

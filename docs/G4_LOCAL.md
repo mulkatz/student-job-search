@@ -174,7 +174,7 @@ cross-store interruption requires exact-token reconciliation after stopping the 
 worker. Never delete markers, locks, reservations or old results to repeat a charge.
 The existing G3 ledger remains authoritative for cumulative caps and costs; its first
 actual discovery dispatch remains preserved. ADR 0017 subsequently replaced the
-mandatory seven-day G3/A duration with a bounded snapshot. G3 investigation closes
-with negative findings; one observed live date, repeat processing and offline calendar
+mandatory seven-day G3/A duration with a bounded snapshot. G3 remediation preserves the original negative investigation; one observed live date,
+repeat processing and offline calendar
 tests do not establish recurring market yield or V1 acceptance, production
 authentication or cloud scheduling.

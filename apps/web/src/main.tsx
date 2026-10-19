@@ -16,7 +16,10 @@ import {
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import type { ProfileView } from "../../../packages/server/dist/profile-schema.js";
+import {
+  currentEvaluatorVersion,
+  type ProfileView,
+} from "../../../packages/server/dist/profile-schema.js";
 import { safeLink } from "./links.mjs";
 import { ProfilePanel } from "./profile.js";
 import "./style.css";
@@ -115,6 +118,86 @@ function JobDetails({
         <Field label="Employer" field={observation.employer} />
         <Field label="Location" field={observation.location} />
         <Field label="Employment type" field={observation.employmentType} />
+        <Field
+          label="Complete language requirements"
+          field={
+            observation.languageRequirements &&
+            observation.languageRequirements.status !== "unknown"
+              ? {
+                  value:
+                    observation.languageRequirements.status === "complete"
+                      ? observation.languageRequirements.alternatives
+                          .map((set) =>
+                            set
+                              .map(
+                                (requirement) =>
+                                  `${requirement.language}${requirement.minimumLevel ? ` ${requirement.minimumLevel}` : ""}`,
+                              )
+                              .join(" AND "),
+                          )
+                          .join(" OR ")
+                      : "Conflicting source requirements · review needed",
+                  evidence: observation.languageRequirements.evidence,
+                }
+              : null
+          }
+        />
+        <Field
+          label="Employment and hours alternatives"
+          field={
+            observation.employmentOptions &&
+            observation.employmentOptions.status !== "unknown"
+              ? {
+                  value:
+                    observation.employmentOptions.status === "complete"
+                      ? observation.employmentOptions.options
+                          .map(
+                            (option) =>
+                              `${option.employmentType.replaceAll("_", " ")} · ${option.weeklyHours.minimum}–${option.weeklyHours.maximum} hours${option.weeklyHours.flexibleWithinRange ? " · applicant may choose within range" : ""}`,
+                          )
+                          .join(" OR ")
+                      : "Conflicting source requirements · review needed",
+                  evidence: observation.employmentOptions.evidence,
+                }
+              : null
+          }
+        />
+        <Field
+          label="Complete work arrangements"
+          field={
+            observation.workArrangements &&
+            observation.workArrangements.status !== "unknown"
+              ? {
+                  value:
+                    observation.workArrangements.status === "complete"
+                      ? observation.workArrangements.arrangements
+                          .map((arrangement) =>
+                            arrangement.mode === "remote"
+                              ? `Remote from ${arrangement.allowedCountries.join(", ")}`
+                              : `${arrangement.mode.replaceAll("_", " ")} · ${arrangement.city}, ${arrangement.countryCode}`,
+                          )
+                          .join(" OR ")
+                      : "Conflicting source requirements · review needed",
+                  evidence: observation.workArrangements.evidence,
+                }
+              : null
+          }
+        />
+        <Field
+          label="Other mandatory requirements"
+          field={
+            observation.additionalRequirements &&
+            observation.additionalRequirements.status !== "unknown"
+              ? {
+                  value:
+                    observation.additionalRequirements.status === "none"
+                      ? "Source explicitly states no further mandatory requirements"
+                      : "Unresolved requirements · review needed",
+                  evidence: observation.additionalRequirements.evidence,
+                }
+              : null
+          }
+        />
         <div className="evidence">
           <strong>Weekly hours</strong>
           {observation.weeklyHours?.status === "confirmed" ? (
@@ -322,6 +405,7 @@ function App() {
     job: DiscoveryJob,
   ) =>
     evaluation.stale ||
+    evaluation.evaluatorVersion !== currentEvaluatorVersion ||
     evaluation.jobRevisionId !== job.currentRevisionId ||
     evaluation.profileVersionId !== profile?.activeVersionId ||
     Date.parse(evaluation.expiresAt) <= Date.now() ||

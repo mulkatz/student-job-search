@@ -100,6 +100,47 @@ test("actual owner-scoped PDF/profile/evaluation lifecycle uses Auth tokens and 
     );
     const job = matchingJob(Date.now());
     await persistSharedJobs(services.firestore, [job]);
+    const roundTrip = await services.dependencies.listJobs();
+    assert.deepEqual(roundTrip, [job]);
+    assert.equal(roundTrip[0]?.currentRevisionId, job.currentRevisionId);
+    // Nested AND/OR arrays round-trip through a Firestore-compatible object wrapper.
+    const storedJob = (
+      await services.firestore.doc(`sharedJobs/${job.jobId}`).get()
+    ).data();
+    assert.ok(storedJob);
+    const originalProjection = structuredClone(storedJob);
+    await services.firestore.doc(`sharedJobs/${job.jobId}`).set({
+      ...storedJob,
+      observation: {
+        ...job.observation,
+        languageRequirements: {
+          status: "complete",
+          alternatives: [{ requirements: [] }],
+          evidence: job.observation.title?.evidence,
+        },
+      },
+    });
+    await assert.rejects(services.dependencies.listJobs());
+    await services.firestore.doc(`sharedJobs/${job.jobId}`).set({
+      ...originalProjection,
+      currentRevisionId: `rev_${"0".repeat(64)}`,
+    });
+    await assert.rejects(
+      services.dependencies.listJobs(),
+      /Invalid projection identity/,
+    );
+    await services.firestore
+      .doc(`sharedJobs/${job.jobId}`)
+      .set(originalProjection);
+    const misplaced = services.firestore.doc(
+      `sharedJobs/job_${"f".repeat(32)}`,
+    );
+    await misplaced.set(originalProjection);
+    await assert.rejects(
+      services.dependencies.listJobs(),
+      /Invalid projection identity/,
+    );
+    await misplaced.delete();
     const operationId = randomUUID();
     const bytes = syntheticPdf();
     const upload = () =>

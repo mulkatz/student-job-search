@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "reviewedAt": "2026-10-19T20:40:40.132Z",
+  "reviewerKind": "independent_agent",
+  "humanReview": false,
+  "status": "exact_version_synthetic_benchmark_accepted",
+  "fixtureHash": "59d0362521658a954fb8604489babe9d3880059fe36e83d8afd128cb0ce11b25",
+  "bindings": {
+    "cases-final.json": "cda654dd6f979ae4efa94204fabc99865f231c0f970a37da82a5b3eeae23c132",
+    "labels-final.json": "bb2e064890b641d70f49e6cf57ea26e24853af062b7ca4da4ac12cdbc9ed4f4b",
+    "adjudication.json": "a7edcb7f7e17d5db3b67f509362b7d372fcb62fb017d3d6b82653d754065bf72",
+    "adjudication-notes.json": "0244207cedd7cd7d27176473447560733158a6a2eebdee8a55c3421415644211",
+    "freeze-manifest.json": "bdfe73a070af7306acd980aad0be4b7e70c88e4b0393356efd99d45046133a78",
+    "first-evaluation.json": "b9e5ac19f5f9e878cfc522b0280af44a7e4fe772c0d6eb7329b81319910f72ac"
+  },
+  "evaluator": {
+    "version": "g5-deterministic-v2",
+    "sourceFile": "packages/server/src/profile-matching.ts",
+    "sourceSha256": "46aa9b57c3864982cfe338bb2acb1459ab54f70b2c71e24f5424e7da696ffcad",
+    "runtimeSha256": "6b38149612d5d57de040f12f23dc32163f143e19f42f8807bd13deef327bfce4"
+  },
+  "review": {
+    "strictProfileAndJobSchemasPassed": 50,
+    "independentProductionRerunRows": 50,
+    "exactSavedOutputComparisons": 50,
+    "comparedFields": [
+      "jobId",
+      "eligibility",
+      "fitScore",
+      "evidenceConfidence",
+      "reasons"
+    ],
+    "outputMismatches": 0,
+    "freezeBeforeAdjudicationBeforeFirstEvaluation": true,
+    "sourceModifiedBeforeFirstEvaluation": true,
+    "newHoldoutOutputsSeenBeforeLabelsFrozen": false,
+    "original50PriorOracleExposure": true
+  },
+  "metrics": {
+    "rows": 50,
+    "canonicalJobUnits": 49,
+    "processed": 50,
+    "processingSuccess": 1,
+    "eligibleRows": 21,
+    "uniqueEligibleJobUnits": 20,
+    "eligibleShortlistPrecision": 1,
+    "confusion": {
+      "eligible": {
+        "eligible": 21,
+        "blocked": 0,
+        "needs_review": 0
+      },
+      "blocked": {
+        "eligible": 0,
+        "blocked": 13,
+        "needs_review": 0
+      },
+      "needs_review": {
+        "eligible": 0,
+        "blocked": 0,
+        "needs_review": 16
+      }
+    }
+  },
+  "thresholds": {
+    "minimumLabeledPositiveRows": 15,
+    "minimumEligibleShortlistPrecision": 0.9,
+    "minimumProcessingSuccessExclusive": 0.95,
+    "met": true
+  },
+  "limitations": [
+    "Independent-agent synthetic exact-version evidence, not human review, real-candidate approval, legal eligibility or live-market yield.",
+    "Author and adjudicator had prior production/original-oracle familiarity; the new labels and separate adjudication were frozen before evaluator outputs were exposed.",
+    "H01/H50 duplicate one canonical unit; never claim21 unique eligible jobs.",
+    "Publication timestamps and H47 inherited expiry are fictional fixture metadata, not source-proven freshness; no source PDF authenticity is established.",
+    "The holdout is now exposed. Any subsequent matcher tuning must preserve this first result and cannot reuse it as a fresh holdout.",
+    "This receipt accepts only the bounded ADR0022 synthetic benchmark method; other G3/G6/release criteria require their own evidence."
+  ]
+}

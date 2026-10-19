@@ -48,7 +48,9 @@ The G3 experiment has a EUR 5 planning sublimit and shared work caps in
 project reads and enabled billing are verified, and Vertex API enablement succeeded.
 Conservative combined-output reservations and settled usage accounting are
 implemented; EU synthetic inference and usage are observed, with failed first-pass
-content cases and the full C/D sample still incomplete. The local Brave credential
+content cases. The complete original C sample failed; exact corrected D packages
+passed delegated review under ADR 0021. Remediation matching is 20/20 correct, but
+five new package outputs fail and today's explicit 70-request allowance is full. The local Brave credential
 and Search/Postpaid tariff are confirmed; no applicable storage/use grant is
 established. The current user instruction authorizes bounded private execution
 despite this condition, recorded separately in [ADR 0016](adr/0016-private-brave-operator-authorization.md).
@@ -61,8 +63,8 @@ Include search-provider queries and page-fetch limits in the cost
 ceiling. Candidate consent is separate from the developer requesting work.
 
 **Current handling:** partial direct-page and synthetic model pilots are measured;
-Brave day one is observed with URL-only leads; the seven-day benchmark remains
-incomplete. Alpha's synthetic facts are explicitly approved
+Brave snapshot searches are observed with URL-only leads. Duration was removed
+under ADR 0017; useful compatible coverage remains unproven. Alpha's synthetic facts are explicitly approved
 privately; this does not approve real candidate facts or generated packages. No
 unreported provider account, spend or personal-data access is assumed.
 The original 400 listings / 40 evaluations / 5 drafts caps are proposals, not spending
@@ -177,3 +179,14 @@ G3 checks. Known conflicting restrictions need resolution for that use. This is
 an operating policy, not a universal extraction/permission guarantee. Preserve
 unavailable or policy-unresolved leads where retention permits, without fabricated
 facts or ready-to-use application packages. Tests must cover the policy when fetches are implemented.
+
+
+## Current quality dependencies before G6/G7
+
+The user requested autonomous closure of G3/G5 gaps. ADR 0022 delegates exact
+synthetic benchmark adjudication to separate agents, without changing numerical
+targets: the independent 50-case fixture passes. This supersedes the earlier human
+benchmark dependency for that fixture only. ADR 0024 requires complete decisive
+source conditions; legacy missing evidence remains review, and old evaluator
+versions are stale. G3 actual coverage and repaired model-package quality still
+need evidence. No user questionnaire is pending for those technical tasks.

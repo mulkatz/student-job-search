@@ -1,15 +1,18 @@
 # G3: bounded feasibility experiment
 
-- Status: investigation complete with negative A/B/C findings; corrected D approved
+- Status: autonomous remediation after preserved negative A/B/C findings; corrected D approved
 - Results: [executed bounded measurements and decisions](G3_SETUP.md#current-findings-and-decisions)
 - Defined: 2026-10-19
 - Prerequisite: G2's reproducible tooling and applicable live-access checks below
 - Initial route: GCP-managed Gemini, Brave, controlled HTTP retrieval with Cheerio
 
 This is the G1 deliverable and G3 execution contract. It defines observations and
-stop conditions. A ten-target B pilot is measured but incomplete; documentation
-diagnostics are separate. Synthetic Alpha facts are approved privately; partial
-live C outputs exist, with no generated package-content approval yet.
+stop conditions. The original full investigation failed coverage/extraction/model
+quality; exact corrected D packages passed delegated review under ADR 0021.
+Subsequent remediation preserves those observations, the numerical criteria and
+all caps. Known-cohort extraction and matching improve; actual source coverage and
+model-package quality still need evidence. ADR 0022 changes only the separate G5
+synthetic benchmark review method, not these G3 criteria.
 Current access readiness and setup commands are in [G3_SETUP.md](G3_SETUP.md).
 Prices and provider features researched earlier remain dated inputs in
 [PROVIDERS_AND_COSTS.md](PROVIDERS_AND_COSTS.md) and

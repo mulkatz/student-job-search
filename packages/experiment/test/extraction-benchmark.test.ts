@@ -120,7 +120,7 @@ function fixture(count = 30) {
             {
               field: "workLanguage",
               status: "present",
-              acceptedValues: ["English"],
+              acceptedValues: ["English is accepted."],
               quote: "English is accepted.",
             },
             {
@@ -179,16 +179,16 @@ function replaceHtml(
   data.labels.captureHashes[caseId] = capture.bodySha256;
 }
 
-test("full synthetic sample scores actual baseline claims without treating unknown language or parser routes as verified", () => {
+test("full synthetic sample scores actual baseline claims with explicit language evidence and unverified parser routes", () => {
   const result = score(fixture());
   assert.equal(result.status, "reported_criteria_met");
   assert.equal(result.overall.correctDetails, 12);
-  assert.equal(result.overall.populated, 48);
-  assert.equal(result.overall.truePositive, 48);
+  assert.equal(result.overall.populated, 60);
+  assert.equal(result.overall.truePositive, 60);
   assert.equal(result.overall.present, 60);
-  assert.equal(result.overall.recovered, 48);
+  assert.equal(result.overall.recovered, 60);
   assert.equal(result.overall.precision, 1);
-  assert.equal(result.overall.recall, 0.8);
+  assert.equal(result.overall.recall, 1);
   assert.equal(result.parserVerified, false);
   assert.equal(
     result.cases.every((row) => row.parserVerified === false),
@@ -394,8 +394,8 @@ test("absent/ambiguous populated values are false positives while unknown langua
     }
     const result = score(data);
     assert.equal(result.status, "failed");
-    assert.equal(result.overall.populated, 48);
-    assert.equal(result.overall.truePositive, 37);
+    assert.equal(result.overall.populated, 60);
+    assert.equal(result.overall.truePositive, 49);
   }
 });
 
@@ -407,7 +407,7 @@ test("duplicate routes cannot inflate counts and accepted routes must bind the e
     row.caseId,
     `${data.bodies[row.caseId]}<a href="/Apply/${row.caseId}">Apply now</a>`,
   );
-  assert.equal(score(data).overall.populated, 48);
+  assert.equal(score(data).overall.populated, 60);
   replaceHtml(
     data,
     row.caseId,
@@ -418,7 +418,7 @@ test("duplicate routes cannot inflate counts and accepted routes must bind the e
   route.acceptedValues = [
     `https://source.example.invalid/Apply/${row.caseId}#details`,
   ];
-  assert.equal(score(data).overall.truePositive, 48);
+  assert.equal(score(data).overall.truePositive, 60);
   route.acceptedValues = [
     `https://source.example.invalid/Apply/${row.caseId}#other`,
   ];
@@ -470,7 +470,7 @@ test("manually negative pages cannot become confirmed vacancies even when JSON-L
   assert.equal(result.overall.falseConfirmed, 6);
 });
 
-test("manual ground truth can include visible form routes the baseline misses without biasing labels to parser support", () => {
+test("manual labels can retain form-interior links omitted by the extractor without becoming false positives", () => {
   const data = fixture();
   for (const row of data.manifest.rows.filter(
     (row) => row.stratum === "static_detail",
@@ -481,9 +481,10 @@ test("manual ground truth can include visible form routes the baseline misses wi
       detailHtml(row.id).replace(/(<a[^>]*>Apply now<\/a>)/, "<form>$1</form>"),
     );
   const result = score(data);
-  assert.equal(result.status, "failed");
-  assert.equal(result.overall.recall, 0.6);
-  assert.equal(result.overall.populated, 36);
+  assert.equal(result.status, "reported_criteria_met");
+  assert.equal(result.overall.recall, 0.8);
+  assert.equal(result.overall.populated, 48);
+  assert.equal(result.overall.falsePositive, 0);
 });
 
 test("redirected aliases of one final HTML page cannot inflate sample or fact counts", () => {
@@ -502,4 +503,123 @@ test("redirected aliases of one final HTML page cannot inflate sample or fact co
       ),
     /Duplicate final HTML URL/,
   );
+});
+
+test("v2 labels ground explicit recruitment emails and local upload forms without inventing channel verification", () => {
+  for (const channel of ["email", "form"] as const) {
+    const data = fixture(1);
+    const row = first(data.labels.cases),
+      route = row.facts.find((fact) => fact.field === "applicationRoute");
+    assert.ok(route);
+    data.labels.version = 2;
+    const html = detailHtml(row.caseId).replace(
+      /<a[^>]*>Apply now<\/a>/,
+      channel === "email"
+        ? "<p>Send your application to hiring@example.org.</p>"
+        : "<form action='/submit?role=one'><label>Resume<input type='file'></label> <button>Apply now</button></form>",
+    );
+    replaceHtml(data, row.caseId, html);
+    route.acceptedValues = [
+      channel === "email"
+        ? "mailto:hiring@example.org"
+        : "https://source.example.invalid/submit?role=one",
+    ];
+    route.quote =
+      channel === "email"
+        ? "Send your application to hiring@example.org."
+        : "Resume Apply now";
+    const result = score(data);
+    assert.equal(result.version, 2);
+    assert.equal(result.scorerVersion, "static-evidence-v2");
+    assert.equal(result.overall.truePositive, 5);
+    assert.equal(result.overall.falsePositive, 0);
+    route.acceptedValues = ["mailto:invented@example.org"];
+    assert.throws(() => score(data), /bound to its quoted source/);
+  }
+});
+
+test("narrow employment encoding aliases retain quoted proof and do not equate student status or hours", () => {
+  const data = fixture(1),
+    row = first(data.labels.cases);
+  const format = row.facts.find((fact) => fact.field === "workFormat");
+  assert.ok(format);
+  format.acceptedValues = ["part-time"];
+  assert.equal(score(data).overall.truePositive, 5);
+  for (const unsupported of ["FULL_TIME", "Werkstudent", "20 hours"]) {
+    format.acceptedValues = [unsupported];
+    assert.throws(() => score(data), /bound to its quoted source/);
+  }
+});
+
+test("unsafe upload actions cannot supply oracle application routes", () => {
+  const data = fixture(1),
+    row = first(data.labels.cases),
+    route = row.facts.find((fact) => fact.field === "applicationRoute");
+  assert.ok(route);
+  replaceHtml(
+    data,
+    row.caseId,
+    detailHtml(row.caseId).replace(
+      /<a[^>]*>Apply now<\/a>/,
+      "<form action='http://127.0.0.1/apply'><input type='file'>Apply now</form>",
+    ),
+  );
+  route.acceptedValues = ["http://127.0.0.1/apply"];
+  route.quote = "Apply now";
+  assert.throws(() => score(data), /bound to its quoted source/);
+});
+
+test("independent labels beyond parser link/form caps and in footers remain measurable recall losses", () => {
+  for (const variant of ["late_anchor", "late_form", "footer"] as const) {
+    const data = fixture(1),
+      row = first(data.labels.cases),
+      route = row.facts.find((fact) => fact.field === "applicationRoute");
+    assert.ok(route);
+    const target = `https://source.example.invalid/Apply/${row.caseId}`;
+    const anchor = `<a href="${target}">Apply now</a>`;
+    const replacement =
+      variant === "late_anchor"
+        ? `<a href='/browse'>Browse</a>`.repeat(500) + anchor
+        : variant === "late_form"
+          ? `<form>Unrelated</form>`.repeat(20) +
+            `<form action="${target}"><input type='file'>Apply now</form>`
+          : `<footer>${anchor}</footer>`;
+    replaceHtml(
+      data,
+      row.caseId,
+      detailHtml(row.caseId).replace(/<a[^>]*>Apply now<\/a>/, replacement),
+    );
+    const result = score(data);
+    assert.equal(result.overall.present, 5);
+    assert.equal(result.overall.recovered, 4);
+    assert.equal(result.overall.falsePositive, 0);
+    assert.equal(result.overall.recall, 0.8);
+  }
+});
+
+test("a complete language clause and line-bound application mail remain independently source grounded", () => {
+  const data = fixture(1),
+    row = first(data.labels.cases);
+  const clause =
+    "Good English OR German B2 is required; acquiring the missing language is mandatory.";
+  const html = detailHtml(row.caseId)
+    .replace("<p>English is accepted.</p>", `<p>${clause}</p>`)
+    .replace(
+      /<a[^>]*>Apply now<\/a>/,
+      "<p>For questions: <a href='mailto:inquiry@example.org'>inquiry@example.org</a><br><strong>Applications to:</strong> <a href='mailto:apply@example.org?subject=discard'>apply@example.org</a></p>",
+    );
+  replaceHtml(data, row.caseId, html);
+  const language = row.facts.find((fact) => fact.field === "workLanguage"),
+    route = row.facts.find((fact) => fact.field === "applicationRoute");
+  assert.ok(language && route);
+  language.acceptedValues = [clause];
+  language.quote = clause;
+  route.acceptedValues = ["mailto:apply@example.org"];
+  route.quote = "apply@example.org";
+  const result = score(data);
+  assert.equal(result.overall.truePositive, 5);
+  assert.equal(result.overall.recovered, 5);
+  assert.equal(result.overall.falsePositive, 0);
+  language.acceptedValues = ["English"];
+  assert.equal(score(data).overall.truePositive, 4);
 });

@@ -16,7 +16,7 @@ export function syntheticPdf(
       "Working language: English",
       "Skill: Analytics",
       "Employment preference: Part-time",
-      "Location preference: Berlin",
+      "Location preference: Berlin, Germany",
       "Weekly availability hours: 16",
       "Work authorization: employee_work_in_germany",
     ],
@@ -92,7 +92,7 @@ export function approvedFixture(
     {
       id: "location",
       category: "location_preference",
-      value: "Berlin",
+      value: "Berlin, Germany",
       provenance: {
         kind: "user_attestation",
         statement: "Synthetic fixture preference",
@@ -145,6 +145,58 @@ export function matchingJob(now = fixtureNow) {
         status: "confirmed",
         value: true,
         evidence: { url, quote: "English is accepted", selector: "p.language" },
+      },
+      languageRequirements: {
+        status: "complete",
+        alternatives: [
+          [
+            {
+              language: "English",
+              minimumLevel: null,
+              evidence: {
+                url,
+                quote: "English is the only required working language",
+                selector: "p.language",
+              },
+            },
+          ],
+        ],
+        evidence: {
+          url,
+          quote:
+            "English is the only required working language. No other languages are required.",
+          selector: "p.language",
+        },
+      },
+      additionalRequirements: {
+        status: "none",
+        evidence: {
+          url,
+          quote:
+            "There are no further mandatory requirements beyond the modeled conditions.",
+          selector: "p.requirements",
+        },
+      },
+      workArrangements: {
+        status: "complete",
+        arrangements: [
+          {
+            mode: "on_site",
+            city: "Berlin",
+            countryCode: "DE",
+            evidence: {
+              url,
+              quote: "This role is on site in Berlin, Germany.",
+              selector: "p.arrangements",
+            },
+          },
+        ],
+        evidence: {
+          url,
+          quote:
+            "The complete work arrangements are on site in Berlin, Germany only.",
+          selector: "p.arrangements",
+        },
       },
       weeklyHours: {
         status: "confirmed",

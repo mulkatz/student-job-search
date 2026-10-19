@@ -1,0 +1,15 @@
+{
+  "version": "2.1",
+  "frozenAt": "2026-10-19T20:25:02.142Z",
+  "fixtureHash": "59d0362521658a954fb8604489babe9d3880059fe36e83d8afd128cb0ce11b25",
+  "cases": 50,
+  "uniqueYieldUnits": 49,
+  "reviewerKind": "independent_agent",
+  "humanReview": false,
+  "files": {
+    "cases-final.json": "cda654dd6f979ae4efa94204fabc99865f231c0f970a37da82a5b3eeae23c132",
+    "labels-final.json": "bb2e064890b641d70f49e6cf57ea26e24853af062b7ca4da4ac12cdbc9ed4f4b",
+    "review-notes-final.json": "b625267b5688cbd6dce7dd9a3ca36825e62a3a775d41cc01ec474e5a94288623",
+    "original-regression-snapshot.json": "8529533d9f29fc1e287ce90e382f92e7f296b44f3325583df1b1fb6f3e0eacb4"
+  }
+}

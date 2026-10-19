@@ -7,7 +7,7 @@ import {
 } from "../src/profile-benchmark.js";
 import { approvedFixture, fixtureNow } from "./profile-fixtures.js";
 
-test("50 varied synthetic oracle cases meet implementation rubric without claiming human benchmark acceptance", async () => {
+test("the original 50 source-template labels remain separate from conservative v2 regression behavior", async () => {
   const cases = syntheticProfileBenchmark(approvedFixture(), fixtureNow);
   const result = await scoreSyntheticProfileBenchmark(cases, fixtureNow);
   assert.equal(cases.length, 50);
@@ -24,8 +24,15 @@ test("50 varied synthetic oracle cases meet implementation rubric without claimi
     "missing_profile",
     "supported",
   ]);
-  assert.equal(result.exactOracleMatches, 50);
-  assert.equal(result.eligibleShortlistPrecision, 1);
+  // Preserve the original labels. They predate complete language/remaining-condition evidence.
+  assert.ok(result.exactOracleMatches < 50);
+  assert.ok(result.cases.every((sample) => sample.actual !== "eligible"));
+  assert.ok(
+    result.cases
+      .filter((sample) => sample.actual === "blocked")
+      .every((sample) => sample.expected === "blocked"),
+  );
+  assert.equal(result.eligibleShortlistPrecision, null);
   assert.equal(result.processingSuccess, 1);
   assert.equal(result.humanReview, "pending");
   assert.equal(result.releaseAcceptance, "not_established");

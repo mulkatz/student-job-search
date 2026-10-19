@@ -1,5 +1,13 @@
 import { generateKeyPairSync } from "node:crypto";
-import { type DiscoveryJob, discoveryJobSchema } from "@job-search/discovery";
+import {
+  type DiscoveryJob,
+  discoveryJobSchema,
+  evidenceSchema,
+  jobIdentity,
+  languageRequirementSchema,
+  languageRequirementsSchema,
+  revisionIdentity,
+} from "@job-search/discovery";
 import { cert, initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
@@ -15,6 +23,35 @@ import {
 } from "./profile-service.js";
 
 export const projectId = "demo-job-search";
+// Firestore cannot store arrays directly inside arrays. This physical encoding
+// leaves the public observation and its content-derived revision identity intact.
+const storedLanguageRequirementsSchema = z.union([
+  languageRequirementsSchema,
+  z
+    .strictObject({
+      status: z.literal("complete"),
+      alternatives: z
+        .array(
+          z.strictObject({
+            requirements: z.array(languageRequirementSchema).min(1).max(10),
+          }),
+        )
+        .min(1)
+        .max(5),
+      evidence: evidenceSchema,
+    })
+    .transform((value) => ({
+      ...value,
+      alternatives: value.alternatives.map((set) => set.requirements),
+    })),
+]);
+const sharedProjectionSchema = discoveryJobSchema
+  .omit({ observation: true })
+  .extend({
+    observation: z.record(z.string(), z.unknown()),
+    retentionUntilEpochMs: z.number().int().positive(),
+  });
+
 export function requireEmulators(environment: NodeJS.ProcessEnv): void {
   if (
     environment.STORAGE_EMULATOR_HOST &&
@@ -166,15 +203,33 @@ export function createEmulatorServices() {
         .get();
       return snapshot.docs
         .map((document) => {
-          const projection = discoveryJobSchema
-            .extend({ retentionUntilEpochMs: z.number().int().positive() })
-            .parse(document.data());
-          const { retentionUntilEpochMs, ...job } = projection;
+          const projection = sharedProjectionSchema.parse(document.data());
+          const { retentionUntilEpochMs, ...stored } = projection;
+          const languages = stored.observation.languageRequirements;
+          const job = discoveryJobSchema.parse({
+            ...stored,
+            observation:
+              languages === undefined
+                ? stored.observation
+                : {
+                    ...stored.observation,
+                    languageRequirements:
+                      storedLanguageRequirementsSchema.parse(languages),
+                  },
+          });
           if (
             retentionUntilEpochMs !== Date.parse(job.observation.retentionUntil)
           )
             throw new Error("Invalid projection expiry");
-          return discoveryJobSchema.parse(job);
+          if (
+            document.id !== job.jobId ||
+            job.sourceId !== job.observation.sourceId ||
+            job.sourceRecordId !== job.observation.sourceRecordId ||
+            job.jobId !== jobIdentity(job.sourceId, job.sourceRecordId) ||
+            job.currentRevisionId !== revisionIdentity(job.observation)
+          )
+            throw new Error("Invalid projection identity");
+          return job;
         })
         .filter(
           (job) => Date.parse(job.observation.retentionUntil) > Date.now(),
@@ -223,8 +278,21 @@ export async function persistSharedJobs(
     z.string()
       .regex(/^[a-zA-Z0-9_-]+$/)
       .parse(job.jobId);
+    const languages = job.observation.languageRequirements;
     batch.set(firestore.doc(`sharedJobs/${job.jobId}`), {
       ...job,
+      observation:
+        languages?.status === "complete"
+          ? {
+              ...job.observation,
+              languageRequirements: {
+                ...languages,
+                alternatives: languages.alternatives.map((requirements) => ({
+                  requirements,
+                })),
+              },
+            }
+          : job.observation,
       retentionUntilEpochMs: Date.parse(job.observation.retentionUntil),
     });
   }

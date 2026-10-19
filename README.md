@@ -3,11 +3,10 @@
 Find student-friendly jobs in Berlin and remote jobs that can be performed from
 Germany. Review the evidence, prepare an application, and send it yourself.
 
-**Status:** G2 is complete. G3 investigation is complete with negative quality and
-coverage findings; see [current results](docs/G3_SETUP.md). G4 implements a local discovery slice,
+**Status:** G2 is complete. G3 source/model acceptance remains unmet after bounded remediation; see [current results](docs/G3_SETUP.md). G4 implements a local discovery slice,
 with conservative identities, bounded runs and a Firebase-emulator table; see
 [local setup and limitations](docs/G4_LOCAL.md). G5 adds local synthetic profiles and
-matching; its human benchmark remains pending. No application is deployed.
+matching; its independently adjudicated synthetic benchmark passes under ADR 0022. No application is deployed.
 Gmail is exclusively a Firebase Auth login identity; mailbox integration is outside
 the current V1/G3 contract ([ADR 0010](docs/adr/0010-manual-application-packages.md)). No cloud resources have been provisioned.
 
@@ -67,9 +66,10 @@ V1; it does not need a complex dashboard to include a useful application assista
 2. Completed: establish the offline TypeScript workspace, one locally verified gate,
    and configured CI with Biome, strict types, tests, build and secret scanning.
 3. Investigation complete with negative source/extraction/model quality decisions.
-   The user removed the long-term duration test; full synthetic matching now has
-   measured failures. Five editorial synthetic packages have delegated semantic
-   review and exact-version operator approval; original model failures remain.
+   The user removed the long-term duration test. Original synthetic matching failed;
+   a new batch classifies all 20 jobs correctly but fails all five application packages.
+   Five separate editorial synthetic packages have delegated semantic review and
+   exact-version operator approval; original model failures remain.
 4. Build discovery, CV/profile matching, and applications as internal slices of V1.
 5. Release V1 after package review/copy, privacy, recovery and operating acceptance pass; scope
    multi-user use and user-managed search orders as V2.
@@ -172,9 +172,11 @@ Run the guide's bounded cleanup command to remove expired storage. Deletion bloc
 reads immediately; uncertain in-flight uploads retain minimal cleanup markers and
 cannot be reported physically complete merely because time elapsed.
 The pilot bounds storage to three assets/drafts, five approved versions and 100
-evaluations; capacity conflicts preserve retained history. Fifty synthetic oracle
-cases and real local browser tests exercise the implementation. Human benchmark
-acceptance, live-model quality, production operation and real CV use remain separate.
+evaluations; capacity conflicts preserve retained history. A separate 50-case synthetic benchmark passed independent agent adjudication and
+production evaluation; its [immutable cases and receipt](experiments/g5/independent-benchmark-v2/README.md)
+are reproducible offline.
+Human review was not performed. Live-model quality, real-market coverage, production
+operation and real CV use remain separate.
 
 ## Development status
 
@@ -182,9 +184,11 @@ The proposed stack is TypeScript, React, Google Cloud, and Firebase. The initial
 provider route is GCP-managed Gemini, Brave and HTTP/Cheerio. The offline foundation
 uses private core, experiment, discovery and server workspaces plus a React/Vite
 local web application. Deployment tooling remains outside the current slice. The G3 model/region route
-has actual synthetic EU observations; its full sample failed quality acceptance.
-G3 investigation is complete with explicit negative findings; G5 local profile and
-matching implementation is separate from pending human benchmark acceptance.
+has actual synthetic EU observations. The original full sample failed; a new batch
+classifies all 20 jobs correctly but fails all five packages. The prepared sole
+repair has not dispatched because the explicit daily model limit is exhausted.
+G3 remediation preserves its original negative findings; G5 local profile and
+matching now meet the delegated synthetic benchmark method in ADR 0022.
 Local G4 discovery is verified; see [delivery evidence](docs/PLAN.md#g4-discovery-slice)
 and [local usage/source proof](docs/G4_LOCAL.md). Provider rights and recurring useful
 coverage remain distinct from this implementation milestone.

@@ -1,9 +1,11 @@
 import { createHash, randomUUID } from "node:crypto";
 import type { DiscoveryJob } from "@job-search/discovery";
 import { z } from "zod";
+import { independentBenchmarkEvidence } from "./profile-benchmark-evidence.js";
 import { type AssessmentHook, evaluateProfileJob } from "./profile-matching.js";
 import { contentHash, extractProfilePdf, ProfileError } from "./profile-pdf.js";
 import {
+  currentEvaluatorVersion,
   type PrivateEvaluation,
   type ProfileFact,
   type ProfileState,
@@ -36,11 +38,7 @@ export interface ProfileAssets {
   remove(ownerId: string, generation: string, id: string): Promise<void>;
 }
 const iso = (now: number) => new Date(now).toISOString();
-const benchmark = {
-  syntheticCases: 50,
-  humanReview: "pending",
-  releaseAcceptance: "not_established",
-} as const;
+const benchmark = independentBenchmarkEvidence;
 export function validatedProfileState(
   input: unknown,
   ownerId: string,
@@ -278,6 +276,7 @@ export function createProfileService(
         .map((evaluation) => ({
           ...evaluation,
           stale:
+            evaluation.evaluatorVersion !== currentEvaluatorVersion ||
             evaluation.profileVersionId !== activeVersionId ||
             !jobs.some(
               (job) =>

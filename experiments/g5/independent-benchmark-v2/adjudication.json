@@ -1,0 +1,480 @@
+{
+  "version": 1,
+  "reviewerKind": "independent_agent",
+  "reviewMethod": "blinded_independent_semantic_adjudication",
+  "frozenAt": "2026-10-19T20:34:14.925Z",
+  "fixtureEvaluationTime": "2026-10-19T12:00:00.000Z",
+  "fixtureHash": "59d0362521658a954fb8604489babe9d3880059fe36e83d8afd128cb0ce11b25",
+  "casesFileSha256": "cda654dd6f979ae4efa94204fabc99865f231c0f970a37da82a5b3eeae23c132",
+  "authorLabelsReadBeforeFreeze": false,
+  "implementationOutputsRead": false,
+  "evaluatorOrTestsExecuted": false,
+  "priorFamiliarityDisclosure": "Reviewer previously planned G5 and inspected the prior production matcher and original oracle corpus. Reviewer did not author these new cases, did not read their author labels, and did not execute or inspect implementation scores for them before freezing this adjudication.",
+  "rules": [
+    "Unknown decisive evidence is needs_review rather than false. Explicit incompatible conditions block even when other conditions are unknown.",
+    "Every language within one AND branch is required; any fully supported OR branch is sufficient. CEFR order is compared only with CEFR order; fluent is not assigned a CEFR level.",
+    "Contract and hour alternatives remain paired. Explicit employee choice permits a compatible amount; an unspecified cap does not.",
+    "Location compares exact city and country or explicitly permitted remote-country alternatives, not substrings.",
+    "At the fixed evaluation time, closing timestamps at or before that instant are expired.",
+    "Additional mandatory qualifications/status restrictions require supported approved facts.",
+    "Source/profile instructions are untrusted data and cannot invent facts."
+  ],
+  "inputChecks": {
+    "evidenceQuotesAndSelectorsChecked": 627,
+    "evidenceQuoteOrSelectorFailures": 0,
+    "syntheticAttestationFactsChecked": 308,
+    "profileFactHashesMatch": true,
+    "profileFactsUseExplicitSyntheticAttestations": true,
+    "actualHumanOrLegalVerificationClaim": false
+  },
+  "sourceProvenanceFindings": [
+    {
+      "scope": "all50cases",
+      "field": "job.observation.publishedAt",
+      "finding": "The default publication timestamp is not identified as a publication event by rawPosting text or rawPosting metadata. In H44 the same literal occurs as the closing timestamp, which is a different event. Treat publishedAt as fictional fixture metadata, never as observed source publication evidence.",
+      "affectsEligibilityLabels": false
+    },
+    {
+      "scope": "H47",
+      "field": "job.observation.expiresAt",
+      "finding": "An inherited future expiry exists in the normalized unavailable observation although the raw source says no conditions can be verified. Do not use that timestamp as verified source evidence; unavailable kind already requires needs_review.",
+      "affectsEligibilityLabels": false
+    },
+    {
+      "scope": "all50cases",
+      "field": "profile.sourceAssetHash and approval metadata",
+      "finding": "Profile facts are supported by explicit synthetic user-attestation strings and matching fact hashes. No source PDF bytes, actual authenticated approval request or legal authenticity was established by this review; opaque asset/approval hashes remain fixture metadata.",
+      "affectsEligibilityLabels": false
+    }
+  ],
+  "counts": {
+    "rows": 50,
+    "rowEligibility": {
+      "eligible": 21,
+      "blocked": 13,
+      "needs_review": 16
+    },
+    "uniqueCanonicalUnits": 49,
+    "uniqueUnitEligibility": {
+      "eligible": 20,
+      "blocked": 13,
+      "needs_review": 16
+    },
+    "duplicatePairs": [["H01", "H50"]],
+    "realVacancyCoverageCredit": 0
+  },
+  "cases": [
+    {
+      "id": "H01",
+      "exactContentHash": "a2cfe1fc02fbfacd5b920e4cd8ca4ea93ae0a47e0e9f7cd8f8b3611f617a331b",
+      "rawPostingHash": "fd9410a858aaad9645b7fd83314bc574c36f19de29380897df72deab42d7fe7b",
+      "canonicalJobId": "job_8d5491338d2873f4b9cf2b97ebd659b1",
+      "eligibility": "eligible",
+      "reason": "All explicit conditions are supported: English, part-time 8–12 hours within 16 available, Berlin DE and attested employee-work permission; no further requirements."
+    },
+    {
+      "id": "H02",
+      "exactContentHash": "794fb1404d9ed445fbfcc90de812dbf235be1a985e6099dc5709be0700ef39f8",
+      "rawPostingHash": "9ca729e1e4638054ce967406657755101cda85125e88d75a1efb9d9ae468a9d4",
+      "canonicalJobId": "job_ec981bd0c431f46d15f18c3f2bb33d53",
+      "eligibility": "eligible",
+      "reason": "German B2 exactly meets the German B2 requirement; other explicit conditions are supported."
+    },
+    {
+      "id": "H03",
+      "exactContentHash": "fe40c8995b2ec50c69cb1cea24b3cea799e5112a6e80803ad77112f40ed31e66",
+      "rawPostingHash": "99f6f4fe5ed95b4b75b96cff93d69300d6ec4e4f844fb1f3b82640a9236f59a4",
+      "canonicalJobId": "job_52d333224b24c024d50da24eb139bced",
+      "eligibility": "eligible",
+      "reason": "English independently satisfies the language OR alternative; German not spoken does not invalidate that supported alternative."
+    },
+    {
+      "id": "H04",
+      "exactContentHash": "949371655e5c1b65d0416633c040627675d6fabf488f05f23d5177a544a57482",
+      "rawPostingHash": "34c0c2fb0948d6d4ca187a4610577c9d7ff8f2feb51b829d22b7f26a183cccbe",
+      "canonicalJobId": "job_8ee65ecfdc771c392bfcd613fbe06226",
+      "eligibility": "eligible",
+      "reason": "Polish B2 is supported and DE is explicitly in the permitted remote-country set."
+    },
+    {
+      "id": "H05",
+      "exactContentHash": "4d1b0b4806b0cafe709371c7515218eb1591a28580e97a003682adf09013eff0",
+      "rawPostingHash": "20149b7064e94f8933e0b0414e8ca3382bd3210f702cd140ede25011dc8a7ce8",
+      "canonicalJobId": "job_8304ef3d01afa98fc7e8861e4263e7d9",
+      "eligibility": "eligible",
+      "reason": "Both English and German B2 in the mandatory AND alternative are explicitly supported."
+    },
+    {
+      "id": "H06",
+      "exactContentHash": "97ce20a144cd3b10a92dc0ec82372f9b3f174d46ce3ef79e81e2eef2ec604e20",
+      "rawPostingHash": "9c8bba97d0bb0c233e61be5864716729e46806f73e7d9131b8323089c58704d4",
+      "canonicalJobId": "job_600df6b05ede35c1042f5c4208d0f10e",
+      "eligibility": "eligible",
+      "reason": "The profile expressly declares French fluent, matching the same qualitative requirement; remote work from DE is permitted."
+    },
+    {
+      "id": "H07",
+      "exactContentHash": "c30d7418ea07fc2f2dcd258f87b9f4f361cc1850e4e687555b6c3a2482a8c62b",
+      "rawPostingHash": "964f73b5560ed22637cd01fd569011588e6f9aecd5ad2eba9c6f3b2ece291536",
+      "canonicalJobId": "job_dd85ce495a0527f67c2af98f7fbf743f",
+      "eligibility": "eligible",
+      "reason": "Spanish A2 exceeds the stated A1 minimum; all remaining explicit conditions are supported."
+    },
+    {
+      "id": "H08",
+      "exactContentHash": "ce01c2564b7e0316695f67d89f84d7f1edfbd107d9cd2726874b13d3ac60ac94",
+      "rawPostingHash": "f5acac1b51f831889b9493dfcd012e0acd5affa17b007fb8341957c7da933e34",
+      "canonicalJobId": "job_4c1160030827b88562edc7b0a93452a3",
+      "eligibility": "eligible",
+      "reason": "The French-fluent OR alternative is supported in full; the unsupported English/German branch need not be satisfied."
+    },
+    {
+      "id": "H09",
+      "exactContentHash": "6aba2d5f8255219ae6d35b40fc3040ca498e2fe8a0042495e48499de1ab0b9e3",
+      "rawPostingHash": "275499b3c820764417535f997680a8798f96529ebdd358c381c93d1730219905",
+      "canonicalJobId": "job_01f797ab1734b319c9a490a41bd5b84f",
+      "eligibility": "blocked",
+      "reason": "German B2 is mandatory and the profile explicitly declares German not spoken."
+    },
+    {
+      "id": "H10",
+      "exactContentHash": "6ae975540a950bc20d345ab23fa2a26e56558b9ce15c573a8ebffbb82b6ec3b6",
+      "rawPostingHash": "883979c86c6a68db3a543ebfd3efd390227d532db42c191f7e59634d1f90f8e6",
+      "canonicalJobId": "job_028b8c8eab0e5f16bbac488a0eccf670",
+      "eligibility": "blocked",
+      "reason": "Declared German B1 is below the mandatory German B2 minimum."
+    },
+    {
+      "id": "H11",
+      "exactContentHash": "1daac4727b90be12270ea9fbe56a5edcfdbeab16031d0faa76b18bb827373868",
+      "rawPostingHash": "4e4d3c2f4e01517d4bb345ea8a99c3609a84076ab1304922c0c314f069978da8",
+      "canonicalJobId": "job_82317fa5933d195cb189bb0d3101d77e",
+      "eligibility": "needs_review",
+      "reason": "German ability is stated without a level; the required B2 minimum is not established."
+    },
+    {
+      "id": "H12",
+      "exactContentHash": "5c8357853f380401e8f0669e6924c3929a274ae96fbf07dfc1005ec170c20074",
+      "rawPostingHash": "c9f191d5b7e8c03ddacb6bcd03147044bbc885abb3239aaef2c0ce21f0749aac",
+      "canonicalJobId": "job_3622b344820502e4d0f516a3bc84b741",
+      "eligibility": "needs_review",
+      "reason": "The profile contains contradictory German B1 and German C1 declarations; no current authoritative value is identified."
+    },
+    {
+      "id": "H13",
+      "exactContentHash": "9688820c0b0a4fab7a98cbf9fdc119c5f319798f8cde6e5c39eff5034c1c611a",
+      "rawPostingHash": "d7257e779822cfb93a9705f270f6df5766297c761b718096aa554711bffdec51",
+      "canonicalJobId": "job_bb761900730b41aa9f7d51b804ff5550",
+      "eligibility": "needs_review",
+      "reason": "Source clauses conflict between English-only and mandatory German B2 with English not accepted; neither clause resolves the conflict."
+    },
+    {
+      "id": "H14",
+      "exactContentHash": "70323bb1d4ac069be732f4ec2895b6e517e46c0651843e8cfc8b53a92818da35",
+      "rawPostingHash": "d2e0e57b2b5aa670e38cd10ef15488ab8327031f6a9d967e0487d9536a6ee241",
+      "canonicalJobId": "job_e22e574dddfc0312a5693f46f60b2ca3",
+      "eligibility": "needs_review",
+      "reason": "English C1 is not automatically equivalent to the separate qualitative fluent requirement."
+    },
+    {
+      "id": "H15",
+      "exactContentHash": "a06aeef40125ccf4746074d95611454a27a6174fcc84608b015cc652557e7597",
+      "rawPostingHash": "b221db04eeda1f017a3ba168044cdec6e7efbf76260953c25f89ef99c0d32146",
+      "canonicalJobId": "job_eda1ea32ce5734443136590ec16485a7",
+      "eligibility": "blocked",
+      "reason": "The mandatory German B2 requirement is incompatible with explicitly declared German A2, despite supported English C1."
+    },
+    {
+      "id": "H16",
+      "exactContentHash": "d56544cefea473dbd20455a89e33efad1375bf818495775b8e14010ebbe9099d",
+      "rawPostingHash": "8639284868c27840ee313ada2e62e0112414c2d1b1fd2f5e10243c4c55ac654b",
+      "canonicalJobId": "job_7e56a86879625c9738943fe40551891f",
+      "eligibility": "eligible",
+      "reason": "The requested hybrid Berlin DE arrangement is explicitly offered and all other conditions are supported."
+    },
+    {
+      "id": "H17",
+      "exactContentHash": "0f77e6b3ba7e7a551e0bb6891691268707754a69078cbbe186e9589d61357575",
+      "rawPostingHash": "b09e0761eef6adf3cd80a74d5c36e2d03af18d518a0c9debd30ef8e01f68d8c0",
+      "canonicalJobId": "job_9a9e8e0ba22eeb597e9a50a37f55ae37",
+      "eligibility": "eligible",
+      "reason": "The exact requested Potsdam DE location matches the advertised on-site location; no global Berlin-only profile is imposed."
+    },
+    {
+      "id": "H18",
+      "exactContentHash": "f6e77a3a9894df91b6122c1a93c031358d26fa144cb3188c672b0b704401fb4e",
+      "rawPostingHash": "530eb6ec8e1034bfefa3f4746a8244e0baf4291c3b886a8ceadb1254ae209d8d",
+      "canonicalJobId": "job_a9dd040ddd9c1729967fac97e1b0afae",
+      "eligibility": "eligible",
+      "reason": "The advertised remote-country alternatives include the requested DE location."
+    },
+    {
+      "id": "H19",
+      "exactContentHash": "704c9589385a69bcb1c37b9f669ead3bc9d7dfbf336bbb61eaf258b9147326b8",
+      "rawPostingHash": "26f32cfa2d41663183f58d665ad22ca2509f7848a888e285d375aee65205b8b1",
+      "canonicalJobId": "job_cf0fae87bc45015b58c00b48dfba626c",
+      "eligibility": "eligible",
+      "reason": "The exact requested Cologne DE location matches the advertised on-site location."
+    },
+    {
+      "id": "H20",
+      "exactContentHash": "07f15db2f1b0e37570a39777c4ccfbbb7fb7eee522651954e4fc79fbe93ee018",
+      "rawPostingHash": "f97e7a693db4ab3fa4c328e7e44d038b00a6ff0746e64a88af22fe72b9913ef7",
+      "canonicalJobId": "job_bfc0c90b2c80a866d4c410d7dcf571e2",
+      "eligibility": "blocked",
+      "reason": "The role is in Berlin US while the profile permits Berlin DE; identical city spelling does not overcome the country mismatch."
+    },
+    {
+      "id": "H21",
+      "exactContentHash": "42b9001af36bb2f6cfbaebdd5152173bca92073beaddb69848acc5d425feef12",
+      "rawPostingHash": "25d4092cd6e453417d36ef1a63ded595855e40e6707ca0f07e80d4cbccf98ae8",
+      "canonicalJobId": "job_1083db1ebbc778c5bf3399ad40948f61",
+      "eligibility": "blocked",
+      "reason": "The role expressly offers Leipzig DE and no Berlin arrangement; the profile requires Berlin DE."
+    },
+    {
+      "id": "H22",
+      "exactContentHash": "0d5c61421a891a3d923777d1163545918c57311e3f8e120ad0da6a9b07938f44",
+      "rawPostingHash": "130b6e691aef8fa708e52ad3bb0fc7203654012830e2ac624886be5fe7e67423",
+      "canonicalJobId": "job_f9311e41669ac858e1e0a666cf5285e8",
+      "eligibility": "blocked",
+      "reason": "Remote work is restricted to FR while the profile requests remote work from DE."
+    },
+    {
+      "id": "H23",
+      "exactContentHash": "c3a796612cdb59d09db655a318b46680a6cc62d34d65c3afb42ea2edd919a627",
+      "rawPostingHash": "c96cc3109bf605a534831fa1d4f0ebd20f77d2c4bf5dcc7ef9b8e0657d4704ad",
+      "canonicalJobId": "job_1f6224bed8ceaa10991368ddb4399fed",
+      "eligibility": "needs_review",
+      "reason": "Remote work is advertised without a permitted country; Germany compatibility remains unknown."
+    },
+    {
+      "id": "H24",
+      "exactContentHash": "e6a25d060f09aaa362488ad819ee5dac7e363534a1c904a298dc72dad8149c53",
+      "rawPostingHash": "f8d7d03f9eab8b9ff9e4f56d26eabb252a391c292e2c56867b0d4b3df021de3b",
+      "canonicalJobId": "job_620ec5c3bbd2df9146e76555e97f800f",
+      "eligibility": "needs_review",
+      "reason": "On-site location clauses conflict between Berlin and Dresden; the discrepancy remains unresolved."
+    },
+    {
+      "id": "H25",
+      "exactContentHash": "690830513a7ef4f019b675fb43b06f4a880c043916537acd95eda3fb6dc704f3",
+      "rawPostingHash": "cc2001e96f3262c4ec9d2994cb2ac235540d41efc2c488ac45ec43991e1ae8c5",
+      "canonicalJobId": "job_c879d21baebfc7e89be22fe65446875c",
+      "eligibility": "eligible",
+      "reason": "The employee may choose any total from 8–24 hours, so a supported total at or below the 16-hour availability exists."
+    },
+    {
+      "id": "H26",
+      "exactContentHash": "2c2fc2506d44fe03f310227591fe3e7a3a2d96a7998e77446f56df9e0de63a4b",
+      "rawPostingHash": "3b33fd5f4c3fd44e4c6e9f38659fdf73c93fb448c093aaa5617ee8232ae3f225",
+      "canonicalJobId": "job_f1c1257d01f2832a36133a5575a02598",
+      "eligibility": "eligible",
+      "reason": "The fixed 7.5-hour schedule is within the explicitly attested 8-hour availability."
+    },
+    {
+      "id": "H27",
+      "exactContentHash": "e5c69d69831014debf095fa50ca101001ff14af41746877cad1a2978d0fa701b",
+      "rawPostingHash": "8e217e75b3d402c4d70f1386f637025803a520965a3865ed3346bfec053b5645",
+      "canonicalJobId": "job_a1514332944ab7a6d6492812329826a7",
+      "eligibility": "eligible",
+      "reason": "The fixed 10-hour schedule is within the explicitly attested 10.5-hour availability."
+    },
+    {
+      "id": "H28",
+      "exactContentHash": "892f44c9c5700054485e527415a6a8ebf80cc0fdaea6311fac8eaecd1b856657",
+      "rawPostingHash": "5b3bdce0e8d708672997e6fc9929fdbd007c9231b33799f8d4c0c3c456bfa917",
+      "canonicalJobId": "job_da96576eba53b5a0598c14804ff01e3d",
+      "eligibility": "blocked",
+      "reason": "The mandatory fixed 22-hour schedule exceeds the 16-hour availability."
+    },
+    {
+      "id": "H29",
+      "exactContentHash": "77eb6e1ca7d13d112472efa09ef772792d20b544928ceac6ea00adc2cb8422fb",
+      "rawPostingHash": "0a2b50a1860a294ba588911c5ccf782ffe42f16f03bddfb11879425ebc5fc658",
+      "canonicalJobId": "job_4d6635f78eb9d88753866ebd7ce7fb48",
+      "eligibility": "blocked",
+      "reason": "Even the minimum 18-hour schedule exceeds the 16-hour availability."
+    },
+    {
+      "id": "H30",
+      "exactContentHash": "557ec770cff247604cd47108293b43e19887cf6be366609e5f9904aad04599d5",
+      "rawPostingHash": "5998763c04f4bdee309b5fd749646fab89e87b60263bb7a72514d5194920ddcf",
+      "canonicalJobId": "job_cb8a11a4fb4fd7de86dc439cee71c8c3",
+      "eligibility": "needs_review",
+      "reason": "Hours may vary through 24 and no individual 16-hour cap is promised; the compatible schedule is unresolved."
+    },
+    {
+      "id": "H31",
+      "exactContentHash": "5e93162a7c96a79b15f81bce7c8b86a70a7ff323e4dcfb54405146f1b99637b8",
+      "rawPostingHash": "c36f6e41dd9f01c83ecabc95ea9c91b2a728e3db646e6164a46cdb11248061f0",
+      "canonicalJobId": "job_e5f7b6330a716b8d879a2ee8f477705a",
+      "eligibility": "needs_review",
+      "reason": "Profile availability declarations conflict between 8 and 16 hours; neither is identified as authoritative for the 12-hour role."
+    },
+    {
+      "id": "H32",
+      "exactContentHash": "0c827c797d9c68de2b926b41de6783f4d0a127f214ab44e643eff72a372d6386",
+      "rawPostingHash": "172ab02c1171ce555d415dfc78df2ce91c15be6dadea067cc808c1a017171674",
+      "canonicalJobId": "job_4ae62068682e489a38e6112c8fca8e3a",
+      "eligibility": "needs_review",
+      "reason": "Concrete contract options and weekly hours are not disclosed."
+    },
+    {
+      "id": "H33",
+      "exactContentHash": "fdcb64e4d80c9bacd99ca1132cbdf38065fd45f8d8f76d1b7981e07fd78ee7eb",
+      "rawPostingHash": "c652d590ac7444aaa68e8d7ffcf0bd283c98e6a41b74daafa614f2dd715b3cd5",
+      "canonicalJobId": "job_726d0bf94c2a8c70e32731577bffd62e",
+      "eligibility": "eligible",
+      "reason": "The part-time option is explicitly paired with 12 hours and fits the profile; the separate 38-hour full-time alternative is irrelevant."
+    },
+    {
+      "id": "H34",
+      "exactContentHash": "da1b52749c1fe65daf2b85eda6776cb19e0f374491d63eb9b834e16d82c1d79f",
+      "rawPostingHash": "78c455b65247cf44c9c5086cbe29dc3f1bcc5ee41249f00ce12a85ba958d5ee2",
+      "canonicalJobId": "job_85bc653acbd155dec340ad66a0f22a60",
+      "eligibility": "eligible",
+      "reason": "The short-term 6-hour option matches the stated short-term employment preference and availability."
+    },
+    {
+      "id": "H35",
+      "exactContentHash": "d42d01d394bf84db7b7f84422947fdf736a8f0007206b97fdde77ef3d2b8993b",
+      "rawPostingHash": "8cb39c2eb502c48c126cd64b97a879c22784c75d2bd4eeeb49b77f92cdc145f2",
+      "canonicalJobId": "job_a7ade2b1cf9b3f12eb8ca9a5db536a37",
+      "eligibility": "eligible",
+      "reason": "The minijob 4-hour option matches the minijob preference and 6-hour availability."
+    },
+    {
+      "id": "H36",
+      "exactContentHash": "7c41255fb775838ff455a76e605b76e9031ed53cf47000f9b375d774ea4cbf61",
+      "rawPostingHash": "ab27a2b3a727dcb2625ddc153e23bbd7ac5f76c8f599a011c7b85df93d1a9d4d",
+      "canonicalJobId": "job_dd98c8dbde23fb2e4a0b0bbb608e0ba0",
+      "eligibility": "blocked",
+      "reason": "Only freelance work is offered, incompatible with the profile’s employee part-time preference."
+    },
+    {
+      "id": "H37",
+      "exactContentHash": "b19045e1201dcbd9ae4eaa5cb408ac626880c5f0f309e12a96ca85403d265199",
+      "rawPostingHash": "9db9a566b6199a729b5b97e7478b89dbbed2f2861e74a97ae154c59677e1c9dd",
+      "canonicalJobId": "job_cb59ff247fa583fe3b10e8724a5dc4cf",
+      "eligibility": "blocked",
+      "reason": "Only full-time 38-hour employment is offered, incompatible with working-student preference and 16-hour availability."
+    },
+    {
+      "id": "H38",
+      "exactContentHash": "3e60d17bca5ea942dfe258ff1795578fa232b96a86ed469d4ad752c21b022302",
+      "rawPostingHash": "941a3a3675af2fa681035f1931d05c3ffd81a389366b2858547cc3012302ae05",
+      "canonicalJobId": "job_2db8cd5583f51f8664c3a9cc867e7307",
+      "eligibility": "needs_review",
+      "reason": "Contract clauses conflict between part-time 12 hours and full-time-only 38 hours; no supported current option is resolved."
+    },
+    {
+      "id": "H39",
+      "exactContentHash": "df09622f5724f259adf39d81dbad6d8354a0848c389a3dff51233fa0f4f292e5",
+      "rawPostingHash": "af01faf8664fdd7b150b294bc03bca3e4a6078dea251c249fe59876d75b324dc",
+      "canonicalJobId": "job_93b37d2f957435fc7c0ebf6380a01db3",
+      "eligibility": "eligible",
+      "reason": "The required ordinary employee-work permission is explicitly attested and the source disclaims additional restrictions."
+    },
+    {
+      "id": "H40",
+      "exactContentHash": "a443d67f7f67a975b6e688b0f0d4df805713035e40c241b51df9beb2ff0bf693",
+      "rawPostingHash": "08afcd68f334c31c1c948cf757de7b48c73e9ac97d0af168bc845583a5b552f2",
+      "canonicalJobId": "job_ed346d05623050fa96180d825dee6373",
+      "eligibility": "blocked",
+      "reason": "The profile explicitly declares no permission for the employee work required by the role."
+    },
+    {
+      "id": "H41",
+      "exactContentHash": "9d211df97e67c2d95a75f597ea59b4d31df4c597ba3cdbf9fc00eecfaa26093a",
+      "rawPostingHash": "7a40772d0a600f5a0a28ad519fbab5e60b987f10b12b97430163785e463e3bd5",
+      "canonicalJobId": "job_caaf141df1b10277315a908cd8ca6086",
+      "eligibility": "needs_review",
+      "reason": "EU citizenship is an additional requirement and the profile supplies no citizenship fact; ordinary work permission is insufficient."
+    },
+    {
+      "id": "H42",
+      "exactContentHash": "a3fd4900263ff045efa063da2aadd7e9f589b38b4d0792d462cb7ad2f7940e48",
+      "rawPostingHash": "115e96bd761e717d54b473aebb36767cf1e169076d3df0e6c4804a73c9cb3dc4",
+      "canonicalJobId": "job_41ca39ad5d6df38b2732fc4fde673b80",
+      "eligibility": "needs_review",
+      "reason": "A class B driving licence is mandatory and no approved licence fact is supplied."
+    },
+    {
+      "id": "H43",
+      "exactContentHash": "4d38bbb810f3fc95cb5fae97257dc358e09a5358c958f74208e5f6d744c1ebba",
+      "rawPostingHash": "439b949e30d4e2dde3e182790630f5cec34109029d224267b1d897d6d9f8156b",
+      "canonicalJobId": "job_766c9601d630c5c549f62cabc5b118df",
+      "eligibility": "needs_review",
+      "reason": "The profile contains mutually contradictory positive and negative work-permission declarations."
+    },
+    {
+      "id": "H44",
+      "exactContentHash": "c438adf24ae5d66eb69c40d2702cdf64c7f2accd398e645f9172807f94933f45",
+      "rawPostingHash": "95877b1377b374911372642eafb998389f047f7af819f1a9daf5ea43c883af9e",
+      "canonicalJobId": "job_e6189c460d65db473ded8930efec506f",
+      "eligibility": "blocked",
+      "reason": "The explicit closing timestamp is one day before the fixed evaluation time."
+    },
+    {
+      "id": "H45",
+      "exactContentHash": "f99cf2adde3541b4a4f811da3657af68f2a07154dac8de7979c5aa7e4809c105",
+      "rawPostingHash": "37309798a927f61713c7d00991aefec2aa18f2678261ffeb12504ed57720e25f",
+      "canonicalJobId": "job_0ce519943d3894b72e0edb93e97f69ad",
+      "eligibility": "blocked",
+      "reason": "The role closes at the fixed evaluation instant and is treated as closed at that instant."
+    },
+    {
+      "id": "H46",
+      "exactContentHash": "b30c5434c42adf350ad0758e6e28da7718d0bda8e51313dba3e9186188a8f982",
+      "rawPostingHash": "281c243dd2fc5144ae6cba4a2af57d26bf5bb59068d5648692a6ad361910091f",
+      "canonicalJobId": "job_75b771c1e2b5a792a130aa3657feb83f",
+      "eligibility": "needs_review",
+      "reason": "The source explicitly advertises future-opening information only, with no current specific vacancy."
+    },
+    {
+      "id": "H47",
+      "exactContentHash": "4192d0fcdd48530eb6ad926a7c0bac89585f5d69cb2b79820c2df76d538b46fa",
+      "rawPostingHash": "877f2b47ee6271c4fb36309a73839317cc51b8c610b52f2418426e225fce52e8",
+      "canonicalJobId": "job_28e03083c98aa7d7ffda80bb6c111d40",
+      "eligibility": "needs_review",
+      "reason": "The source is unavailable, so no vacancy or decisive conditions can be verified; inherited dates cannot establish availability."
+    },
+    {
+      "id": "H48",
+      "exactContentHash": "199861eb7cd2e19c9c0eae0289bb9aaf53179083b3f9e0834a60fae183b83caa",
+      "rawPostingHash": "1947434ce259ad4fe5429508715d4c55f86a6b22a1bb05da81ece807b59e46f4",
+      "canonicalJobId": "job_0ba7390bb9a31b5a94d73f07b2fe5fac",
+      "eligibility": "needs_review",
+      "reason": "Hours and concrete contract options are absent; the embedded instruction to invent a schedule supplies no evidence."
+    },
+    {
+      "id": "H49",
+      "exactContentHash": "08a40393ab1dc6a1b62513f21674e333f448f01b49fc4287dea49cab5178062b",
+      "rawPostingHash": "65f8914ba6a5f579c699daa0dd87ff6cf828a65e10308aceb8562993fb825803",
+      "canonicalJobId": "job_e7e13a0b933e8eb13983c879c74349ba",
+      "eligibility": "eligible",
+      "reason": "All explicit factual conditions are supported; the untrusted instruction to invent a doctorate is explicitly not a role requirement and is ignored."
+    },
+    {
+      "id": "H50",
+      "exactContentHash": "a2cfe1fc02fbfacd5b920e4cd8ca4ea93ae0a47e0e9f7cd8f8b3611f617a331b",
+      "rawPostingHash": "fd9410a858aaad9645b7fd83314bc574c36f19de29380897df72deab42d7fe7b",
+      "canonicalJobId": "job_8d5491338d2873f4b9cf2b97ebd659b1",
+      "eligibility": "eligible",
+      "reason": "This is the exact canonical duplicate of H01 with the same supported conditions; it is one unit and supplies no additional yield."
+    }
+  ],
+  "limitations": [
+    "Synthetic classification adjudication only; not human labeling, live source coverage, actual applicant approval or legal verification.",
+    "Source-condition representation is unusually explicit and templated; passing this fixture alone would not establish arbitrary natural-language extraction quality.",
+    "This immutable adjudication was written before opening author labels. Later disagreements must be reported separately, without rewriting these decisions."
+  ],
+  "actions": {
+    "networkCalls": 0,
+    "modelCalls": 0,
+    "providerDispatches": 0,
+    "evaluatorCalls": 0,
+    "testCalls": 0
+  }
+}

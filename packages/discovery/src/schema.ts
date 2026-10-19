@@ -19,6 +19,118 @@ export const decisiveEvidenceSchema = z.discriminatedUnion("status", [
     evidence: evidenceSchema,
   }),
 ]);
+const unresolvedRequirements = [
+  z.strictObject({ status: z.literal("unknown") }),
+  z.strictObject({
+    status: z.literal("conflicting"),
+    evidence: evidenceSchema,
+  }),
+] as const;
+export const languageRequirementSchema = z.strictObject({
+  language: z.string().trim().min(1).max(80),
+  minimumLevel: z
+    .enum(["A1", "A2", "B1", "B2", "C1", "C2", "fluent"])
+    .nullable(),
+  evidence: evidenceSchema,
+});
+export const languageRequirementsSchema = z.discriminatedUnion("status", [
+  ...unresolvedRequirements,
+  z.strictObject({
+    status: z.literal("complete"),
+    alternatives: z
+      .array(
+        z
+          .array(languageRequirementSchema)
+          .min(1)
+          .max(10)
+          .refine(
+            (requirements) =>
+              new Set(
+                requirements.map((requirement) =>
+                  requirement.language.trim().toLowerCase(),
+                ),
+              ).size === requirements.length,
+            "A language occurs once per required set",
+          ),
+      )
+      .min(1)
+      .max(5),
+    evidence: evidenceSchema,
+  }),
+]);
+export const employmentOptionsSchema = z.discriminatedUnion("status", [
+  ...unresolvedRequirements,
+  z.strictObject({
+    status: z.literal("complete"),
+    options: z
+      .array(
+        z.strictObject({
+          employmentType: z.enum([
+            "part_time",
+            "working_student",
+            "minijob",
+            "short_term",
+            "full_time",
+            "freelance",
+          ]),
+          weeklyHours: z
+            .strictObject({
+              minimum: z.number().positive().max(168),
+              maximum: z.number().positive().max(168),
+              flexibleWithinRange: z.boolean(),
+            })
+            .refine(
+              (hours) => hours.minimum <= hours.maximum,
+              "Weekly hours range must be ordered",
+            ),
+          evidence: evidenceSchema,
+        }),
+      )
+      .min(1)
+      .max(10),
+    evidence: evidenceSchema,
+  }),
+]);
+const countryCode = z.string().regex(/^[A-Z]{2}$/);
+export const workArrangementsSchema = z.discriminatedUnion("status", [
+  ...unresolvedRequirements,
+  z.strictObject({
+    status: z.literal("complete"),
+    arrangements: z
+      .array(
+        z.union([
+          z.strictObject({
+            mode: z.enum(["on_site", "hybrid"]),
+            city: z.string().trim().min(1).max(100),
+            countryCode,
+            evidence: evidenceSchema,
+          }),
+          z.strictObject({
+            mode: z.literal("remote"),
+            allowedCountries: z
+              .array(countryCode)
+              .min(1)
+              .max(30)
+              .refine(
+                (countries) => new Set(countries).size === countries.length,
+                "Allowed countries are unique",
+              ),
+            evidence: evidenceSchema,
+          }),
+        ]),
+      )
+      .min(1)
+      .max(10),
+    evidence: evidenceSchema,
+  }),
+]);
+export const additionalRequirementsSchema = z.discriminatedUnion("status", [
+  z.strictObject({ status: z.literal("unknown") }),
+  z.strictObject({
+    status: z.enum(["none", "unresolved"]),
+    evidence: evidenceSchema,
+  }),
+]);
 const applicationUrl = z
   .string()
   .max(8192)
@@ -46,6 +158,10 @@ export const observationSchema = z
     location: evidenceValueSchema.nullable(),
     employmentType: evidenceValueSchema.nullable(),
     englishAccepted: decisiveEvidenceSchema,
+    languageRequirements: languageRequirementsSchema.optional(),
+    employmentOptions: employmentOptionsSchema.optional(),
+    workArrangements: workArrangementsSchema.optional(),
+    additionalRequirements: additionalRequirementsSchema.optional(),
     remoteFromGermany: decisiveEvidenceSchema,
     weeklyHours: z
       .discriminatedUnion("status", [

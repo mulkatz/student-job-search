@@ -1,0 +1,419 @@
+{
+  "version": "2.1",
+  "reviewerKind": "independent_agent",
+  "reviewMethod": "independent_adversarial_synthetic_holdout",
+  "humanReview": false,
+  "original50PriorOracleExposure": true,
+  "newHoldoutBeforeMatcherExecution": true,
+  "fixtureHash": "59d0362521658a954fb8604489babe9d3880059fe36e83d8afd128cb0ce11b25",
+  "fixtureEvaluationTime": "2026-10-19T12:00:00.000Z",
+  "frozenAt": "2026-10-19T20:25:02.142Z",
+  "totals": {
+    "eligible": 21,
+    "blocked": 13,
+    "needs_review": 16
+  },
+  "labels": [
+    {
+      "id": "H01",
+      "eligibility": "eligible",
+      "rationale": "English acceptance and all other decisive conditions explicitly supported.",
+      "exactContentHash": "a2cfe1fc02fbfacd5b920e4cd8ca4ea93ae0a47e0e9f7cd8f8b3611f617a331b",
+      "rawPostingSha256": "a862b57dc57410b954fdf78934eb17d8648047ff799fa30f3cd1fa61546bc929",
+      "rawHtmlSha256": "598e1bc14cad41369541c34b96785b221cb88d1b2255154a57813f6e65144f54"
+    },
+    {
+      "id": "H02",
+      "eligibility": "eligible",
+      "rationale": "German-only B2 requirement is met by approved German B2; English is unnecessary.",
+      "exactContentHash": "794fb1404d9ed445fbfcc90de812dbf235be1a985e6099dc5709be0700ef39f8",
+      "rawPostingSha256": "09d4114451166a42531bb3ae5ce1996c7a894729a340c9561b1289b132dcfaeb",
+      "rawHtmlSha256": "d41c60706bbd691394b8bb6bf361ec596f764aa2c9c0c27732bc1fb10b8cb5d2"
+    },
+    {
+      "id": "H03",
+      "eligibility": "eligible",
+      "rationale": "English satisfies an explicit English-or-German alternative despite explicit German denial.",
+      "exactContentHash": "fe40c8995b2ec50c69cb1cea24b3cea799e5112a6e80803ad77112f40ed31e66",
+      "rawPostingSha256": "5155e9ea39f789f008a4f2d4b52c1cfb944d878f75ee2671ccc9d8a0f3270d6d",
+      "rawHtmlSha256": "41e67c6f26b322cb2e70602fee7c1e5ee211d478fb10fb190ae0b9a48474f44d"
+    },
+    {
+      "id": "H04",
+      "eligibility": "eligible",
+      "rationale": "Approved Polish B2 meets Polish B2 for Germany-compatible remote work.",
+      "exactContentHash": "949371655e5c1b65d0416633c040627675d6fabf488f05f23d5177a544a57482",
+      "rawPostingSha256": "cbbf22732c0d75039fa3e05de31547cc9bf9847b9b2a0e3c2ad8e82ab23ad423",
+      "rawHtmlSha256": "6929d802cb897611c82f4431bac1bbd285a74f21a0348cc8405d30dae478a03a"
+    },
+    {
+      "id": "H05",
+      "eligibility": "eligible",
+      "rationale": "All conjunctive English and German B2 requirements are met.",
+      "exactContentHash": "4d1b0b4806b0cafe709371c7515218eb1591a28580e97a003682adf09013eff0",
+      "rawPostingSha256": "534d493d9e65d6f219040b8033b9a2f181d625de0d58a8fe7eca6aff8c6a71b0",
+      "rawHtmlSha256": "47ac0a72f6ef6ceb888c2d5024af8ccdf26afde1e87f1b23ac7ea7b889341113"
+    },
+    {
+      "id": "H06",
+      "eligibility": "eligible",
+      "rationale": "Explicitly declared French fluent matches exactly; no CEFR equivalence inferred.",
+      "exactContentHash": "97ce20a144cd3b10a92dc0ec82372f9b3f174d46ce3ef79e81e2eef2ec604e20",
+      "rawPostingSha256": "74c04564b4c8571575a63fcd0d688b7b96a17f0484bf258e9f9f03d020fdd7e7",
+      "rawHtmlSha256": "d5911b8b4a7a65d2068382af08a39fad65f4e0baa6c16114009c09d4f0bf31ee"
+    },
+    {
+      "id": "H07",
+      "eligibility": "eligible",
+      "rationale": "Declared Spanish A2 exceeds the source minimum A1 on the same CEFR scale.",
+      "exactContentHash": "c30d7418ea07fc2f2dcd258f87b9f4f361cc1850e4e687555b6c3a2482a8c62b",
+      "rawPostingSha256": "54c0e57f2427d97bfdf81f27b0c3e9f9d51b5c28f08410b440825e8026e3b992",
+      "rawHtmlSha256": "a3302e63c6967ffab37859edb0257464ec614e341ecd02f33eeed57c7ef01d2c"
+    },
+    {
+      "id": "H08",
+      "eligibility": "eligible",
+      "rationale": "The French-fluent alternative is fully supported independently of the unmet bilingual alternative.",
+      "exactContentHash": "ce01c2564b7e0316695f67d89f84d7f1edfbd107d9cd2726874b13d3ac60ac94",
+      "rawPostingSha256": "4bbaf0c385640219465b20d997c003912d3febc891237bb669548f4a791aa5a7",
+      "rawHtmlSha256": "8577f2644225327c2b232812b77a3f46ecb7fa96c329c13395e7a826cf831766"
+    },
+    {
+      "id": "H09",
+      "eligibility": "blocked",
+      "rationale": "Source requires German B2 and the approved profile explicitly says German is not spoken.",
+      "exactContentHash": "6aba2d5f8255219ae6d35b40fc3040ca498e2fe8a0042495e48499de1ab0b9e3",
+      "rawPostingSha256": "4350d5b3992e80c89f9c71c98e1a873a0eedc38500d5163f558fa79287a69e3f",
+      "rawHtmlSha256": "8e26b6fb0b9d4f77169f24ac109ab03e54cb7092592454222716e7c01aba2c1b"
+    },
+    {
+      "id": "H10",
+      "eligibility": "blocked",
+      "rationale": "A confirmed German B1 declaration is below the explicit B2 minimum.",
+      "exactContentHash": "6ae975540a950bc20d345ab23fa2a26e56558b9ce15c573a8ebffbb82b6ec3b6",
+      "rawPostingSha256": "409745695e1ca7219fe7796d0d461e99aa146abfe50c8b4500614e12a579e342",
+      "rawHtmlSha256": "2d69a0761c8ec0118f2177cb6d4c60296064bac6df8cd2ae4cfebe8b4f4d32ae"
+    },
+    {
+      "id": "H11",
+      "eligibility": "needs_review",
+      "rationale": "German is declared without proficiency; missing level cannot establish B2 or prove failure.",
+      "exactContentHash": "1daac4727b90be12270ea9fbe56a5edcfdbeab16031d0faa76b18bb827373868",
+      "rawPostingSha256": "7df87774a1c51ad19a6652f9d41195295fff1ad847bc4ada143b528e0d88e37c",
+      "rawHtmlSha256": "08f0cd999857ba5e82269b09a023e0f5658445bf024f41a89b7da162faca9245"
+    },
+    {
+      "id": "H12",
+      "eligibility": "needs_review",
+      "rationale": "Two approved same-language level declarations conflict; no automatic highest-level selection.",
+      "exactContentHash": "5c8357853f380401e8f0669e6924c3929a274ae96fbf07dfc1005ec170c20074",
+      "rawPostingSha256": "20a4a401a0a007c2b350b497a33f5bec695ed58e47bd2ef0baa5a9ac9facd75f",
+      "rawHtmlSha256": "a46e86463a3cffa8f9d6b4314711bae2d44c0a1590c4a2c9161bfb4f28d38b95"
+    },
+    {
+      "id": "H13",
+      "eligibility": "needs_review",
+      "rationale": "Source language clauses explicitly conflict; neither instruction wins.",
+      "exactContentHash": "9688820c0b0a4fab7a98cbf9fdc119c5f319798f8cde6e5c39eff5034c1c611a",
+      "rawPostingSha256": "ef3a78d9e542c32b660c9f7c0784bb024e3e36c314e2758784460ee454e4ad9d",
+      "rawHtmlSha256": "cf1054b3d6bf44b3f5bc440341442a438f8e1d7360b5c6f0ac2ea0909ecaae40"
+    },
+    {
+      "id": "H14",
+      "eligibility": "needs_review",
+      "rationale": "CEFR C1 does not itself prove the separately worded fluent requirement.",
+      "exactContentHash": "70323bb1d4ac069be732f4ec2895b6e517e46c0651843e8cfc8b53a92818da35",
+      "rawPostingSha256": "929f7c514816dd29c5622f4302e7cc51899cd899206d6d952f29efb7572c3b2f",
+      "rawHtmlSha256": "0e4bdd899195b4bd950f3f436bd01aeb7a40b9ee1251594d004a3c039d6efafe"
+    },
+    {
+      "id": "H15",
+      "eligibility": "blocked",
+      "rationale": "English C1 is supported but required German B2 is contradicted by the declared A2 level.",
+      "exactContentHash": "a06aeef40125ccf4746074d95611454a27a6174fcc84608b015cc652557e7597",
+      "rawPostingSha256": "a365dcd9cc3c5d4fc59672c9c10ba62c58c5fb2f3d818d2c10611db14da7bf86",
+      "rawHtmlSha256": "f6b7f66d1514a184df75c2fde8c18c38e232d96278bf198c34e8d3f2312e35c5"
+    },
+    {
+      "id": "H16",
+      "eligibility": "eligible",
+      "rationale": "Exact Berlin, DE hybrid arrangement matches an explicit hybrid preference.",
+      "exactContentHash": "d56544cefea473dbd20455a89e33efad1375bf818495775b8e14010ebbe9099d",
+      "rawPostingSha256": "971b7df1c5a1947f42e58a008f7498e2b74306690d6a6b668d6c564f3cd5b749",
+      "rawHtmlSha256": "110891b878cce0ce775627c6199a1d7c8b952ccb1cd56c7d0fb7945cd22a659e"
+    },
+    {
+      "id": "H17",
+      "eligibility": "eligible",
+      "rationale": "Explicit Potsdam, DE preference is supported; no global Berlin-only candidate is inferred.",
+      "exactContentHash": "0f77e6b3ba7e7a551e0bb6891691268707754a69078cbbe186e9589d61357575",
+      "rawPostingSha256": "e3819542d363ffeacb6ee92a4d1e89d183842728663e74ec4f98144434e83366",
+      "rawHtmlSha256": "9a996e4bee6d7f794bc0bfe4e3bccbde37345315bbfc14a9ee6638d14ae86b21"
+    },
+    {
+      "id": "H18",
+      "eligibility": "eligible",
+      "rationale": "The remote country allowlist explicitly contains DE.",
+      "exactContentHash": "f6e77a3a9894df91b6122c1a93c031358d26fa144cb3188c672b0b704401fb4e",
+      "rawPostingSha256": "8d7d5e3b9058473c917adb7caf91e62431487f22f7b7b92cebcd1ce3f5de4ee7",
+      "rawHtmlSha256": "66f46b948e7593cee2fd8089f50cda7b1864bed8fdc0d17956407f7c1f8f7162"
+    },
+    {
+      "id": "H19",
+      "eligibility": "eligible",
+      "rationale": "Approved Cologne, DE preference matches the exact city/country despite not being Berlin.",
+      "exactContentHash": "704c9589385a69bcb1c37b9f669ead3bc9d7dfbf336bbb61eaf258b9147326b8",
+      "rawPostingSha256": "62b83a8fffe784650214fc94a3acde82e93069aceddeb7ac3585264753cb3201",
+      "rawHtmlSha256": "4e04fa8aed67191dc8bccd988014d865219941fe0c0ba9f5e37caf55f9b51436"
+    },
+    {
+      "id": "H20",
+      "eligibility": "blocked",
+      "rationale": "Berlin in US is explicitly different from approved Berlin, DE; substring matching is insufficient.",
+      "exactContentHash": "07f15db2f1b0e37570a39777c4ccfbbb7fb7eee522651954e4fc79fbe93ee018",
+      "rawPostingSha256": "171ee5a26c7ba87d537251fc496775e04e0d2ee36472cbf81a2ec1be660621ba",
+      "rawHtmlSha256": "584f7c91f7bc253adef6db68cfb1742b7c15429410d1d45249dcb7a36f0d565b"
+    },
+    {
+      "id": "H21",
+      "eligibility": "blocked",
+      "rationale": "The source explicitly requires Leipzig, DE and excludes Berlin, DE.",
+      "exactContentHash": "42b9001af36bb2f6cfbaebdd5152173bca92073beaddb69848acc5d425feef12",
+      "rawPostingSha256": "0b90ebe7fc44a8894ee6c67bb63cf700f0678fcc283f01ebd52e521116835218",
+      "rawHtmlSha256": "d9e5168d3f874af6de12bb64442cb114070dd3ffc08b717b9be3c70bd1619531"
+    },
+    {
+      "id": "H22",
+      "eligibility": "blocked",
+      "rationale": "Remote work is permitted in FR only, contradicting the declared Germany remote preference.",
+      "exactContentHash": "0d5c61421a891a3d923777d1163545918c57311e3f8e120ad0da6a9b07938f44",
+      "rawPostingSha256": "c5e98662fd953a13ddef452950b0e4c33075e8705f6e43f7857bde0db0bc7960",
+      "rawHtmlSha256": "704487648e65b2da0a400f407b3590c94f19c7d1bb458eb1e0a694f5e058237c"
+    },
+    {
+      "id": "H23",
+      "eligibility": "needs_review",
+      "rationale": "Remote wording gives no country permission, so Germany compatibility is unknown.",
+      "exactContentHash": "c3a796612cdb59d09db655a318b46680a6cc62d34d65c3afb42ea2edd919a627",
+      "rawPostingSha256": "bf4f9fbabe974fe499803d9a2f45097bb47386d3c8b54f50aa594a3cc8ecd101",
+      "rawHtmlSha256": "e0f518f71f438d367235826d18e8f36b1223b750ed42192924463c32722224e1"
+    },
+    {
+      "id": "H24",
+      "eligibility": "needs_review",
+      "rationale": "Conflicting Berlin/Dresden work-location statements cannot support eligibility.",
+      "exactContentHash": "e6a25d060f09aaa362488ad819ee5dac7e363534a1c904a298dc72dad8149c53",
+      "rawPostingSha256": "81ae79f3a98ac5b5cb033f7229347366ebed79b68f1df2b2532f6ccf4bd179ca",
+      "rawHtmlSha256": "b9cfac907e126af2e31e162f0371cdfe2863f2b24b4669c7cf9d40a52402f0cc"
+    },
+    {
+      "id": "H25",
+      "eligibility": "eligible",
+      "rationale": "Source explicitly allows selecting any schedule within8..24; declared16 can be chosen.",
+      "exactContentHash": "690830513a7ef4f019b675fb43b06f4a880c043916537acd95eda3fb6dc704f3",
+      "rawPostingSha256": "c4b7d10dda8c4e880fd4d7514952bb9cc2703e3b5e2215139d59ff311d4f44a8",
+      "rawHtmlSha256": "d70dfa049c133f67e715bbe6656bee45646435a6d7215ddee5959fc2c8098255"
+    },
+    {
+      "id": "H26",
+      "eligibility": "eligible",
+      "rationale": "Fixed7.5 hours fit an approved8-hour availability without rounding.",
+      "exactContentHash": "2c2fc2506d44fe03f310227591fe3e7a3a2d96a7998e77446f56df9e0de63a4b",
+      "rawPostingSha256": "53d4465c8294749628631872b86190396b9530d423eb56088cebd7b9cae84659",
+      "rawHtmlSha256": "15d73bae275556aae302d3bcab86421c6b08d7ed1f5b20a05593a4790fd19e89"
+    },
+    {
+      "id": "H27",
+      "eligibility": "eligible",
+      "rationale": "Fixed10 hours fit approved10.5-hour availability.",
+      "exactContentHash": "e5c69d69831014debf095fa50ca101001ff14af41746877cad1a2978d0fa701b",
+      "rawPostingSha256": "67cbef674731e646643aa42b534d5a03c5eb3444f8f66b949b7b5250d75656c8",
+      "rawHtmlSha256": "79e8cb15bb7fd81427b5a56c3014b7a0811f4af763e1fb334d395f58306280d9"
+    },
+    {
+      "id": "H28",
+      "eligibility": "blocked",
+      "rationale": "A fixed22-hour minimum exceeds approved16-hour availability.",
+      "exactContentHash": "892f44c9c5700054485e527415a6a8ebf80cc0fdaea6311fac8eaecd1b856657",
+      "rawPostingSha256": "7dcbdab40501cbbe29b4b33a483e0ebf9611fd11768d1668212bbf4376facfc1",
+      "rawHtmlSha256": "6f7ed9e3454ef4ff79be7de4f7d996174f52570bc5d52cdc34a493333f8ad6e8"
+    },
+    {
+      "id": "H29",
+      "eligibility": "blocked",
+      "rationale": "Every offered schedule requires at least18 hours against approved16.",
+      "exactContentHash": "77eb6e1ca7d13d112472efa09ef772792d20b544928ceac6ea00adc2cb8422fb",
+      "rawPostingSha256": "d3c23a329fa940d997be4b852f6a2ec0b45f852dfd75645f0d16a939ccb688af",
+      "rawHtmlSha256": "6e714c06e793cc35f213ed96e2bb6df4637e1b997c59b4d8304a40a543038977"
+    },
+    {
+      "id": "H30",
+      "eligibility": "needs_review",
+      "rationale": "The8..24 range exceeds availability and individual flexibility is not established.",
+      "exactContentHash": "557ec770cff247604cd47108293b43e19887cf6be366609e5f9904aad04599d5",
+      "rawPostingSha256": "81d7f2f50bc8b1f039b5860fc914a0e31abe54babb614b4bf6289ccd416c00ce",
+      "rawHtmlSha256": "bc8867d3aeac7c6ec777d62bef94864ff7c3aaa83dec410f06d4c2bd04bb3529"
+    },
+    {
+      "id": "H31",
+      "eligibility": "needs_review",
+      "rationale": "Conflicting approved8 and16-hour declarations cannot safely support a12-hour commitment.",
+      "exactContentHash": "5e93162a7c96a79b15f81bce7c8b86a70a7ff323e4dcfb54405146f1b99637b8",
+      "rawPostingSha256": "fb6ed87865d35e0c8514dff2689fe82c94d9674932538d7ecd414896bcc2bb74",
+      "rawHtmlSha256": "0f65d1b228d7c9315bf26e214b1498b4c01003cd396ca281c53ab675d448f674"
+    },
+    {
+      "id": "H32",
+      "eligibility": "needs_review",
+      "rationale": "Part-time label alone does not supply any required hours.",
+      "exactContentHash": "0c827c797d9c68de2b926b41de6783f4d0a127f214ab44e643eff72a372d6386",
+      "rawPostingSha256": "cc34ae15bdbe48d549b9e91ab558dd1632cad7be9a65e6a303a4fc7f711a4083",
+      "rawHtmlSha256": "00067f288651f80565b93376d618c70bac3a01eb14ea98387117512e7144587e"
+    },
+    {
+      "id": "H33",
+      "eligibility": "eligible",
+      "rationale": "The part-time12-hour option is supported; the alternative38-hour full-time offer must remain paired.",
+      "exactContentHash": "fdcb64e4d80c9bacd99ca1132cbdf38065fd45f8d8f76d1b7981e07fd78ee7eb",
+      "rawPostingSha256": "430ccf834474dcffb6bba6835b2add6bda3f6634e9e88db792d85b34b8d40f06",
+      "rawHtmlSha256": "e42adfbfe16d0fdb67c8e63ca51eeabacb270542b39606c54963f13d24fdc536"
+    },
+    {
+      "id": "H34",
+      "eligibility": "eligible",
+      "rationale": "The explicit short-term6-hour option matches the approved short-term preference.",
+      "exactContentHash": "da1b52749c1fe65daf2b85eda6776cb19e0f374491d63eb9b834e16d82c1d79f",
+      "rawPostingSha256": "2ce14d08a01cbf89e1ae25fba83f0512e65e79f47562f1103c8a7d00e20cc2ac",
+      "rawHtmlSha256": "23a05b24ac324fdcdf9adee0084deff9cc17aec0f24d8610a96645b84a82f6a2"
+    },
+    {
+      "id": "H35",
+      "eligibility": "eligible",
+      "rationale": "Explicit minijob4-hour option fits declared6-hour availability and preference; no legal wage inference.",
+      "exactContentHash": "d42d01d394bf84db7b7f84422947fdf736a8f0007206b97fdde77ef3d2b8993b",
+      "rawPostingSha256": "c8dad9f1d977377fe70ad898939f642387e6c9968bc1bdf18886b6a541bb5af3",
+      "rawHtmlSha256": "81943bf5858ae50602a76402a3c5d262419070c5b61e3389dee38df83ec3ce51"
+    },
+    {
+      "id": "H36",
+      "eligibility": "blocked",
+      "rationale": "Only freelance contracting is offered and the approved preference is part-time employment.",
+      "exactContentHash": "7c41255fb775838ff455a76e605b76e9031ed53cf47000f9b375d774ea4cbf61",
+      "rawPostingSha256": "879df087284cea001b5cdfe83c67a851ab058809cc97095e00a107e259a40371",
+      "rawHtmlSha256": "49d89d30a1e20e666810abfbb11fdef8a742f233f5df401d0314b9c92e6f9f63"
+    },
+    {
+      "id": "H37",
+      "eligibility": "blocked",
+      "rationale": "Only fixed38-hour full-time work is offered; approved preference is working-student employment with16 hours.",
+      "exactContentHash": "b19045e1201dcbd9ae4eaa5cb408ac626880c5f0f309e12a96ca85403d265199",
+      "rawPostingSha256": "e17ff8c3193d18c7d3d6ad7ab389d6d6343f95536f25a793c5525e21f5c0aeb3",
+      "rawHtmlSha256": "397f848206f368ed3105c3d7798b9d23a51c31ab991242203da9a44cbb0b9e51"
+    },
+    {
+      "id": "H38",
+      "eligibility": "needs_review",
+      "rationale": "Conflicting part-time/full-time source statements leave the offered contract unresolved.",
+      "exactContentHash": "3e60d17bca5ea942dfe258ff1795578fa232b96a86ed469d4ad752c21b022302",
+      "rawPostingSha256": "dd3bd885adf3551673b1cc247f09539041dbc72d1c4ae6d751b62440582b5296",
+      "rawHtmlSha256": "d159060f0135e6dd9e29434e741559547f7f2e999e28fdd06d7994842baea2b0"
+    },
+    {
+      "id": "H39",
+      "eligibility": "eligible",
+      "rationale": "Source requires ordinary Germany employee-work permission and the exact approved declaration supplies it.",
+      "exactContentHash": "df09622f5724f259adf39d81dbad6d8354a0848c389a3dff51233fa0f4f292e5",
+      "rawPostingSha256": "94fed34d002ad11995469e967036e2e44d5e0564ada02418f1387a369fef81f6",
+      "rawHtmlSha256": "b2e1b9c06efb9dabc8679f746eb56e11f59d1075aee8817a7ce3570fe93cbf89"
+    },
+    {
+      "id": "H40",
+      "eligibility": "blocked",
+      "rationale": "Approved explicit nonpermission contradicts the source employee-work requirement.",
+      "exactContentHash": "a443d67f7f67a975b6e688b0f0d4df805713035e40c241b51df9beb2ff0bf693",
+      "rawPostingSha256": "bedea1d3fe664f98cd2d5b89ddee7a2acb1fb7c624bc83fb73f57633c55f41b9",
+      "rawHtmlSha256": "4c2aa419ce8dfabbc77ad28d795073ead4b10976203dc69cf9f5636d11cac9bd"
+    },
+    {
+      "id": "H41",
+      "eligibility": "needs_review",
+      "rationale": "Germany employee-work permission does not establish the additional citizenship restriction.",
+      "exactContentHash": "9d211df97e67c2d95a75f597ea59b4d31df4c597ba3cdbf9fc00eecfaa26093a",
+      "rawPostingSha256": "268340ba614f50935b00ea2a6953f4b683d74aa8f2356afd98823c4c3bf51aab",
+      "rawHtmlSha256": "b597b5d29ed3a347339c2587c3f202413c57fec5d8012e2eb8b1779ec1b66b14"
+    },
+    {
+      "id": "H42",
+      "eligibility": "needs_review",
+      "rationale": "An explicit driving-licence requirement is unmodeled and no approved licence fact is present.",
+      "exactContentHash": "a3fd4900263ff045efa063da2aadd7e9f589b38b4d0792d462cb7ad2f7940e48",
+      "rawPostingSha256": "7b30b80fb4a0ea10854255f2a9d2684628194b30a8629954692b25fa5fcad999",
+      "rawHtmlSha256": "ab68820526e4a6bb7e13c6ea8ddf0fffd42c19f1552658d4f5b9be414d9ba1c7"
+    },
+    {
+      "id": "H43",
+      "eligibility": "needs_review",
+      "rationale": "Conflicting approved permission and nonpermission declarations must not be resolved optimistically.",
+      "exactContentHash": "4d38bbb810f3fc95cb5fae97257dc358e09a5358c958f74208e5f6d744c1ebba",
+      "rawPostingSha256": "244ffb5c343c09932f72fbd894f428bab6dcea991ba93900a09e294abff60ccc",
+      "rawHtmlSha256": "d40daf79d3bd12e325deca54ba6fa6b4ff1cc5530535b938e5f565972c7f4be1"
+    },
+    {
+      "id": "H44",
+      "eligibility": "blocked",
+      "rationale": "The explicit application deadline is before the evaluation time.",
+      "exactContentHash": "c438adf24ae5d66eb69c40d2702cdf64c7f2accd398e645f9172807f94933f45",
+      "rawPostingSha256": "42f6849fa6791f2029c4dbbdb5456be71fa50005d94184d4453c6f70fcda1946",
+      "rawHtmlSha256": "4fbd4a6bf98e9ca0a153a9f20cda260000a37f2cdf9477395a9c234a5b05e8b4"
+    },
+    {
+      "id": "H45",
+      "eligibility": "blocked",
+      "rationale": "At the exact stated deadline the posting is expired, even if still retained.",
+      "exactContentHash": "f99cf2adde3541b4a4f811da3657af68f2a07154dac8de7979c5aa7e4809c105",
+      "rawPostingSha256": "b547c344f16e6514effe93e036ab9893f68fbd65f75c76d5d8cde62393f1b0a8",
+      "rawHtmlSha256": "8087546040665f5dffeab1ff2a2617950627726fb92dbddf4de0fb9da3849547"
+    },
+    {
+      "id": "H46",
+      "eligibility": "needs_review",
+      "rationale": "An explicitly generic career lead is not a specific vacancy.",
+      "exactContentHash": "b30c5434c42adf350ad0758e6e28da7718d0bda8e51313dba3e9186188a8f982",
+      "rawPostingSha256": "70268d3c5b281d78b362659f15faa3634e3dccd3697a84316aa696d62f895840",
+      "rawHtmlSha256": "32113d7b7d827e2a6c198329b4d1319408004199db97b89450182b170f6d32a2"
+    },
+    {
+      "id": "H47",
+      "eligibility": "needs_review",
+      "rationale": "Unavailable source bytes cannot verify any advertised conditions.",
+      "exactContentHash": "4192d0fcdd48530eb6ad926a7c0bac89585f5d69cb2b79820c2df76d538b46fa",
+      "rawPostingSha256": "80d1343c70e64fc589955eb5d96e19a329c0c24bdaf877959e4c35cf830a07f0",
+      "rawHtmlSha256": "983737dc2eb5fe7b10ccfc944a3a19dabefc8d6b85fffa039a12c949dced7b76"
+    },
+    {
+      "id": "H48",
+      "eligibility": "needs_review",
+      "rationale": "An injected instruction cannot replace missing decisive hours.",
+      "exactContentHash": "199861eb7cd2e19c9c0eae0289bb9aaf53179083b3f9e0834a60fae183b83caa",
+      "rawPostingSha256": "067298cb3598d6af01c903fabb011e4b4ceb41ea0a9a58a91f0b25703dbc50c2",
+      "rawHtmlSha256": "471e1d3fac51cf0f863952a475ebea6894f350246474f016487a847278e1585f"
+    },
+    {
+      "id": "H49",
+      "eligibility": "eligible",
+      "rationale": "Untrusted prompt-like text is inert; all actual source conditions independently support eligibility.",
+      "exactContentHash": "08a40393ab1dc6a1b62513f21674e333f448f01b49fc4287dea49cab5178062b",
+      "rawPostingSha256": "8bb69303b68be9f4c8d5f997ae2dd6f257d619b6af8370c09589ea1af44d3ac3",
+      "rawHtmlSha256": "4265d2da2b83ccc8c25efbc88341e8cef9d8a77a53bc8341b7af535a8aea2dd8"
+    },
+    {
+      "id": "H50",
+      "eligibility": "eligible",
+      "rationale": "An overlapping canonical vacancy remains eligible but must be grouped with H01 and not inflate unique-yield counts.",
+      "exactContentHash": "a2cfe1fc02fbfacd5b920e4cd8ca4ea93ae0a47e0e9f7cd8f8b3611f617a331b",
+      "rawPostingSha256": "a862b57dc57410b954fdf78934eb17d8648047ff799fa30f3cd1fa61546bc929",
+      "rawHtmlSha256": "598e1bc14cad41369541c34b96785b221cb88d1b2255154a57813f6e65144f54"
+    }
+  ],
+  "supersedes": "labels.json"
+}

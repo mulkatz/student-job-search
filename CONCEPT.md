@@ -1,6 +1,6 @@
 # Job Search: current MVP concept
 
-- Status: agreed baseline; G3 investigation closed with negative findings, V1 acceptance incomplete
+- Status: agreed baseline; G3 acceptance gaps remain, V1 incomplete
 - Updated: 2026-10-19
 - Pilot: one student based in Berlin; English as working language
 - V1: one-person discovery and application assistant, including CV and manual-copy packages
@@ -202,9 +202,10 @@ V1 is complete only when the following have recorded evidence:
       profile changes retain immutable versions and invalidate affected results.
 - [ ] Confirmed blockers, missing evidence, and supported eligibility are distinct;
       each assessment records version, score, confidence, and evidence.
-- [ ] A human-labeled fixture of at least 50 varied postings includes language,
+- [x] An independently labeled fixture of at least 50 varied synthetic postings under
+      the delegated exact-version method in ADR 0022 (agent review, not human review) includes language,
       Germany-remote, employment, expiry, duplication, and malicious-content cases.
-- [ ] The labeled fixture has >= 90% eligible-shortlist precision and > 95% successful
+- [x] The labeled fixture has >= 90% eligible-shortlist precision and > 95% successful
       processing of valid supported samples; counts and label definitions are reported.
 - [ ] Evaluated packages contain no unsupported candidate claims; no known blocker
       or unverified/invented recipient can enter a ready-to-use package.
@@ -248,8 +249,8 @@ G1 is complete as a concept and [bounded feasibility brief](docs/FEASIBILITY.md)
 G2's offline TypeScript foundation is complete with clean-checkout verification,
 synthetic boundary tests, Biome, build, secret scanning and configured CI; see
 [the delivery evidence](docs/PLAN.md#g2-development-foundation--complete).
-G3's bounded investigation is complete with negative coverage/extraction/model
-quality findings; [current results](docs/G3_SETUP.md#current-findings-and-decisions)
+G3's original bounded investigation produced negative coverage/extraction/model
+quality findings; bounded autonomous fixes are implemented, while acceptance gaps remain; [current results](docs/G3_SETUP.md#current-findings-and-decisions)
 record the actual samples, costs and follow-up decisions. The user removed the
 seven-day duration under ADR 0017; longitudinal yield is waived, not passed, and
 source retention remains unchanged. Model daily throughput 70 has an explicit
@@ -257,7 +258,8 @@ remaining-G3 receipt under ADR 0020, with unchanged total/cost/token caps. The f
 corrected synthetic packages passed independent delegated semantic review and
 conditional operator approval under ADR 0021; original model failures remain.
 Brave's vendor grant remains unverified under the bounded private exception in
-ADR 0016. Local G4 is complete; G5 profile/matching/lifecycle implementation proceeds
-synthetic-first under ADRs 0018/0019, with human benchmark acceptance still pending.
+ADR 0016. Local G4 and synthetic G5 profile/matching/lifecycle implementation are complete
+under ADRs 0018/0019. The independent 50-case synthetic benchmark
+meets ADR 0022 (50/50 correct; 20 unique eligible); no human or real-market claim.
 V1 coverage/quality acceptance remains incomplete.
 G2 authorizes no subscriptions, deployment or real CV use.

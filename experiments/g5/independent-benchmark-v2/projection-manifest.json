@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "fixtureHash": "59d0362521658a954fb8604489babe9d3880059fe36e83d8afd128cb0ce11b25",
+  "reviewerKind": "independent_agent",
+  "synthetic": true,
+  "files": {
+    "cases-final.json": "6f8246763515d8eb67ca1dbf919547f86ca6e0cae9c2c2fe1df2da776de695eb",
+    "labels-final.json": "bb2e064890b641d70f49e6cf57ea26e24853af062b7ca4da4ac12cdbc9ed4f4b",
+    "adjudication.json": "160dd0da69be8d293768262d689b0e4a4e5835dcef510367469fbc120970dd30",
+    "reviewer-acceptance-v1.json": "f9f7a429944b4cb84f63b08467d6223f61cae99c9d61ee9a27cc94638cbd473a",
+    "freeze-manifest.json": "bdfe73a070af7306acd980aad0be4b7e70c88e4b0393356efd99d45046133a78"
+  },
+  "omittedAuditFiles": [
+    "review-notes-final.json",
+    "original-regression-snapshot.json",
+    "adjudication-notes.json",
+    "first-evaluation.json"
+  ],
+  "omissionDisclosure": "The original receipts retain hash references to omitted private audit-only records. This public projection includes the complete synthetic cases, two independent label sets, original freeze and acceptance receipts; the offline regression reproduces the accepted classifications without those audit-only records.",
+  "limitations": [
+    "Independent-agent synthetic exact-version evidence, not human review, real-candidate approval, legal eligibility or live-market yield.",
+    "Author and adjudicator had prior production/original-oracle familiarity; the new labels and separate adjudication were frozen before evaluator outputs were exposed.",
+    "H01/H50 duplicate one canonical unit; never claim21 unique eligible jobs.",
+    "Publication timestamps and H47 inherited expiry are fictional fixture metadata, not source-proven freshness; no source PDF authenticity is established.",
+    "The holdout is now exposed. Any subsequent matcher tuning must preserve this first result and cannot reuse it as a fresh holdout.",
+    "This receipt accepts only the bounded ADR0022 synthetic benchmark method; other G3/G6/release criteria require their own evidence."
+  ],
+  "originalFiles": {
+    "cases-final.json": "cda654dd6f979ae4efa94204fabc99865f231c0f970a37da82a5b3eeae23c132",
+    "labels-final.json": "bb2e064890b641d70f49e6cf57ea26e24853af062b7ca4da4ac12cdbc9ed4f4b",
+    "adjudication.json": "a7edcb7f7e17d5db3b67f509362b7d372fcb62fb017d3d6b82653d754065bf72",
+    "reviewer-acceptance-v1.json": "f9f7a429944b4cb84f63b08467d6223f61cae99c9d61ee9a27cc94638cbd473a",
+    "freeze-manifest.json": "bdfe73a070af7306acd980aad0be4b7e70c88e4b0393356efd99d45046133a78"
+  },
+  "canonicalJsonSha256": {
+    "cases-final.json": "0dc7c897c8c505980ffd620b502518908848af00fef296a75277667b32f11a4f",
+    "labels-final.json": "470d8fe59074736ea1b884ce714c327f6b9c533e55c5e9a0a3a15c8f276f3cfc",
+    "adjudication.json": "1382497a9848efae4939274c0a5f5330b74bf9fdf9524de9aacbd826e6f7bc9c",
+    "reviewer-acceptance-v1.json": "2cffe242d42f101e5824e43a3059e6c6598c00d17683fca57b00d513ea629dde",
+    "freeze-manifest.json": "ee65318ef8e7238bb27dd576f12d15208b9c92ec7ed230f6486e9d526945350b"
+  },
+  "formattedFiles": ["cases-final.json", "adjudication.json"],
+  "formattingDisclosure": "Public cases-final.json and adjudication.json use Biome formatting. All parsed JSON values and key/array order are unchanged. originalFiles binds the reviewed source bytes, files binds the published bytes, and canonicalJsonSha256 binds their identical parsed JSON. Original source bytes reconstruct as JSON.stringify(parsed, null, 2) plus one newline; tests verify the original receipt chain."
+}

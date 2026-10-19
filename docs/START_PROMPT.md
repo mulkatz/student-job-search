@@ -1,106 +1,120 @@
-# Fresh-session continuation after G4
+# Continuation: remaining G3 acceptance gaps before G6/G7
 
-Updated 2026-10-19. G2/local G4 are complete; G3 investigation closed with
-negative findings. G5 is implemented and locally verified; human benchmark
-acceptance is pending. The user removed G3 duration, raised model daily throughput to 70,
-and delegated exact five-package review (ADRs 0017–0021). These current instructions
-supersede older seven-day/human-line-by-line clauses below. V1 remains incomplete.
-See [PLAN.md](PLAN.md#g4-discovery-slice) for executed evidence and limits.
+Updated 2026-10-19. The user requests autonomous work without further assistance,
+with reasoning no higher than **high**, including agents. G4 and G5 are complete
+locally; G3 coverage/extraction/model acceptance remains unmet after bounded fixes.
+G6/G7 remain planned. V1 is incomplete.
 
 ```text
 Continue in the existing student-job-search repository. Read AGENTS.md, CONCEPT.md,
-docs/PLAN.md, docs/G4_LOCAL.md and relevant G3_SETUP/OPEN_QUESTIONS sections. Consult
-accepted ADRs 0005/0008/0010–0021 as needed. Inspect branch/worktree/native Goal;
-preserve unrelated changes, including the unstaged AGENTS.md reasoning-policy edit.
-Use current model selection and never exceed high reasoning.
+docs/PLAN.md and current findings in docs/G3_SETUP.md. Relevant accepted decisions
+include ADRs0016–0024. Preserve the unrelated unstaged AGENTS.md reasoning-policy
+edit. Use separate planning, implementation and independent review roles, with
+bounded ownership; never exceed high reasoning. Do not create a native Goal unless
+explicitly requested. The previous G4 Goal is already complete.
 
-G4 implements source-pair identity, immutable meaningful revisions, uncertain duplicate
-links, bounded Berlin daily runs, expiring traversal frontiers, fenced recovery,
-persisted origin ownership/pacing/cooldowns and paid-search reconciliation guards.
-The authenticated React/API table and private imports use Firebase Auth/Firestore/
-Storage emulators only. G5 adds private version-bound scores after approved synthetic facts; no cloud scheduler,
-production Google login or deployment exists. Package UI remains G6.
+The user authorized autonomous closure of G3/G5 gaps and pushing verified task-owned
+commits to main. Inspect actual remote state. No deployment, subscription/top-up,
+billing/IAM change, real CV use, email, submission, autofill or employer-form write
+is authorized. Gmail is Firebase Auth identity only. Keep private data owner-bound.
 
-The final integrated gate passed in an isolated checkout without warm build outputs:
-166 offline tests, all builds, Biome, strict types, Secretlint, two emulator ownership/
-profile integrations and two synthetic Chromium journeys. A separate final actual-source
-Chromium regression also passed on the retained private projection without new
-external requests.
-Use Node 24.22.0/npm 11.11.0 and Java 21+; build now precedes dependent type checking.
-Known dev-CLI audit/gRPC-override limitations are explicit in G4_LOCAL, not passing
-npm audit/npm ls claims. Manual CUA inspection and remote CI were not observed.
+Use Node24.22.0/npm11.11.0 through mise, Java21+ (Java26 installed), and Poppler
+pdfinfo/pdftotext. Final combined v4 verification passed in an isolated checkout
+without warm workspace outputs:200 offline tests (5core,104experiment,62discovery,
+25server,1web-link,3scanner), all builds/types/Biome/Secretlint,2emulator integrations,
+2synthetic Chromium journeys and1separate actual-source Chromium regression.
+Temporary actual-source fixture copies were removed. CI is configured, but remote
+CI/manual CUA/npm audit were not observed passing; see G4_LOCAL for known limits.
+Run npm run verify before new commits; inspect staged content and scan outgoing
+history. Never stage the unrelated AGENTS.md edit or private captures/credentials.
 
-Actual private search: .local/g4/brave-live-v1 ran 20 frozen queries and retained 200 URL leads,
-14 HTTP attempts yielded 8 career leads, 4 unavailable records and 0 details;
-a completed repeat sent 0 requests.
-Traversal v2 fixes navigation prioritization offline; no live v2 yield is claimed.
-Separate .local/g4/search-detail-probe-v1 fetched 4 retained actual Brave URLs in 4 HTTP attempts.
-Inert review found an unsolicited lead, an advert expired in 2022 and specific hostel cleaner
-advert (freshness/eligibility unknown). Search-normalization-v1 replays actual bytes
-with reviewed source selectors to 3 jobs/3 revisions; repeat creates no duplicates.
-Its one-job projection passed actual-source Chromium. Earlier real Impala evidence
-and replay versions remain separate; never overwrite or relabel old outcomes.
+G5 evaluator g5-deterministic-v2 requires complete mandatory language alternatives,
+paired employment/hours options, exact work arrangements and remaining-requirement
+evidence. Missing legacy fields stay needs_review; v1 results are stale. Germany
+work permission cannot establish foreign authorization. Firestore encodes nested
+language alternatives as objects and validates decoded job/revision identity.
+Fit and evidence confidence remain separate from eligibility/legal determinations.
 
-The user explicitly authorized bounded private Brave use despite an unverified vendor
-grant (ADR 0016). That instruction is not provider permission, a third-party content
-licence or wider AI/storage/publication rights. Retain URL/provenance only, discard
-search snippets/raw payloads, and send no retained results to a model in this slice.
-Continue per-target/redirect rights/access checks, SSRF prevention and bounded traffic.
-Future operators inherit latest packet ownership/pacing and global cooldowns, not
-stale v1 state. Use current frozen method guards before any separately scoped live run.
+The independent G5 synthetic benchmark passed under ADR0022. A separate author
+froze50cases; another agent adjudicated before author labels or evaluator outputs;
+production evaluation and independent reproduction agree on all50. Results:
+21eligible/13blocked/16review,100% shortlist precision/processing. H01/H50 duplicate
+one canonical unit:49uniquejobs/20uniqueeligible. Public immutable cases, receipt,
+provenance and production-matcher regression are in experiments/g5/independent-benchmark-v2.
+Prior implementation familiarity and unusually explicit synthetic conditions are
+disclosed. This is agent review, not human labeling, arbitrary-language extraction
+proof, real-market coverage or full V1 release. Original50oracle stays regression-only.
 
-Current continuation: G3 has no mandatory seven-day duration (ADR 0017). Keep the
-actual initial dispatch/history and source retention unchanged. Its model 70/day
-remaining-G3 receipt is explicit (ADR 0020); 100 total/EUR 5/token caps still apply.
-The new matching-snapshot-v1 operator completed 19 cases/38 calls. Full C failed
-quality: 9/10 eligible, 5/5 blocked, 2/5 needs_review and four original package semantic
-failures. Preserve failures; no more default repairs. D's exact model-review-v3
-editorial outputs passed separate agent semantic re-review and conditional operator
-approval under ADR 0021; never claim direct human line-by-line review or model success.
+G3 duration was removed under ADR0017; no calendar test/wait is needed. The explicit
+model limit remains70/day,100total,EUR5 and original token caps. CountTokens counts.
+Today70requests are consumed: do not reset history, silently raise limits or switch
+providers to bypass them. Source expansion and calendar polling are stopped.
 
-G3 A/B execution is complete with negative findings, not acceptance success:
-- snapshot-extraction-v1: 30 primary URLs, 23 HTML/six access stops/one 404;
-  independent pre-extraction labels: 12 details/45 present fields; baseline 7 correct
-  details, 16/45 recovery (35.6%), method-bound 16/18 precision (88.9%), zero false confirmations.
-  Plaintext/form channel omissions and equivalent encoding penalties limit the oracle;
-  never call its scores exhaustive semantic/channel metrics. The failed conclusion
-  remains robust even crediting both mismatches (40% recovery versus 80% target).
-- structured-snapshot-v1: 3 actual public Greenhouse employer details, three HTTP/three
-  structured attempts, all valid JSON/expected IDs, independently inspected additional
-  language/hour constraints. No confirmed compatible or incremental Brave-cohort credit.
-- A: 20 frozen queries/200 URL-only leads, 0 confirmed compatible coverage versus the 10+3 target.
-  Dates, updates and public access do not establish freshness/compatibility. No proven JS
-  dependence or metered browser fallback exists; optional comparison unsupported/unexecuted.
-Final cumulative 104 HTTP/20 search/4 structured/68 model/266 reserved observations, all settled,
-no outstanding attempts/overruns/locks. Conservative accounted EUR 0.261393, not an invoice.
-Close G3 investigation with negative A/B/C and approved D, preserving unmet V1 quality criteria.
-No further G3 dispatch is scheduled; no calendar waiting. See G3_SETUP current findings.
-Future operators inherit .local/g3/structured-snapshot-v1/ownership.json and reread
-shared cooldowns inside the source lock. Preserve frozen methods/history; no fresh
-technical source ID or stale ownership bypass. BA/WorkingNomads remain excluded.
+Original C failed despite all5CV outcomes passing: matching9/10eligible,5/5blocked,
+2/5review and four original package semantic failures. D's exact corrected editorial
+model-review-v3 packages passed delegated review/conditional approval under ADR0021;
+no human line-by-line or original-model-success claim. New remediation-model-v2
+made one CountTokens plus one generation shared by20jobs/5packages. All20decisions
+correct; all5packages fail references/content. Reviewed per-field scopes assisted
+that method; it does not test general question-to-fact selection.
 
-G5 is implemented locally under ADRs 0018/0019: owner-private synthetic PDF upload,
-actual bounded Poppler page extraction, corrected facts with explicit approval,
-immutable versions, deterministic unknown/blocker guards, private evaluations,
-retention/export/deletion and synthetic local browser proof. Preserve user ownership,
-source revision and active profile bindings. Do not label partial supported-field
-checks as full eligibility when decisive hours/authorization evidence is absent.
-A 50-case synthetic oracle/rubric passes, but human benchmark acceptance
-remains pending; exact private review artifact: .local/g5/human-benchmark-v1/review.html.
-The delegated-five-package exception does not waive that requirement.
-No real CV processing, default paid G5 calls, production deployment or G6 UI is implied.
+The sole five-package repair is prepared but NOT dispatched. See
+.local/g3/package-repair-v3/run.mjs and method.json. Current exact method:
+6b503e6fab020e0d47339d98e5d7e7b6658c634bc8838c587a6c294cd34506d2.
+It binds33inputs including exact observed failed parent output/result, uses stricter
+provider schema and reuses actual20parent job outputs only for context validation.
+The archived4292e564 predecessor's missing-authorization/day-cap refusal made zero
+network calls; current change was documentation-only. A legitimate later run needs
+available caps and fresh coordinator exact-method authorization, not another user
+question. Report one repair, preserve first failures, independently review all five
+complete outputs; no automatic retry or editorial correction called model success.
 
-Private captures, normalized copies, method snapshots, browser failure artifacts and
-projections expire within original parent retention (at most seven days). Check expiry
-and perform cleanup; replay never renews evidence. Do not commit these, credentials,
-project/account IDs, real applicant data or sensitive logs. No emulator export exists.
+Source investigation:28searches/280URL entries total, then46newpage observations
+and33HTML bodies in three separately reviewed capture packets. Independent source
+inspection found16detailpages,2Silorolesections,1truncatedteaser, ZERO confirmed
+compatible/current unique vacancies, Germany-remote or incremental Brave credit.
+Mandatory German/specialist/shift conditions and decisive unknowns matter. Do not
+infer a market-wide absence from this bounded sample or invent10+3coverage positives.
 
-Use separate planning/implementation/independent review, small ownership scopes and
-meaningful acceptance evidence. Run focused checks then npm run verify; inspect staged
-content and scan secrets. Keep task-owned lowercase semantic commits. The user
-conditionally authorized pushing main once G4 completed; inspect actual remote status
-before assuming a push occurred. No deployment, new subscription/top-up, billing/IAM
-change or real-CV use is authorized. Gmail remains Auth identity only: no mailbox API,
-sending, submissions, autofill or browser-form writes. Actual access challenges stop.
-Report briefly in German with verification, commit IDs and remaining limitations.
+First new formal30 labels were independently frozen after a metadata-only policyRef
+correction, before extraction. The original invalid freeze and failed result were
+preserved through review. First result:8correctdetails,16/32field recovery,
+16/24precision,0falseconfirmations. Full quotes did not repair truncated normalized
+language conditions; eight explicit recruitment routes were missed. Generic fixes
+now retain complete bounded language clauses and tightly bind recruitment recipients,
+rejecting privacy/support/negation/multiple or conflicting addresses, including nested
+fallbacks. Unrepresentable independent language clauses remain unknown.
+
+Final code closure81352867d89c43087f6ac3cabad50fcf958dd1d41fb2f47d7e2159f8cadd5437.
+Development replay on the exposed new30 gets32/32precision/recovery,8details,
+0falseconfirmations, still INCOMPLETE: only8details/2confirmedlocal and incomplete
+planned strata. Old corrected unchanged B oracle final-v4 is FAILED:40/49recovery,
+40/47precision,11details,0falseconfirmations. Seven differences are full grounded
+language blocks vs old partial accepted strings; do not relabel or claim semantic
+100%. Historical v3 was47/49and47/47 for its own exact bytes. First failed observations
+and all numerical targets remain unchanged. See G3_SETUP for full chronology.
+
+Latest ledger:170HTTP/28search/4structured/70model/391records, all settled with no
+outstanding attempt/lock/fence. Conservative costEUR0.359876, not invoice. Remaining:
+30HTTP/9records, zero models today. Minimized final ownership/pacing is retained at
+.local/g3/extraction/ownership-retained-v1.json; reread shared cooldowns inside the
+source lock and keep the existing technical owner. Do not reset state/source IDs.
+BA/WorkingNomads/TheBarn/Zertificon remain excluded. ADR0016's bounded private Brave
+exception is user authorization, not vendor rights. Retain URL/provenance only,
+no snippets/raw search body/model input; per-target/redirect/SSRF/access/rights and
+resource checks stay distinct. No further source expansion is scheduled.
+
+All three task-owned new source packet trees and derived copies were deleted early
+at 2026-10-19T21:24:05Z after independent verification (439 files), before their
+21:58:33.168Z ceiling. Their aggregate/digest/deletion receipt is
+.local/g3/source-remediation-closure-v1.json. Raw-source replay is no longer available
+for these packets. Only aggregate provenance, minimized technical ownership,
+cooldowns and cumulative caps survive this cleanup.
+Old B/structured packets separately expire2026-10-20T08:01/08:05UTC; earlier G4
+captures retain original deadlines. Replay never renews evidence. Synthetic model
+parents and public G5 fixture are separate and must remain for later repair/tests.
+
+Keep G6/G7 planned while material G3 gaps remain. No user questionnaire is pending
+for routine technical decisions. Report concise German results, verification,
+commit/push status and remaining acceptance limits without false completion.
 ```

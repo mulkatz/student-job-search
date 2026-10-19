@@ -405,6 +405,40 @@ test("reviewed visible selectors require unique inert source text and do not upg
     now: () => current,
   });
   assert.equal(repo.listJobs(current)[0]?.observation.kind, "vacancy_detail");
+  const unreviewed = await publicAdapter(
+    "<p><strong>Synthetic Employer</strong></p><h2>Student Assistant</h2>",
+  ).step(null, {
+    now: current,
+    signal: AbortSignal.timeout(1000),
+    reserveRequest: async () => {},
+  });
+  assert.equal(unreviewed.observations[0]?.kind, "career_lead");
+  assert.equal(unreviewed.observations[0]?.title, null);
+  for (const [html, expected] of [
+    [
+      "<p><strong>Synthetic</strong></p><h1 id='selected'>Role one</h1><h1>Role two</h1><h2>Requirements</h2><p>Part-time</p>",
+      "career_lead",
+    ],
+    [
+      "<p><strong>Synthetic</strong></p><h1 id='selected'>Sponsorship opportunities</h1><h2>Requirements</h2><p>Part-time</p>",
+      "career_lead",
+    ],
+    [
+      "<p><strong>Synthetic</strong></p><h1 id='selected'>Student Assistant</h1><p>We have no current openings.</p>",
+      "unavailable",
+    ],
+  ] as const) {
+    const guarded = await publicAdapter(html, {
+      title: "#selected",
+      employer: "p strong",
+    }).step(null, {
+      now: current,
+      signal: AbortSignal.timeout(1000),
+      reserveRequest: async () => {},
+    });
+    assert.equal(guarded.observations[0]?.kind, expected);
+    assert.equal(guarded.observations[0]?.title, null);
+  }
   const ambiguous = publicAdapter(
     "<h2>Role one</h2><h2>Role two</h2><p><strong>Synthetic</strong></p>",
     { title: "h2", employer: "p strong" },

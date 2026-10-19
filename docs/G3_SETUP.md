@@ -1,28 +1,31 @@
 # G3 setup and resumable experiment
 
-Status: G3 investigation complete with negative feasibility findings, updated 2026-10-19.
-The user removed the long-term test (ADR 0017); longitudinal yield is waived, not
-passed. All required source, extraction, model and package-review branches now have
-executed findings. Coverage/model/extraction quality acceptance remains unmet.
-Source retention still expires independently within at most seven days. Model daily
-throughput 70 was explicitly authorized (ADR 0020); 100 total/EUR 5/token caps remain.
-Historical checkpoints below preserve their earlier counts and policies.
+Status: bounded remediation implemented; G3 acceptance remains unmet, updated 2026-10-19.
+The original investigation and its failed observations remain preserved below.
+The user removed duration (ADR 0017) and requested independent completion of G3/G5
+gaps before G6/G7. Source retention, 70 model requests/day, 100 total, token caps
+and EUR 5 remain unchanged. Historical checkpoints retain their original counts.
 
 ## Current findings and decisions
 
 | Branch | Actual finding | Decision |
 | --- | --- | --- |
-| A: discovery | 20 frozen queries, 200 URL-only leads; separate actual three-employer structured GET sample; 0 confirmed compatible vacancies and no demonstrated 3 incremental compatible web vacancies | Reject the coverage acceptance claim; public source access works, useful compatible yield remains unproven |
-| B: extraction | 30 source captures, 12 independently labeled details, 45 present decisive fields; generic baseline finds 7 correct details and recovers 16 labeled fields | Reject generic extractor quality; retain conservative source-specific handling and improve extraction before broad operational use |
-| C: model | Full 5-CV/20-matching/5-package sample; matching 9/10 eligible, 5/5 blocked, 2/5 review; four original package semantic failures | Reject model quality acceptance; deterministic unknown/blocker guards precede optional scores, with no automatic additional repair |
-| D: packages | All five exact corrected editorial versions passed independent semantic review and the user's conditional approval | Complete under ADR 0021; no direct human line-by-line review or original-model-success claim |
+| A: discovery | Original 20 queries/200 leads plus 8 next-page searches/80 entries; 38 further target observations yield 26 HTML bodies and no independently confirmed compatible vacancy | Coverage target of 10 unique compatible vacancies, including 3 incremental web discoveries, remains unmet |
+| B: extraction | Known-cohort v3 development: 47/49 recovery and 47/47 precision. Independent new-source first run: 8 correct details, 16/32 recovery, 16/24 precision, zero false confirmations; only 2 confirmed local sources | Generic fixes and development replay recover the new fields; B remains incomplete because adequate independent acceptance is absent and old exact diagnostics still fail |
+| C: model | New single batch classifies all 20 jobs correctly, but all 5 packages fail strict reference/format/content checks; earlier CV outcomes still pass | Matching remediation observed; package quality still fails. Sole bounded repair prepared offline; today's 70-request allowance is exhausted |
+| D: packages | All five exact corrected editorial versions passed independent semantic review and conditional approval | Complete under ADR 0021; neither human line-by-line review nor original model success |
 
-G5 implementation proceeds locally with synthetic data and separate human benchmark
-acceptance. Optional browser/hosted extraction comparison is unsupported/unexecuted;
-no proven JavaScript-dependence or rendering benefit is claimed. B's exact-string
-oracle omits genuine plaintext/form application routes and can penalize equivalent
-encodings, so its precision/recall is a method-bound diagnostic, not exhaustive
-semantic/channel accuracy. See the final bounded measurement below.
+G5's separate independently authored/adjudicated 50-case synthetic benchmark passed
+under ADR 0022: 50/50 correct, 100% processing/shortlist precision, 49 canonical jobs
+and 20 unique eligible jobs. This is agent review of synthetic data, not human labels,
+real-market coverage, real CV permission or full V1 acceptance. Decisive source
+conditions and v2 stale-result handling are recorded in ADR 0024.
+
+The original B oracle omitted four genuine application routes and penalized some
+equivalent encodings. Its original negative report remains intact. A corrected v2
+oracle was independently checked before the new full replay; because the cohort
+and failures were already known, this is development evidence, not a blind holdout.
+Optional rendered/hosted extraction comparison remains unsupported/unexecuted.
 
 The intended GCP/Firebase project is designated privately, with an EU preference.
 After the earlier permission failure, current CLI and ADC project reads succeeded,
@@ -47,8 +50,7 @@ The parsed corpus SHA-256 is
 `46d5eae10c2d38673429817e9da772ca9e14cb975825561a1a7a52697a160df3`.
 The user explicitly approved Alpha's ten synthetic facts; the corpus-bound receipt
 is private at `.local/g3/profile-approval.json`. This is test-only approval, not real
-applicant data or approval of generated package content. Public fixtures remain
-pending; model outputs exist but human package-content review does not. Final private PDFs,
+applicant data or approval of generated package content. The synthetic corpus is committed; exact corrected package approval is recorded above. Final private PDFs,
 page-text JSON and the source-hash manifest are under
 `.local/g3/model-fixtures-v1-final/`; their five PDFs are byte-identical to the
 visually inspected inputs. The final manifest matches the current corpus file.
@@ -641,3 +643,223 @@ Both packets, all labels/notes, archived inputs, logs and derived copies inherit
 their actual recorded expiry, which can be earlier than seven days. The private
 retention inventory records those deadlines; replay never renews them. Retain only
 minimal technical ownership/cooldown/cumulative-cap state needed after cleanup.
+
+
+## Autonomous quality remediation evidence
+
+The unchanged synthetic corpus fed one CountTokens call and one generation under
+ADR 0023 in `.local/g3/remediation-model-v2/`. Its exact frozen method hash is
+`ff96149b3860cdbd8c663b8f418865ee9d08ab8a5512201f3486f3b0dc11924f`.
+All 20 matching outputs have correct decisions. The five packages omit required
+channel references, proposed-answer fact references and/or include duplicate fields
+and internal analysis in applicant copy. The actual failed output remains preserved;
+no editorial correction is represented as model success. One generation produced
+all 25 outputs, not 25 independent calls. Reviewed per-question fact scopes assisted
+generation and do not test general question-to-fact selection. Usage: 7,895 input,
+2,413 candidate and zero thought tokens; conservative cost EUR 0.018483.
+
+`model-remediation.ts` validates complete case identities, channels and field-specific
+fact scopes. `package-remediation.ts` adds a stricter provider schema and final-copy
+instructions for the sole permitted repair of that failed generation. It is tested
+offline; the repair is not dispatched while the explicit 70/day allowance is full.
+No calendar polling, daily-cap increase or alternative-provider bypass is scheduled.
+The five D editorial versions and earlier CV observations remain separate evidence.
+
+`.local/g3/extraction-remediation-v2/` preserves the original v1 labels/report and
+corrects only four demonstrable application-route omissions. A separate agent
+checked those changes against actual source bytes. The v2 label hash is
+`3d9cb5e520facda9f896ed0a638f7f6dc7638197e0351e911c3f223db066c26d`;
+exact source closure is
+`ec6fa5ef55943e8673fe81c2585850bbdd7af0f2876649625e2d091a99faeeb9`.
+The known 30-row development replay identifies 11 of 12 details, recovers 47 of 49
+present fields, has 47 correct of 47 extracted decisive fields and zero false
+confirmations. Source quotes, form intent, safe routes, missing values and true
+oracle facts beyond extractor limits have focused regressions. This does not
+establish independent source generalization or live browser-rendering benefit.
+
+`.local/g3/coverage-followup-v2/` executed eight unchanged queries at offset one:
+four Berlin and four Germany-remote. All eight searches succeeded; 80 URL-only
+entries contain 76 distinct target URLs, 61 absent from the original search set.
+No search snippets/raw provider payloads or titles were retained. The failed v1
+startup exceeded a local run-duration bound and made zero calls/reservations;
+its failure and exact reconciliation remain preserved separately. The reviewed v2
+method is `9b3ecbd8b75c6e44264f7b5befddadc6caf6570b2c0beea2581f35d76b56b6f9`.
+
+At this checkpoint the cumulative ledger is 104 HTTP, 28 search, four structured
+and 70 model requests, 346 reserved observations, no outstanding attempts or
+reconciliation fences. Conservative accounted cost is EUR 0.359876, not an invoice.
+Latest future origin state is `.local/g3/coverage-followup-v2/ownership.json` plus
+shared cooldowns reread inside the source lock. Subsequent captures must inherit
+that state and stay within the remaining 96 HTTP/54 observations. Known source
+restrictions remain in force; extra search entries are not verified vacancies.
+
+
+The first combined gate exposed a reviewed-selector compatibility regression:
+generic extraction's new no-evidence reason skipped an existing explicit reviewed
+selector path. The fix restores that path while retaining distinct multiple-role,
+non-vacancy and no-opening refusals. Independent focused extraction/discovery
+checks pass. `.local/g3/extraction-remediation-v3/` preserves the v2 report and
+replays the same previously frozen corrected labels against the final fixed bytes:
+11 correct details, 47/49 recovery, 47/47 precision and zero false confirmations.
+Its source closure is
+`7d81ff81b71df9e23beec079a06cf7419359b7a7e04446d9fda8058e5c120a00`.
+Reports retain the base commit in `methodVersion`; archived source/runtime closure
+hashes identify the actual modified code, not an unmodified base checkout. This
+remains known-cohort development evidence, with no new external requests.
+
+
+### Independent new-source capture
+
+The separately frozen `.local/g3/source-capture-followup-v1/` method
+`a17850a4c634443a36cee6b318a13b92b62a525b443289aa876cb32a7f7b3506`
+ran once after independent review and zero-network refusal proofs. It made 58 HTTP
+requests for 31 fixed targets plus seven navigation children, with no rechecks.
+The fixed 30-case benchmark was selected before fetching; the remaining eight
+observations are supplements and cannot replace its failures. Actual benchmark
+outcomes: 19 HTML, five source-policy stops, one access stop and five unavailable.
+Seven further HTML bodies and one policy stop are supplemental. All 26 successful
+page final URLs are distinct. Requested strata/local-business flags were sampling
+hypotheses, not actual content or local-employer evidence.
+
+Independent source inspection identifies eight formal specific TU vacancies,
+seven career leads, four negative/expired pages and eleven unavailable cases.
+Only two formal cases establish local-business membership. Additional mandatory
+German or specialist requirements, missing hours/language evidence, old deadlines
+and explicit no-openings content prevent a compatible-vacancy claim. This is an
+observed bounded cohort, not a determination that the wider market has no jobs.
+The independently grounded labels must freeze before the first extractor replay.
+
+There are 38 page diagnostics but 37 new record reservations: one operator-picked
+target failed before its first HTTP reservation; its specific transport/DNS cause
+is unknown. Every one of the 58 HTTP attempts is accounted and settled, including
+robots and redirects. The cumulative ledger is 162 HTTP, 28 search, four structured,
+70 model and 383 reserved records, no outstanding attempt, lock or reconciliation
+fence. Conservative accounted cost remains EUR 0.359876; the HTTP reads add no
+metered provider charge. Remaining allowance: 38 HTTP/17 records, zero model calls
+today. Latest technical origin state is this packet's `ownership.json` plus shared
+cooldowns. New bodies, labels, notes and derived copies expire at the earlier
+actual dispatch ceiling **2026-10-19T21:58:33.168Z**, never the later planned ceiling.
+
+
+A separately reviewed canonical-host recovery supplement corrected an overly narrow
+private operator rule: three exact initial paths were read on already approved
+apex counterparts, with actual robots redirects as provenance. It made three HTTP
+requests and three record reservations: two HTML pages and one preserved 404.
+Method `74c599975c81bd87cdef5beec61f744d7d6f9587ba7034514e4aecd4bb4fbf03`
+and all 29 input/archive hashes were independently checked before and after.
+The fixed 30-case benchmark and its failures are unchanged. This is not another
+fresh benchmark or an original first-pass success. No public runtime code changed.
+
+Current cumulative usage after recovery is **165 HTTP, 28 search, four structured,
+70 model and 386 reserved records**; all settled with zero locks/fences/outstanding
+attempts. Conservative cost remains EUR 0.359876. Latest origin snapshot is
+`.local/g3/source-capture-recovery-v1/ownership.json`, plus shared cooldowns reread
+inside the source lock. Remaining allowance is 35 HTTP/14 records, zero model calls
+today. Both new packets and their derived evidence expire at 21:58:33.168Z today.
+
+
+### First independent extraction result
+
+The independent author froze labels before extraction. Pure validation first refused
+missing `policyRef` metadata; all initial artifacts are preserved unchanged in
+`independent-v1-schema-refused/`. Only policy references and bound freeze metadata
+were corrected, with the same 30 identities/order/strata, kinds, facts and capture
+hashes. The evaluated freeze is **21:06:35.329Z**, not the invalid earlier receipt.
+Manifest hash `3ba6d738be2f8a5629fb929ea463d03d2ad9d13afea366e2b65398dca97745d8`
+and label hash `aa464b803b060b9e93f790c5bae86311ae93d8f2f1fdda8ac1229ac43daa7b3a`
+passed separate pure oracle validation before the first actual scorer invocation.
+
+The preserved first report at 21:06:52 identifies all eight specific details but
+recovers only **16/32** decisive fields (50%) with **16/24** precision (66.7%) and
+zero false confirmations. All eight normalized language values lose source
+qualifications or conditions; all eight application routes are missed. Attached
+full evidence quotes do not repair a lossy normalized fact. Independent review
+reproduced every case/aggregate/stratum result and confirmed those are substantive
+quality failures, not merely interchangeable encodings. Formal sample readiness is
+also incomplete: eight details, two confirmed local sources, unbalanced planned
+strata and no demonstrated JS cohort. No benchmark or source-coverage pass follows.
+The first failed result remained immutable through review and repair; subsequent
+runs on these exposed pages are development evidence. The early cleanup below
+retains its digest and aggregate history rather than the raw source artifacts.
+
+A final independently reviewed actual-anchor supplement fetched five exact retained
+recruitment links in five HTTP attempts, all HTML with matching body hashes.
+Its method is `a4c2f973efea16b8e884d973104dc0feb780d45fe6b8227e77fe270237426c7e`.
+The three capture batches therefore contain 46 page observations/diagnostics and
+33 retained HTML bodies, using 66 HTTP and 45 new record reservations. No search,
+structured or model call occurred inside them. Source expansion is stopped; the
+fixed 30 cases and their failures never change or absorb supplemental successes.
+
+Latest cumulative accounting: **170 HTTP, 28 search, four structured, 70 model,
+391 reserved records**, all settled, no locks/outstanding attempts/fences. Cost
+remains conservatively EUR 0.359876; 30 HTTP/nine records remain, zero model calls
+today. Latest future origin state is
+`.local/g3/extraction/ownership-retained-v1.json` plus shared cooldowns under the
+source lock. The three new packets had a 21:58:33.168Z ceiling and were deleted
+early after verification, as recorded below.
+
+
+Separate independent source review of all three new packets binds all 33 HTML
+body hashes and the retained parent-anchor/redirect proofs. The 46 observations
+contain 16 specific detail pages, two Silo role sections and one truncated Father
+teaser. There are **zero confirmed compatible/current unique vacancies**, zero
+compatible Germany-remote vacancies and zero proven incremental Brave-compatible
+vacancies. Additional German levels, specialist/enrollment/shift conditions and
+missing accepted-language/hours/currentness evidence remain decisive. The 10+3
+coverage criterion therefore remains unmet. Original formal benchmark membership
+and all failed observations are preserved; supplemental source observations do not
+supply missing benchmark strata or confirmed-local membership retroactively.
+
+
+### Final bounded extraction repair and development replay
+
+The generic repair preserves the entire bounded language requirement clause,
+including proficiency, written/spoken scope, conjunction/alternatives, preference
+versus obligation and missing-language learning commitments. Independent or
+incomplete clauses remain unknown. A shared narrowly scoped mailto-context helper
+requires an explicit same-line recruitment direction and rejects inquiry, privacy,
+support, negation, multiple recipients and conflicting visible/href recipients,
+including nested plaintext fallbacks. Generic application-word anchors cannot
+bypass those checks. All discovered channels remain unverified. Synthetic
+positive/adversarial cases and independent code re-review cover these behaviors;
+no actual source page, email address or recruiter identity enters committed tests.
+
+The final exact source/runtime closure is
+`81352867d89c43087f6ac3cabad50fcf958dd1d41fb2f47d7e2159f8cadd5437`.
+The unchanged new-source labels pass pure validation, then a separately versioned
+**development** replay recovers 32/32 fields with 32/32 precision, eight correct
+details and zero false confirmations. Status remains **incomplete** because the
+formal sample still has only eight details/two confirmed local sources and missing
+planned strata. This is not an independent first-pass acceptance or a replacement
+for the preserved 66.7%/50% first result.
+
+The old corrected known-cohort oracle was also replayed unchanged against final
+code in `extraction-remediation-v4/`: 40/49 recovery (81.6%), 40/47 exact precision
+(85.1%), eleven correct details, zero false confirmations; its method-bound outcome
+is **failed**. The historical v3 report remains 47/49 and 47/47 for its own exact
+bytes. No oracle values or precision thresholds were loosened after seeing output.
+Neither development report establishes full G3 B acceptance.
+
+Independent inspection grounds the seven exact-value differences in complete
+source language blocks rather than the old oracle's shorter accepted strings.
+One block also retains adjacent teamwork/learning context. These are not seven
+fabricated source claims, but the unchanged exact diagnostic still fails; no
+replacement semantic score or retrospective acceptance is claimed.
+
+### Verified early source cleanup
+
+After independent reproduction and the final integrated gate, all three new
+task-owned source packet trees and their derived copies were deleted at
+**2026-10-19T21:24:05Z**, before their retention ceiling. The cleanup removed 439
+files. The private aggregate receipt
+`.local/g3/source-remediation-closure-v1.json` retains method/report/tree digests,
+numeric results and deletion provenance without source URLs, quotes, addresses or
+bodies. Raw-source reproducibility for these packets ended at deletion. The first
+failure and final development result remain distinct aggregate observations.
+
+The cumulative ledger, shared cooldowns and minimized 53-origin ownership/pacing
+snapshot remain unchanged. Old B/G4/structured evidence and synthetic model parents
+were outside this cleanup and retain their separate deadlines or purposes. The
+final isolated gate passed 200 offline tests, two emulator integrations, two
+synthetic Chromium journeys and a separate actual-source Chromium regression, with
+zero external provider calls. No G3 acceptance criterion is waived by cleanup.
