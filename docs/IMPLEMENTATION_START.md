@@ -4,8 +4,9 @@ Updated: 2026-10-19. **G1 and G2 are complete; G3 is in progress.**
 G2 is locally verified with synthetic data. [G3 setup](G3_SETUP.md) records a
 ten-target extraction pilot and its incomplete measured baseline; no branch
 acceptance is established. Offline C fixtures/schemas/scoring are verified and
-Alpha's synthetic facts are approved privately. No model output or generated
-package review exists; the discovery window has not started.
+Alpha's synthetic facts are approved privately. Partial live model observations
+include failed first-pass cases; human package review and the full model sample
+remain incomplete. The discovery window has not started.
 
 ## Accepted baseline and handoff state
 
@@ -21,7 +22,7 @@ Firebase Auth login identity, without Gmail API/mailbox OAuth integration.
 | V1 scope, ownership, pilot language/location | Agreed; private preferences may remain unknown | All work |
 | Operating ceiling | EUR 50/month total; experiment planning sublimit EUR 5 | Costed G3 execution and operation |
 | Baseline providers | GCP-managed Gemini, existing Brave, HTTP/Cheerio; optional alternatives/fallbacks need measured benefit | G3 and affected slices |
-| Access | Project/ADC reads and enabled billing verified; Vertex API enabled; local Brave key located | Model compatibility/bounded usage and actual Brave storage entitlement |
+| Access | Project/ADC/billing/API verified; EU synthetic inference observed; Brave Search/Postpaid confirmed | Reliable model content/full sample, human package review and Brave storage/use rights |
 | Source/model/extraction/manual-package contract | Defined in FEASIBILITY.md; no branch acceptance yet | G3 |
 | Public-page fetch policy | ADR 0005; robots metadata alone does not exclude leads or block public fetches | G3 fetching and G4 |
 | Exact model/region, plans, IAM/ADC and source rights | Live prerequisites explicitly recorded, not assumed verified | The affected G3 branch |
@@ -44,7 +45,8 @@ must remain visible and cannot be invented to satisfy eligibility or package tes
 
 G1's brief received independent review. Findings about vacuously passing extraction
 and model gates were resolved by adding minimum successful samples, recall/coverage,
-positive-case outcomes and bounded repairs. Live results are still pending G3.
+positive-case outcomes and bounded repairs. Partial live results exist; complete
+branch results remain pending G3.
 
 ## First fresh-session goal: G2
 
@@ -90,10 +92,13 @@ actual layers; do not create placeholder checks that merely return success.
 
 ## Session and goal cadence
 
-G1 is complete as an experiment brief and G2 as an offline foundation. G3 is the
-next bounded goal; select its scope and live-access prerequisites from
+G1 is complete as an experiment brief and G2 as an offline foundation. G3 remains
+in progress; the requested G4 continuation checks its viable-source prerequisite.
+Read the current evidence and live-access prerequisites in
 [PLAN.md](PLAN.md#g3-feasibility-experiment). [START_PROMPT.md](START_PROMPT.md)
-retains the completed G2 contract. A fresh session is a project workflow choice,
+provides the requested G4 continuation with explicit source prerequisites;
+the completed G2 contract is [archived](archive/G2_START_PROMPT.md).
+A fresh session is a project workflow choice,
 not a requirement to discard context after every task. Use a new session at a
 meaningful goal boundary or when the current context becomes difficult to navigate.
 

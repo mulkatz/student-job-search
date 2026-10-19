@@ -47,9 +47,10 @@ The G3 experiment has a EUR 5 planning sublimit and shared work caps in
 **Current access:** the EU-preferred project is designated privately. CLI/ADC
 project reads and enabled billing are verified, and Vertex API enablement succeeded.
 Conservative combined-output reservations and settled usage accounting are
-implemented; actual inference compatibility and reported usage remain unverified.
-The local Brave credential is located; plan/storage entitlement remains
-unverified. Account/project identifiers and credential values stay private.
+implemented; EU synthetic inference and usage are observed, with failed first-pass
+content cases and the full C/D sample still incomplete. The local Brave credential
+and Search/Postpaid tariff are confirmed; no applicable storage/use grant is
+established. Account/project identifiers and credential values stay private.
 
 Verify operator/project access, authentication setup, actual source
 plan/credentials configuration, and who may access candidate data. Decide LLM
@@ -57,8 +58,8 @@ provider/data handling and retention before sending real CV-derived facts.
 Include search-provider queries and page-fetch limits in the cost
 ceiling. Candidate consent is separate from the developer requesting work.
 
-**Current handling:** a partial direct-page pilot is measured; no paid inference
-or Brave benchmark has run. Alpha's synthetic facts are explicitly approved
+**Current handling:** partial direct-page and synthetic model pilots are measured;
+no Brave benchmark has run. Alpha's synthetic facts are explicitly approved
 privately; this does not approve real candidate facts or generated packages. No
 unreported provider account, spend or personal-data access is assumed.
 The original 400 listings / 40 evaluations / 5 drafts caps are proposals, not spending

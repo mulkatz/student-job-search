@@ -128,12 +128,12 @@ The proposed stack is TypeScript, React, Cloud Run Job/API, Firebase Auth/Hostin
 Firestore, private Cloud Storage, Secret Manager, and a replaceable LLM adapter.
 A GCP/Firebase project is designated privately with an EU preference. CLI/ADC
 project reads, enabled billing and Vertex API setup have been verified. Conservative
-model reservations and settled usage accounting are implemented; actual inference
-compatibility remains to be checked.
-The local Brave credential is located; the exact storage-rights plan remains unverified.
+model reservations and settled usage accounting are implemented, and EU synthetic
+inference is observed; reliable application content remains unproven.
+The local Brave credential and Search/Postpaid tariff are confirmed; a storage grant is not.
 GCP-managed Gemini is the accepted first LLM route, with OpenRouter as an alternative behind the same
-boundary; the next synthetic test selects Gemini 3.5 Flash-Lite via the EU v1 endpoint,
-without a live compatibility result yet. See
+boundary; Gemini 3.5 Flash-Lite is tested via the EU v1 endpoint, with partial
+observations and failed first-pass content cases. See
 [provider options and cost model](docs/PROVIDERS_AND_COSTS.md).
 
 Prefer a deterministic pipeline; no agent orchestration framework, vector database,
@@ -241,7 +241,8 @@ synthetic boundary tests, Biome, build, secret scanning and configured CI; see
 G3 has a measured partial extraction pilot; the full benchmark and seven-day
 discovery window remain incomplete. [Current readiness](docs/G3_SETUP.md) separates
 local checks, live observations and the remaining acceptance samples. Offline C
-validation is verified and synthetic Alpha facts are approved privately; no model
-output or generated package review exists. Actual plan rights and bounded model
-configuration remain live entry checks.
+validation is verified and synthetic Alpha facts are approved privately. Actual
+model outputs exist; the full C sample and human package review remain incomplete.
+Brave storage/use rights remain unresolved. The G4 continuation checks its viable
+source prerequisite without labeling unfinished G3 evidence complete.
 G2 authorizes no subscriptions, deployment or real CV use.

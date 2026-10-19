@@ -1,74 +1,89 @@
-# Fresh-session implementation start prompt
+# Fresh-session continuation: G4 discovery slice
 
-Status: G2 completed and locally verified on 2026-10-19; G3 has partial live B evidence. See
-[PLAN.md](PLAN.md#g2-development-foundation--complete) for executed evidence and
-limitations. Live-access prerequisites and explicit opt-in remain G3 checks.
+Prepared 2026-10-19 at the user's request. G2 is complete. G3 remains incomplete;
+read [current evidence](G3_SETUP.md) and [the plan](PLAN.md) before implementation.
+The prior completed G2 contract is [archived](archive/G2_START_PROMPT.md).
 
-Current scope is [ADR 0010](adr/0010-manual-application-packages.md): Gmail is
-Firebase Auth login only; V1/G3 use manual-copy email/questionnaire packages.
-Gmail requirements in the historical contract below are superseded.
-
-The following is the completed G2 execution contract, retained for traceability.
-Do not restart G2 from it. For G3, select the bounded experiment and prerequisites
-from [PLAN.md](PLAN.md#g3-feasibility-experiment) and [FEASIBILITY.md](FEASIBILITY.md).
+Paste this prompt in the next fresh session:
 
 ```text
-Start Goal G2 for student-job-search: establish a reproducible TypeScript development
-foundation that a clean checkout can install and verify through one documented
-command, with CI configured to run that gate without secrets or paid/live APIs.
+Start Goal G4 for student-job-search: implement the first traceable discovery slice
+with conservative job identity/deduplication, an authenticated job table, and bounded
+daily runs. Work in the existing repository; this is not a new scaffold or deployment.
 
-Read AGENTS.md, CONCEPT.md, docs/PLAN.md, and docs/IMPLEMENTATION_START.md first.
-Consult docs/OPEN_QUESTIONS.md and relevant accepted ADRs where a task depends on
-them. Treat the original MVP proposal as reference, not the current product contract.
-Inspect the actual branch, worktree, and existing files; preserve unrelated changes.
+Read AGENTS.md, CONCEPT.md, docs/PLAN.md and docs/G3_SETUP.md first. Consult
+docs/FEASIBILITY.md, docs/OPEN_QUESTIONS.md and accepted ADRs 0002/0004/0005,
+0008/0010/0011 where relevant. Inspect the actual branch, commits and worktree;
+preserve unrelated changes. Use separate planning, implementation and independent
+review agents with bounded file ownership, and resolve/re-review material findings.
 
-Check G1's handoff state and identify prerequisites relevant to G2. Do not claim
-G1 is complete if it is not. Missing live access or unresolved live-fetch policy
-does not prevent independent offline tooling. Ask only if an unresolved choice
-materially blocks this goal; proceed on independent work while waiting.
+The handoff is integrated locally on main. G2 is complete and the TypeScript,
+Biome, strict types, tests, builds and Secretlint foundation is verified. Use the
+documented npm run verify gate; do not introduce Prettier or ESLint. Verify current
+official versions and provider facts when adding dependencies or integrations.
 
-If native Goals are available, create a Goal for the G2 outcome stated above.
-Do not add a token/time budget unless the user explicitly supplies one. Otherwise,
-track the same outcome and evidence in the repository plan.
+G3 is still incomplete. Its seven-day discovery clock has not started; B has a
+partial ten-target extraction pilot plus one separately versioned transport check.
+C has actual EU Vertex observations, including failed first-pass cases and two
+remaining package content findings. The 2026-10-19 model cap is reached: 30 requests,
+with nineteen matching cases still missing. Editorial corrections remain separate
+from model scoring; D requires human review of exact full package content.
+Read the latest results instead of assuming that schema validity, offline fixtures
+or a prepared operator passed a
+branch. Never reset .local/g3/state.json, overwrite old captures/results, restart
+G2, waive the seven days, or mark G3 complete merely to begin G4.
 
-Use separate planning, implementation, and independent review agents as AGENTS.md
-requires. Delegate bounded tasks with explicit file ownership. Keep coordination
-proportionate; resolve findings and re-review affected changes before completion.
+G4 depends on G2 and at least one viable, permitted source demonstrated in G3;
+it does not require every G3 branch to finish first. Verify that source prerequisite
+and its actual rights/access. Brave's Search/Postpaid account and local key do not
+establish persistent-storage or AI/benchmark permissions. Keep that integration
+disabled until an applicable explicit grant is established. Preserve broad web
+discovery; an API-only or fixed-employer-list product does not satisfy V1.
 
-Choose and pin maintained tooling after checking current official documentation.
-Build the smallest useful workspace, strict TypeScript configuration, format/lint
-checks, meaningful synthetic fixture/schema tests, a build, a maintained secret
-scanner, and CI invoking one verification entry point. Write the actual install
-and verification commands in README.md once they exist. Do not create empty package
-trees, placeholder passing tests, or speculative framework layers.
+Define outcome, acceptance criteria, dependencies and small reviewable tasks in
+docs/PLAN.md. First resolve canonical/source job identities, provenance, revisions,
+uncertain duplicate links and timestamp meanings in a concise ADR before persistence.
+Implement one permitted source path, normalization, idempotent repeat processing,
+bounded cursor/recovery handling and source-isolated failures. Preserve the public
+fetch boundary for targets, redirects and browser subrequests. Distinguish search
+leads, career pages and verified vacancy details; retain decisive unknowns.
 
-Use docs/IMPLEMENTATION_START.md's G2 completion evidence as the contract. Prove
-installation and verification from a clean checkout. Test meaningful invalid inputs
-and include synthetic owner/candidate identities without claiming production auth.
-Run browser/emulator checks only as corresponding layers are implemented. Distinguish
-configured CI, locally passing checks, and an observed remote CI run.
+Build a minimal authenticated table with original application links, field evidence,
+unknowns and expandable details. Fit scores remain unavailable until G5 supplies
+validated matching; never use fabricated scores as real results. Use Firebase Auth
+and owner-scoped Firestore/private storage contracts with synthetic-owner tests.
+Prefer local emulators for development; deployment/provisioning is not requested.
+Add bounded Europe/Berlin daily-run logic, overlap protection, idempotency and useful
+diagnostics without installing a cloud schedule. Exercise the implemented local
+journey in a real browser and verify server-side/rules ownership isolation.
 
-Keep this goal offline and synthetic. The monthly operating ceiling is EUR 50 across
-cloud, search, and LLM; no paid provisioning, provider subscription, live crawling,
-real CV processing, OAuth account connection, or deployment is requested by G2.
-The accepted initial route is GCP-managed Gemini, Brave, and HTTP/Cheerio; the
-exact live model/region/plan and optional alternatives are G3 checks. Use accepted
-ADRs 0004/0005 and docs/FEASIBILITY.md only when that context affects this goal.
-V1 still includes CV processing, application text, Gmail drafts, and broad discovery.
-V2 multi-user onboarding and user-managed search orders stay out of scope.
+While live source prerequisites remain unresolved, progress on independent contracts,
+offline source/normalization behavior and a clearly synthetic local browser journey.
+Mocks establish neither source access nor useful coverage. The full G4 exit needs
+repeatable real-source evidence, conservative deduplication/recovery, browser
+verification and private-data isolation. The second permitted adapter and broad
+web discovery remain V1 requirements as recorded in PLAN.md.
+Do not claim that a partial first slice completes G4 or V1.
 
-Work autonomously through implementation, verification, review, and fixes. Record
-significant choices in concise ADRs and maintain docs/PLAN.md at meaningful changes.
-Use atomic lowercase English semantic commits for task-owned changes. Follow the
-session's actual authorization for pushes; do not infer deployment authorization.
+Gmail is exclusively a Firebase Auth login identity: no Gmail API/mailbox OAuth,
+send, submission, autofill or browser-form writes. The shared “View application
+draft” dialog for email text/questionnaire answers and manual copying belongs to G6.
+CAPTCHA solver work is explicitly deferred; real challenges stop under ADR 0005.
+Never invent candidate facts, work authorization, recruiter identities or addresses.
 
-Finish G2 only when its applicable acceptance criteria have evidence and material
-review findings are resolved. Update the plan with actual commands, review outcome,
-limitations, and the next goal. Mark a native Goal complete only when achieved.
-Do not automatically expand into G3 or the rest of V1. Report the result concisely
-in German, with commit IDs and executed verification; repository content stays English.
+Keep project/account identifiers, credentials, real applicant data, licensed results
+and raw captures out of Git. Inspect private operator state only where needed; never
+print secrets. Use placeholders in tracked config and read current credentials privately.
+Preserve cumulative G3 caps and the EUR 50/month ceiling. No new subscription,
+credit bundle, top-up, IAM/billing change, production deployment or real-CV use is
+authorized by this prompt. Reuse applicable existing authorization; ask only for
+genuinely missing access, material unresolved choices or destructive/public actions.
+
+Use native Goals if available without inventing a budget or overwriting an unfinished
+goal. Keep G3's incomplete evidence separate from G4's outcome. Run focused checks,
+then npm run verify before handoff; inspect staged changes and scan secrets. Update
+PLAN with actual evidence and limitations, and use task-owned lowercase semantic
+commits. Integrate finished changes on main as requested; do not push or publish
+without applicable authorization. Report concisely in German with executed checks,
+commit IDs, remaining dependencies and the next bounded task.
 ```
-
-For later goals, reuse the outcome/evidence/constraints structure but select the
-actual goal and its prerequisites from [PLAN.md](PLAN.md). Do not blindly reuse G2's
-offline boundary for an explicitly authorized live-integration goal.

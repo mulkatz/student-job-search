@@ -7,8 +7,8 @@
 
 This is the G1 deliverable and G3 execution contract. It defines observations and
 stop conditions. A ten-target B pilot is measured but incomplete; documentation
-diagnostics are separate. Synthetic Alpha facts are approved privately, with no
-model output or generated package-content approval yet.
+diagnostics are separate. Synthetic Alpha facts are approved privately; partial
+live C outputs exist, with no generated package-content approval yet.
 Current access readiness and setup commands are in [G3_SETUP.md](G3_SETUP.md).
 Prices and provider features researched earlier remain dated inputs in
 [PROVIDERS_AND_COSTS.md](PROVIDERS_AND_COSTS.md) and

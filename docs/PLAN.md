@@ -23,7 +23,7 @@ Firebase Auth login only. No later mailbox integration is promised.
 
 The [conception closure and implementation handoff](IMPLEMENTATION_START.md) defines
 what needs resolving before live experiments and retains the completed G2 contract.
-The [archived G2 start prompt](START_PROMPT.md) records that bounded scope. Select
+The [archived G2 start prompt](archive/G2_START_PROMPT.md) records that bounded scope. Select
 the next goal deliberately; G1 is complete as a brief and live results remain G3 work.
 
 For each goal, define the outcome, dependencies, acceptance criteria, and smallest
@@ -36,6 +36,13 @@ and unresolved questions in [OPEN_QUESTIONS.md](OPEN_QUESTIONS.md). Task records
 live here until a remote issue tracker exists; an external project board is not
 required. Report blockers with the missing evidence or access and a concrete next
 action. Independent tasks may proceed while an integration is blocked.
+
+The user requested local integration on `main` and a fresh-session G4 handoff.
+Use [START_PROMPT.md](START_PROMPT.md) for that continuation; it preserves G3's
+unfinished evidence and G4's viable-source prerequisite. Only `main` exists locally;
+finished task-owned work is committed there, without an artificial merge or push.
+The handoff documentation and corrected private proposals received independent
+review with no remaining material findings. Human content approval remains pending.
 
 ## G0: repository foundation
 
@@ -162,7 +169,8 @@ was performed; live account setup and all branch measurements remain pending.
 Current follow-up: after the initial permission failure, the privately designated
 EU-preferred project's CLI/ADC reads and enabled billing were verified. Vertex AI
 API enablement succeeded without deployment, IAM or billing changes. The local
-Brave credential is located; actual plan/storage entitlement remains unresolved.
+Brave credential and Search/Postpaid tariff are confirmed; no applicable storage/use
+grant is established. Current public help/terms require a resolution before retaining results.
 No project/account IDs or credential values belong in Git.
 Offline C corpus work is implemented and locally verified: three synthetic profiles,
 five PDF inputs, twenty labeled jobs, five packages, strict schemas, prompts and scoring.
@@ -171,8 +179,8 @@ pages were visually inspected, scan-only text absence checked and malformed inpu
 rejected locally. The final corpus hash and private artifact references are in
 [G3_SETUP.md](G3_SETUP.md). The follow-up integrated gate passed Biome, strict types,
 47 offline tests, builds and Secretlint. The user has since explicitly approved
-Alpha's ten synthetic facts in a private corpus-bound receipt. No generated model
-observations or package-content approvals exist; C/D remain incomplete.
+Alpha's ten synthetic facts in a private corpus-bound receipt. Partial model
+observations now exist; human package-content approvals and full C/D remain incomplete.
 
 The first live B pilot examined ten local employer targets: three HTML captures,
 seven marker stops, one independently labeled specific advert and four present
@@ -182,8 +190,8 @@ claims. This small pilot is incomplete evidence. A separate bounded diagnostic
 identified an incidental-marker false positive and informed a reviewed correction;
 old results remain unchanged. The evidence and remaining 30-URL requirements are
 in [G3_SETUP.md](G3_SETUP.md#first-live-extraction-pilot).
-HTTP attempts total 22, all settled; no paid provider/model call, real CV processing
-or discovery benchmark has run. A's seven-day window remains unstarted. Optional
+HTTP attempts total 22, all settled; synthetic model calls are recorded below.
+No real CV processing or discovery benchmark has run. A's window remains unstarted. Optional
 alternative providers/renderers remain unexecuted. The final benchmark/fetch gate
 passed Biome, strict types, 59 offline tests, both builds and Secretlint over
 68 repository files. Independent review resolved findings and rechecked the
@@ -204,7 +212,7 @@ same bytes. Original pilot labels/scores remain unchanged. This is transport
 evidence only, not a full B, freshness or compatibility pass; see
 [the follow-up evidence](G3_SETUP.md#post-correction-transport-check).
 
-Next bounded C task: preserve immutable per-call reservations while accounting
+Implemented bounded C task: preserve immutable per-call reservations while accounting
 complete settled model usage separately (ADR 0011), add pure Vertex request/response
 validation, and independently review the private opt-in operator before dispatch.
 Acceptance: pending/ambiguous usage keeps its full bound, all existing caps remain,
@@ -215,6 +223,24 @@ request limits; it is not a generated CV or matching result. No solver or V1 UI 
 The accounting/helpers and private operator are independently reviewed, with
 findings fixed and rechecked. The integrated gate passes 74 offline tests, Biome,
 strict types, both builds and Secretlint; no dispatch is claimed by that gate.
+The separately reviewed live operators observed three textual CVs, five package
+first passes, exactly six single repairs and one matching case. Original failures
+remain recorded, including two CV boolean normalizations and two truncated package
+outputs. Final CV facts/quotes match 10/10, 8/8 and 4/4; scan/malformed outcomes are
+correct locally. All repaired outputs are schema-valid, but package 02 still uses
+an out-of-scope fact for one field and package 03 adds unsupported skill proficiency.
+These model content failures remain failures after separate editorial corrections;
+none of the five packages has human approval. Job 01 matches its expected decision.
+The cumulative ledger has 30 LLM requests (15 free preflights + 15 generations),
+17,534 effective input/7,461 billed output tokens and EUR 0.052615 accounted cost
+using conservative headroom rather than an invoice. Independent review reconciled
+all receipts. Every original bound remains immutable, and no outstanding attempt,
+overrun or reconciliation is present. The Berlin daily cap is reached on 2026-10-19.
+See [the actual model evidence](G3_SETUP.md#first-live-model-observations).
+Next: preserve the two content findings, review corrected package versions with
+the user, and observe the remaining nineteen matching cases from 2026-10-20 within
+caps. Source rights and the unstarted seven-day discovery window remain separate
+dependencies; a handoff to G4 does not complete them.
 
 - [ ] Verify current provider/model/region, source rights/plan and operator access;
       reserve within the experiment caps before live execution.
@@ -226,8 +252,9 @@ strict types, both builds and Secretlint; no dispatch is claimed by that gate.
       employers; measure additional unique vacancies beyond structured samples.
 - [x] Implement offline C corpus, schemas, prompts and scorer; run the integrated gate.
 - [x] Record explicit approval of the synthetic facts used for matching/generation.
-- [ ] Resolve the model's combined billed-token reservation boundary and execute
-      synthetic CV, twenty-case matching and five-package generation within caps.
+- [x] Resolve conservative combined-token reservations and complete-usage settlement.
+- [ ] Complete the synthetic CV, twenty-case matching and five-package sample within
+      caps, preserving all first-pass failures and at most one repair per case.
 - [ ] Manually review those same five full packages: two email and three questionnaire
       packages, internal field IDs mapped to source-evidenced question text, correct missing/action states,
       no unsupported claims, and exact reviewed full-content hashes (ADR 0010).

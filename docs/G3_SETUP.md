@@ -1,7 +1,7 @@
 # G3 setup and resumable experiment
 
 Status: partial live extraction pilot recorded, 2026-10-19. G3 is not complete.
-No discovery benchmark or model call has run. Gmail now serves Firebase
+No discovery benchmark has run; partial synthetic model observations exist. Gmail serves Firebase
 Auth login only under [ADR 0010](adr/0010-manual-application-packages.md); no mailbox
 API/OAuth integration is part of current V1/G3. The pilot and separate diagnostics
 are recorded below; they do not pass branch acceptance. The
@@ -12,21 +12,22 @@ remains the experiment contract.
 
 | Branch | Evidence available | Remaining prerequisites or measurements |
 | --- | --- | --- |
-| A: discovery | Twenty frozen non-personal queries; local Brave credential located without disclosure | Exact plan/storage entitlement; source-specific rights and up to five useful initial boards; reviewed live runner |
+| A: discovery | Twenty frozen non-personal queries; local Brave credential and Search/Postpaid tariff confirmed | Applicable storage/use grant; source-specific rights and up to five useful initial boards; reviewed live runner |
 | B: extraction | Ten-target live pilot and frozen, independently reviewed labels; measured JSON-LD-only baseline; corrected access-marker heuristic | Complete 30-URL stratification, at least 30 present decisive values, sufficient retrieved details and a separately versioned next measurement |
-| C: model | Project/ADC access and enabled billing verified; Vertex API enabled; synthetic Alpha facts explicitly approved privately; offline CV/model corpus and scorer | Supported EU model configuration with conservative billed-token bounds, actual model compatibility/usage, reviewed live runner and generated results |
-| D: manual packages | Revised bounded rubric for same 5 C packages (2 email + 3 questionnaire) | Generated full content, source-evidenced questions mapped by internal IDs, supported claims, exact reviewed content hashes and explicit human review; no UI/clipboard acceptance yet |
+| C: model | Three textual CVs, five packages, six single repairs and one matching case observed in EU; final CV facts correct; two package content findings | Nineteen matching cases, explicit failed-package scoring and complete C report; daily model cap reached on 2026-10-19 |
+| D: manual packages | Five complete proposals available, including two independently reviewed editorial correction versions | Explicit human review of exact full-content hashes; no UI/clipboard acceptance yet |
 
 The intended GCP/Firebase project is designated privately, with an EU preference.
 After the earlier permission failure, current CLI and ADC project reads succeeded,
 and enabled billing was verified. The existing project's Vertex AI API
 (`aiplatform.googleapis.com`) was enabled successfully; no deployment, IAM or
-billing change was made. This establishes access prerequisites, not GenerateContent
-compatibility or an inference result. Private evidence: `gcp-current-check.json`,
+billing change was made. These setup checks established access prerequisites;
+actual inference observations are recorded below. Private evidence: `gcp-current-check.json`,
 `vertex-api-setup.json` and `adc-check.json` under `.local/g3/`.
 The local Brave variable was normalized to `BRAVE_API_KEY`; no value was printed.
-The user has not confirmed the tariff/storage entitlement, so persistent Brave
-result storage and the discovery benchmark remain disabled. Firestore is the
+The user confirmed Search/Postpaid by text and dashboard screenshot. No explicit
+storage grant was displayed; current public terms/help do not establish an
+applicable exception. Persistent result storage and A remain disabled. Firestore is the
 planned database; it does not confer Brave's contractual storage rights.
 
 The offline synthetic corpus has three profiles, three textual PDFs, one scan-only
@@ -39,7 +40,7 @@ The parsed corpus SHA-256 is
 The user explicitly approved Alpha's ten synthetic facts; the corpus-bound receipt
 is private at `.local/g3/profile-approval.json`. This is test-only approval, not real
 applicant data or approval of generated package content. Public fixtures remain
-pending; no model output or package-content review exists. Final private PDFs,
+pending; model outputs exist but human package-content review does not. Final private PDFs,
 page-text JSON and the source-hash manifest are under
 `.local/g3/model-fixtures-v1-final/`; their five PDFs are byte-identical to the
 visually inspected inputs. The final manifest matches the current corpus file.
@@ -118,9 +119,9 @@ bodies, no rendering, a default 15-second whole-operation deadline and 2 MB body
 limit. It never forwards credentials or cookies and does not retry automatically.
 Its caller must account for every request/redirect/robots fetch in the ledger and
 persist Retry-After across restarts; pacing/backoff inside one fetcher is in memory.
-HTML challenge-marker matching is deliberately conservative and can flag ordinary
-pages mentioning CAPTCHA/login. Its marker outcome does not prove an authentication
-wall; actual 401/403 status outcomes remain distinct.
+HTML challenge-marker matching stops strong challenges and isolated widgets while
+ignoring incidental CAPTCHA text on substantive public pages. Its marker outcome
+does not prove an authentication wall; actual 401/403 status outcomes remain distinct.
 A request hook that completes after a deadline can leave a conservative outstanding
 reservation and must be reconciled. Neither this library nor its synthetic tests
 establish live vacancy coverage, source rights or extraction accuracy.
@@ -193,8 +194,8 @@ and all fourteen model tests passed independently. Question/source and channel/s
 binding findings and the generator identifier-path guard were fixed and rechecked;
 no material findings remain.
 
-The ten-target pilot below is partial B evidence. A/C/D remain unexecuted against
-their required samples; no branch is passed. Resolve the remaining plan/model
+The ten-target pilot below is partial B evidence; C has partial first-pass observations.
+A/D remain unexecuted and no branch is passed. Resolve the remaining source/model
 conditions and complete the actual live adapters, then start A's seven-day coverage window with the frozen
 queries. After that first discovery dispatch, use `status` for the next due Berlin
 date and record gaps; do not keep an agent waiting for calendar time.
@@ -202,8 +203,8 @@ date and record gaps; do not keep an agent waiting for calendar time.
 ## Current provider references
 
 Reviewed 2026-10-19. Project/ADC access, billing enablement and API setup have private
-observations above. Actual plan entitlements, credits, inference compatibility,
-quotas and account-specific billed rates remain unverified.
+observations above. First synthetic inference is observed below. Storage/use
+entitlements, credits, quotas and account-specific billed rates remain unverified.
 
 - Brave currently lists USD 5 per 1,000 Search requests. One hundred attempts are
   forecast at USD 0.50 before account-specific credits, currency and taxes. Do not
@@ -327,14 +328,14 @@ Private evidence is under `.local/g3/extraction-followup/`: `method.json`,
 The capture uses the same maximum seven-day private retention; original pilot
 captures, frozen labels and baseline scores are unchanged. HTTP attempts now
 total 22, all settled, with no retained live lock or reconciliation requirement.
-Paid API spend remains EUR 0; the discovery clock has not started. No solver,
+Before model dispatch, paid API spend was EUR 0; the discovery clock had not started. No solver,
 browser, new dependency or provider account was used.
 
 ## Conservative synthetic model dispatch
 
-The next selected configuration is Gemini 3.5 Flash-Lite Standard PayGo in EU,
+The tested configuration is Gemini 3.5 Flash-Lite Standard PayGo in EU,
 with a single direct v1 `generateContent` response, `candidateCount: 1`, JSON
-response schemas, `maxOutputTokens: 2048` and `thinkingLevel: MINIMAL`.
+response schemas, first-pass `maxOutputTokens: 2048` and `thinkingLevel: MINIMAL`.
 No tools, grounding, continuation loop, explicit cache or thought summaries are
 requested. The smaller configured output is not treated as thinking-off: reserve
 the full documented 65,536 model output maximum before each generation.
@@ -347,7 +348,7 @@ Pure helpers validate request shapes, one-candidate text responses, complete usa
 totals and conservative EUR cost. These offline checks do not establish live
 compatibility. The private single-case operator must be reviewed before execution;
 its source/build/script hashes, actual synthetic PDF/text and raw provider evidence
-remain private. No generated result exists yet.
+remain private. First-pass observations are recorded below.
 
 Each case first uses the same payload in `CountTokens`, then reserves the greater
 of its estimated input plus 1,024 tokens or full request UTF-8 bytes plus 1,024.
@@ -369,3 +370,89 @@ Independent isolated checks also passed all eight Vertex and seven usage tests.
 The private operator passed syntax and three opt-in/input rejection checks without
 changing the real ledger. Fresh local parsing of all three textual PDFs matches
 the inspected artifact hashes/text. These are pre-dispatch checks, not C/D results.
+
+## First live model observations
+
+The reviewed operator at `4b23efecf40aac1b1bdf01f0bde8d94a155a3aa6` ran three textual
+CV cases and the five approved-Alpha package cases. Each used a free CountTokens
+preflight and one generation, with no retries. All eight generations reached the
+selected EU model; four outputs passed the independent task schema on first pass.
+
+| Cases | Actual first-pass finding |
+| --- | --- |
+| Alpha CV | 9/10 exact values/quotes; student status normalized to `true`; strict CV acceptance fails despite 90% recall |
+| Beta CV | 8/8 exact values/quotes, no unsupported facts |
+| Gamma CV | 3/4 exact values/quotes; the same student-status normalization; strict CV acceptance fails |
+| Email package 01 | Missing required channel evidence reference |
+| Questionnaire package 02 | Missing required metadata/answers and excessive instruction-like boilerplate |
+| Email package 03 | Schema-valid, but unsupported “strong” skill proficiency; human review pending |
+| Questionnaire packages 04/05 | `MAX_TOKENS`, truncated JSON; no complete package or manual-review pass |
+
+Raw outputs, exact payloads, method hashes, usage receipts and the CV comparison
+are under `.local/g3/model-live-v1/`. No oracle values, expected decisions or answer
+policies were sent. Every original 65,536-token reservation remains immutable;
+complete usage settles to 5,625 input and 6,067 billed output tokens. Conservative
+accounted model cost is EUR 0.037084 at the documented headroom rate, not an invoice.
+At that first-pass checkpoint the ledger had 16 LLM attempts (8 free preflights +
+8 generations) and 22 HTTP attempts. Later observations follow; the original
+failures and their usage remain unchanged.
+
+### Single repairs and current model checkpoint
+
+A separately reviewed, hash-guarded operator under `.local/g3/model-repair-v1/`
+made exactly one repair for Alpha/Gamma CVs and packages 01/02/04/05. It used
+`maxOutputTokens: 4096`, the same full reservation, original source/prompt and
+previous untrusted output, with generic format/value constraints rather than oracle
+answers. All six repairs stopped normally and passed their task schema. Final
+CV comparisons recover 10/10, 8/8 and 4/4 exact facts with page/quote evidence and
+zero unsupported facts. The scan-only and malformed PDFs produce local
+`needs_review` and `parse_failed` outcomes without model calls.
+
+Independent semantic review found two remaining package failures: package 02's
+experience answer cites the approved spreadsheet skill outside that field's frozen
+fact scope; package 03 adds unsupported “strong” skill proficiency. The other three
+packages have no identified content finding. Schema validity does not pass either
+failed package. No second model repair is allowed; editorial corrections must be
+new versions and cannot turn the original generated outputs into C successes.
+
+The first matching case (`job-01`) is schema-valid and agrees with its expected
+eligible decision. Nineteen matching cases remain unobserved; the full report
+schema correctly rejects this incomplete sample. Private partial inventory:
+`.local/g3/model-live-v1/partial-inventory.json`. Human review of all five full
+packages remains pending; C/D and G3 have no passing result.
+
+Separately versioned editorial proposals and a complete offline review document
+are under `.local/g3/model-review-v2/` (`manifest.json`, `review.html` and five
+package JSON files). Only package 02's experience sentence/reference and package
+03's unsupported qualifier change; the other three outputs are unchanged.
+The manifest binds original/final hashes and marks both original model findings
+as failures. Independent re-review verified the exact changes, schemas, hashes,
+source mappings, inert HTML and unchanged original evidence/ledger. These corrections
+require fresh exact-content human review; they
+do not change model scoring, consume another repair or establish G6 UI acceptance.
+
+The current cumulative ledger has **30 LLM attempts: 15 free CountTokens preflights
+and 15 generations** (9 first passes plus 6 repairs), and 22 HTTP attempts.
+Complete receipts settle to **17,534 input and 7,461 billed output tokens**;
+conservative accounted model cost is **EUR 0.052615**, not an invoice. Every original
+bound is retained. Independent review reconciled all 30 receipts/totals. There is
+no outstanding attempt, overrun, live model lock or reconciliation requirement;
+search/structured requests remain zero and the discovery clock remains unstarted.
+The 30/day model cap prevents further model calls on 2026-10-19 Europe/Berlin.
+The next possible model date is 2026-10-20, subject to cumulative caps and current
+operator/source checks; do not reset the ledger or wait in a loop for midnight.
+
+## Brave account and storage condition
+
+The user confirmed Search/Postpaid and supplied a dashboard screenshot without
+an explicit storage grant. Minimized private evidence is `.local/g3/brave-plan.json`.
+Current public help says retaining API data requires contacting Brave, and the
+general terms limit storage to operationally transient use and restrict AI
+evaluation/benchmark uses. No applicable exception has been established for this
+account. Do not infer rights from the tariff name, payment or choice of Firestore.
+[Provider help](https://api-dashboard.search.brave.com/documentation/resources/help-feedback),
+[terms](https://api-dashboard.search.brave.com/documentation/resources/terms-of-service).
+An explicit applicable grant or a separately selected permitted source is needed
+before the affected persistent-discovery use. No Brave request, account change,
+purchase or support message was made. This is not a source-coverage failure sample
+or a started seven-day observation window.
