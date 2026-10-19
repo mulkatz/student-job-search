@@ -1,96 +1,84 @@
-# Fresh-session continuation: G4 discovery slice
+# Fresh-session continuation: finish G4 discovery
 
-Prepared 2026-10-19 at the user's request. G2 is complete. G3 is paused for the
-requested session handoff and remains incomplete;
-read [current evidence](G3_SETUP.md) and [the plan](PLAN.md) before implementation.
-The prior completed G2 contract is [archived](archive/G2_START_PROMPT.md).
-
-Paste this prompt in the next fresh session:
+Updated 2026-10-19 after the first local G4 slice. G2 is complete; G3 and G4 remain
+incomplete. The implemented slice, executed checks and remaining exit criteria are
+in [PLAN.md](PLAN.md#g4-discovery-slice). Do not restart the foundation or treat this
+handoff as source-coverage, production authentication or V1 acceptance.
 
 ```text
-Start Goal G4 for student-job-search: implement the first traceable discovery slice
-with conservative job identity/deduplication, an authenticated job table, and bounded
-daily runs. Work in the existing repository; this is not a new scaffold or deployment.
+Continue G4 in the existing student-job-search repository. Read AGENTS.md,
+CONCEPT.md, docs/PLAN.md, docs/G4_LOCAL.md and the relevant G3_SETUP/OPEN_QUESTIONS
+sections. Read accepted ADRs 0005/0008/0010/0011/0012/0013/0014 where relevant.
+Inspect branch, commits, worktree and current native Goal; never overwrite an
+unfinished goal. Preserve unrelated changes, including the concurrent AGENTS.md
+reasoning-policy edit if it is still present. Reasoning must not exceed high.
 
-Read AGENTS.md, CONCEPT.md, docs/PLAN.md and docs/G3_SETUP.md first. Consult
-docs/FEASIBILITY.md, docs/OPEN_QUESTIONS.md and accepted ADRs 0002/0004/0005,
-0008/0010/0011/0012 where relevant. Inspect the actual branch, commits and worktree;
-preserve unrelated changes. Use separate planning, implementation and independent
-review agents with bounded file ownership, and resolve/re-review material findings.
+The first slice is integrated locally on main: packages/discovery implements
+strict observation/evidence contracts, source-pair IDs, conservative duplicate
+links, content revisions, private atomic persistence, bounded Berlin daily runs,
+request reservations, fenced recovery, cross-day cooldowns and origin ownership.
+One source owns each target/redirect origin; other source IDs cannot bypass pacing.
+The React table/API uses Firebase Auth/Firestore/Storage emulators only. Shared
+job projections are API-only with expiry filtering and bounded manual cleanup;
+owner-private paths and rules deny cross-owner access. Fit scores are unavailable;
+application-package UI remains G6. No cloud schedule or deployment is installed.
 
-The handoff is integrated locally on main. G2 is complete and the TypeScript,
-Biome, strict types, tests, builds and Secretlint foundation is verified. Use the
-documented npm run verify gate; do not introduce Prettier or ESLint. Verify current
-official versions and provider facts when adding dependencies or integrations.
+npm run verify passed 97 offline tests, all workspace builds, Biome, strict types,
+Secretlint, real emulator ownership integration and a Chromium synthetic journey.
+CI installs Java 21 and Chromium, but no remote CI run was observed. npm audit has
+seven development-CLI dependency nodes (4 moderate / 3 high), and npm ls flags the
+intentional patched gRPC override against Firestore's original range; consult the
+explicit G4_LOCAL limitation instead of claiming these commands pass.
 
-G3 is still incomplete. Its seven-day discovery clock has not started; B has a
-partial ten-target extraction pilot plus one separately versioned transport check.
-A further eight-detail cohort/operator is prepared privately at
-.local/g3/extraction-expansion-v1/; it has no live captures or independent operator
-review yet. Review the actual files/policy/hash guards before any dispatch.
-C has actual EU Vertex observations, including failed first-pass cases and two
-remaining package content findings. The 2026-10-19 model cap is reached: 30 requests,
-with nineteen matching cases still missing. Editorial corrections remain separate
-from model scoring; D requires human review of exact full package content.
-Read the latest results instead of assuming that schema validity, offline fixtures
-or a prepared operator passed a branch. Never reset .local/g3/state.json,
-overwrite old captures/results, restart
-G2, waive the seven days, or mark G3 complete merely to begin G4.
+Actual private source evidence: .local/g4/source-probe-v1 has two independently
+reviewed live reads of the existing G3 employer page (one request each). Final
+.local/g4/normalization-v2 binds source/build/operator/capture hashes and replays
+those real bytes offline to one job/one revision; v1 is preserved separately.
+An authenticated emulator API import proof matches that job exactly (anonymous 401,
+authenticated 200). Chromium rendering used synthetic data; the extra manual CUA
+browser connection was unavailable. Do not combine these into a claimed live
+browser/source-coverage pass. Preview services were stopped without emulator export.
+Raw captures, normalized records and all copies have at most seven-day retention;
+check expiry before reuse and perform operator cleanup. Do not overwrite evidence
+or reset state to repeat an observation. No unlimited mirroring grant is inferred.
 
-G4 depends on G2 and at least one viable, permitted source demonstrated in G3;
-it does not require every G3 branch to finish first. Verify that source prerequisite
-and its actual rights/access. Brave's Search/Postpaid account and local key do not
-establish persistent-storage or AI/benchmark permissions. Keep that integration
-disabled until an applicable explicit grant is established. Preserve broad web
-discovery; an API-only or fixed-employer-list product does not satisfy V1.
+Next bounded task: establish an applicable permitted web-search storage/use route,
+then implement and observe bounded broad discovery/career-link traversal beyond
+operator-seeded pages. Brave Search/Postpaid/key does not establish storage or
+AI/benchmark permission. Keep it disabled until an explicit applicable grant exists;
+a separately permitted alternative requires its own current rights/access review.
+Do not narrow the product to APIs or a fixed employer list. The second permitted
+adapter and incremental broad-web vacancies remain V1 requirements. Two immediate
+reads of one page do not establish repeatable useful daily discovery or finish G4.
+Progress on independent offline behavior while genuinely missing access is pending.
 
-Define outcome, acceptance criteria, dependencies and small reviewable tasks in
-docs/PLAN.md. First resolve canonical/source job identities, provenance, revisions,
-uncertain duplicate links and timestamp meanings in a concise ADR before persistence.
-Implement one permitted source path, normalization, idempotent repeat processing,
-bounded cursor/recovery handling and source-isolated failures. Preserve the public
-fetch boundary for targets, redirects and browser subrequests. Distinguish search
-leads, career pages and verified vacancy details; retain decisive unknowns.
+G3 remains incomplete and separate. Its discovery clock is unset. The cumulative
+ledger has 24 settled HTTP attempts and 30 model attempts (15 CountTokens + 15
+inferences); source follow-up added only 2 HTTP attempts. No outstanding attempt,
+overrun or writer reconciliation was present at handoff. Preserve all reservations,
+failed model cases and old captures/results. Nineteen matching cases and full
+human exact-content package review remain pending. Never waive the seven days or
+mark G3 complete merely to continue G4. The prepared G3 eight-detail cohort remains
+unexecuted; review current method/policy/hash guards before any future dispatch.
 
-Build a minimal authenticated table with original application links, field evidence,
-unknowns and expandable details. Fit scores remain unavailable until G5 supplies
-validated matching; never use fabricated scores as real results. Use Firebase Auth
-and owner-scoped Firestore/private storage contracts with synthetic-owner tests.
-Prefer local emulators for development; deployment/provisioning is not requested.
-Add bounded Europe/Berlin daily-run logic, overlap protection, idempotency and useful
-diagnostics without installing a cloud schedule. Exercise the implemented local
-journey in a real browser and verify server-side/rules ownership isolation.
+Use separate planning, implementation and independent review for substantive work,
+with bounded file ownership and current AGENTS.md model selection. Resolve material
+findings and re-review affected changes. Update PLAN at meaningful boundaries.
+Use the pinned runtime and npm run verify; no Prettier/ESLint. Exercise actual local
+journeys in a real browser and server/rules ownership independently. No provider
+calls in default tests. Keep fixture data synthetic and source evidence private.
 
-While live source prerequisites remain unresolved, progress on independent contracts,
-offline source/normalization behavior and a clearly synthetic local browser journey.
-Mocks establish neither source access nor useful coverage. The full G4 exit needs
-repeatable real-source evidence, conservative deduplication/recovery, browser
-verification and private-data isolation. The second permitted adapter and broad
-web discovery remain V1 requirements as recorded in PLAN.md.
-Do not claim that a partial first slice completes G4 or V1.
+Preserve the EUR 50/month ceiling and cumulative G3 caps. HTTP has no internal daily
+cap under ADR 0012, but cumulative limits, finite runs, source pacing and provider
+limits remain. Search/model daily constraints and A's sampling protocol are separate.
+No new subscription, credit purchase, top-up, IAM/billing change, deployment or real
+CV use is authorized. Gmail is Firebase Auth login only: no mailbox API/OAuth,
+sending, submissions, autofill or browser-form writes. CAPTCHA solver work remains
+deferred; actual challenges stop. Never invent applicant or application facts.
 
-Gmail is exclusively a Firebase Auth login identity: no Gmail API/mailbox OAuth,
-send, submission, autofill or browser-form writes. The shared “View application
-draft” dialog for email text/questionnaire answers and manual copying belongs to G6.
-CAPTCHA solver work is explicitly deferred; real challenges stop under ADR 0005.
-Never invent candidate facts, work authorization, recruiter identities or addresses.
-
-Keep project/account identifiers, credentials, real applicant data, licensed results
-and raw captures out of Git. Inspect private operator state only where needed; never
-print secrets. Use placeholders in tracked config and read current credentials privately.
-Preserve cumulative G3 caps and the EUR 50/month ceiling.
-The internal HTTP daily cap is removed under ADR 0012; the cumulative HTTP cap,
-bounded runs, source pacing and provider limits remain. Search/model daily controls
-and A's seven-day sampling protocol are separate internal experiment constraints.
-No new subscription, credit bundle, top-up, IAM/billing change, production deployment
-or real-CV use is authorized by this prompt. Reuse applicable existing authorization; ask only for
-genuinely missing access, material unresolved choices or destructive/public actions.
-
-Use native Goals if available without inventing a budget or overwriting an unfinished
-goal. Keep G3's incomplete evidence separate from G4's outcome. Run focused checks,
-then npm run verify before handoff; inspect staged changes and scan secrets. Update
-PLAN with actual evidence and limitations, and use task-owned lowercase semantic
-commits. Integrate finished changes on main as requested; do not push or publish
-without applicable authorization. Report concisely in German with executed checks,
-commit IDs, remaining dependencies and the next bounded task.
+Keep project/account identifiers, credentials, real applicant facts, licensed/raw
+captures and scratch data out of Git. Read credentials privately only when needed.
+Commit only task-owned changes with lowercase semantic commits on main. Inspect
+staged content and scan secrets; do not push/publish. Report briefly in German with
+actual verification, commit IDs, remaining dependencies and the next bounded task.
 ```

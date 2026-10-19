@@ -1,0 +1,24 @@
+{
+  "name": "@job-search/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.test.json --noEmit",
+    "build": "tsc --project tsconfig.json",
+    "test": "tsc --project tsconfig.test.json && node --test dist-test/test/api.test.js",
+    "test:integration": "tsc --project tsconfig.test.json && node --test dist-test/test/emulators.test.js",
+    "start": "node dist/main.js",
+    "seed": "node dist/seed.js",
+    "cleanup": "node dist/cleanup.js"
+  },
+  "dependencies": {
+    "@job-search/discovery": "0.0.0",
+    "firebase-admin": "14.5.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "6.0.0",
+    "firebase": "13.0.0"
+  }
+}

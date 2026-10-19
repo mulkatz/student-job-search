@@ -115,8 +115,16 @@ missing private scopes. This is a local domain contract, not authentication or
 database/storage authorization. The persistence/version/state questions below
 remain unresolved for their respective slices.
 
-Resolve these inconsistencies in the original proposal through schemas/tests and
-an ADR, rather than copying the sample types as final contracts:
+**G4 discovery boundary resolved:** [ADR 0013](adr/0013-discovery-identities-and-recovery.md)
+defines source-pair identities, content revisions, uncertainty links, distinct
+timestamps and bounded local recovery. [ADR 0014](adr/0014-local-firebase-authenticated-discovery.md)
+defines local Firebase authentication, shared source projections and owner-private
+paths/rules. Emulator evidence is separate from production identity-provider and
+private-data lifecycle readiness. Application/package versions and states remain
+G5/G6 decisions.
+
+Resolve the remaining affected contracts through schemas/tests and an ADR, rather
+than copying the original proposal's sample types as final contracts:
 
 - A source-derived hash is a stable source identity, not by itself a cross-source
   canonical job identity. Define canonical IDs, aliases/merges, and revision history.

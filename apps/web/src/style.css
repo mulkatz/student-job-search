@@ -1,0 +1,263 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  color: #18362e;
+  background: #f5f6f1;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 1280px;
+  margin: auto;
+  padding: 50px 40px;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 34px;
+}
+.eyebrow {
+  letter-spacing: 0.16em;
+  font-size: 11px;
+  font-weight: 750;
+  color: #587367;
+  margin-bottom: 20px;
+}
+h1 {
+  font-size: clamp(32px, 4vw, 50px);
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+  margin: 0 0 20px;
+  font-weight: 650;
+}
+.intro {
+  font-size: 16px;
+  color: #60746a;
+}
+button {
+  border: 0;
+  border-radius: 7px;
+  background: #285b46;
+  color: white;
+  padding: 13px 19px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+button:hover {
+  background: #173f2f;
+}
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #bf9243;
+  outline-offset: 4px;
+}
+.secondary {
+  background: white;
+  color: #285b46;
+  border: 1px solid #ced9ce;
+}
+.notice {
+  display: flex;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #e8eee3;
+  border: 1px solid #d8e1d2;
+  border-radius: 8px;
+  color: #4d6451;
+  font-size: 13px;
+  margin-bottom: 40px;
+}
+.notice strong {
+  white-space: nowrap;
+}
+.login {
+  background: white;
+  border: 1px solid #e0e5dd;
+  padding: 34px;
+  border-radius: 9px;
+  max-width: 680px;
+}
+.login p {
+  color: #63766a;
+  line-height: 1.6;
+}
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+h2 {
+  font-size: 22px;
+  letter-spacing: -0.025em;
+  margin: 0 0 8px;
+}
+.count {
+  font-size: 13px;
+  vertical-align: middle;
+  background: #dfe8db;
+  border-radius: 20px;
+  padding: 3px 9px;
+  margin-left: 9px;
+}
+.section-title p {
+  font-size: 13px;
+  color: #6c7b70;
+  margin: 0;
+}
+.session {
+  font-size: 12px;
+  color: #547d5f;
+}
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid #dde3d9;
+  border-radius: 10px;
+  background: white;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+th {
+  background: #edf0e9;
+  text-align: left;
+  font-size: 11px;
+  color: #637565;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 16px 20px;
+  width: 25%;
+}
+td {
+  padding: 22px 20px;
+  border-top: 1px solid #e5e9e1;
+}
+.job-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+h3 {
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 0 0 10px;
+}
+.badge {
+  display: inline-block;
+  padding: 4px 7px;
+  background: #e7efdf;
+  color: #597544;
+  font-size: 11px;
+  border-radius: 4px;
+}
+small {
+  display: block;
+  font-size: 11px;
+  color: #7b877c;
+  margin-top: 7px;
+  line-height: 1.5;
+}
+.muted,
+.unknown {
+  color: #7b806f;
+}
+a {
+  color: #286346;
+  text-decoration: none;
+  font-size: 13px;
+}
+a:hover {
+  text-decoration: underline;
+}
+details {
+  margin-top: 22px;
+  border-top: 1px solid #e8ece4;
+  padding-top: 15px;
+}
+summary {
+  font-size: 12px;
+  color: #4d6d54;
+  cursor: pointer;
+}
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+.evidence {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.evidence strong {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #5d735f;
+}
+blockquote {
+  margin: 0;
+  border-left: 2px solid #c5d3bd;
+  padding-left: 10px;
+  line-height: 1.6;
+  color: #667664;
+}
+footer {
+  margin-top: 30px;
+  color: #7a8577;
+  font-size: 11px;
+}
+.error {
+  color: #923d32;
+  background: #f8e7e2;
+  padding: 15px;
+  border-radius: 7px;
+}
+@media (max-width: 700px) {
+  main {
+    padding: 25px 18px;
+  }
+  .notice {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .session {
+    display: none;
+  }
+  .job-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  th {
+    font-size: 9px;
+    padding: 12px 10px;
+  }
+  td {
+    padding: 20px 14px;
+  }
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+  .intro {
+    line-height: 1.6;
+  }
+  .secondary {
+    padding: 9px;
+  }
+  header {
+    gap: 15px;
+  }
+}

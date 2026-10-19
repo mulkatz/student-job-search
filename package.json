@@ -10,7 +10,10 @@
   },
   "workspaces": [
     "packages/core",
-    "packages/experiment"
+    "packages/experiment",
+    "packages/discovery",
+    "packages/server",
+    "apps/web"
   ],
   "scripts": {
     "check:runtime": "node scripts/check-runtime.mjs",
@@ -21,15 +24,22 @@
     "test": "npm run test --workspaces && node --test scripts/test/*.test.mjs",
     "build": "npm run build --workspaces",
     "secrets": "node scripts/scan-secrets.mjs",
-    "verify": "npm run check:runtime && npm run check && npm run typecheck && npm test && npm run build && npm run secrets",
+    "verify": "npm run check:runtime && npm run check && npm run typecheck && npm test && npm run build && npm run secrets && npm run test:emulators && npm run test:browser",
     "check": "biome ci . --error-on-warnings",
-    "experiment": "npm run build --workspace=@job-search/experiment && node packages/experiment/dist/cli.js"
+    "experiment": "npm run build --workspace=@job-search/experiment && node packages/experiment/dist/cli.js",
+    "local:emulators": "firebase emulators:start --project demo-job-search --only auth,firestore,storage",
+    "test:emulators": "firebase emulators:exec --project demo-job-search --only auth,firestore,storage \"npm run test:integration --workspace=@job-search/server\"",
+    "test:browser": "firebase emulators:exec --project demo-job-search --only auth,firestore,storage \"npm run test:browser --workspace=@job-search/web\""
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
     "@secretlint/node": "13.0.7",
     "@secretlint/secretlint-rule-preset-recommend": "13.0.7",
     "@types/node": "24.19.2",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "firebase-tools": "15.34.0"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "1.14.6"
   }
 }

@@ -3,9 +3,10 @@
 Find student-friendly jobs in Berlin and remote jobs that can be performed from
 Germany. Review the evidence, prepare an application, and send it yourself.
 
-**Status:** G2's offline TypeScript foundation is complete and locally verified.
-G3's bounded feasibility experiment is in setup; see [current readiness](docs/G3_SETUP.md).
-No deployed application or verified vacancy-source/model integration is available.
+**Status:** G2 is complete. G3 has partial live evidence and remains incomplete;
+see [current readiness](docs/G3_SETUP.md). G4 implements a local discovery slice,
+with conservative identities, bounded runs and a Firebase-emulator table; see
+[local setup and limitations](docs/G4_LOCAL.md). No application is deployed.
 Gmail is exclusively a Firebase Auth login identity; mailbox integration is outside
 the current V1/G3 contract ([ADR 0010](docs/adr/0010-manual-application-packages.md)). No cloud resources have been provisioned.
 
@@ -64,9 +65,9 @@ V1; it does not need a complex dashboard to include a useful application assista
    experiment, planning cost limits, and required evidence.
 2. Completed: establish the offline TypeScript workspace, one locally verified gate,
    and configured CI with Biome, strict types, tests, build and secret scanning.
-3. In progress: prepare and validate source/API access, web search/page extraction, Berlin/Germany
-   coverage, synthetic CV/model behavior and manual package review. The offline
-   corpus/schema/scorer work is in progress; model observations and approvals are pending.
+3. In progress: source rights, seven-day discovery coverage, remaining synthetic
+   matching cases and exact-content human package review. Partial extraction/model
+   observations exist and retain their original failures.
 4. Build discovery, CV/profile matching, and applications as internal slices of V1.
 5. Release V1 after package review/copy, privacy, recovery and operating acceptance pass; scope
    multi-user use and user-managed search orders as V2.
@@ -89,17 +90,20 @@ From the repository root, install the locked dependencies and run the complete g
 
 ```sh
 npm ci
+npx playwright install chromium
 npm run verify
 ```
 
-Dependency installation needs access to the public npm registry. Verification uses
-synthetic local data and needs no provider credentials, cloud account, `.env` file,
-or paid/live API. The same gate is configured in GitHub Actions for pushes and pull
+Install Java 21 or newer for Firebase emulators. Dependency/browser installation
+and the first emulator start download public tooling artifacts. After those
+artifacts are cached, checks use synthetic local data and loopback services, with
+no provider credentials, cloud account, `.env` file, or paid/live API. The same gate is configured in GitHub Actions for pushes and pull
 requests, including fork contributions; a local pass does not establish a remote
 CI run. No deployment command is provided.
 
 The gate checks runtime versions, formatting, lint, strict types, synthetic tests,
-build output, and secrets in sequence; a failure stops it. Individual commands:
+build output, secrets, Firebase emulator ownership and Chromium browser tests in
+sequence; a failure stops it. Individual commands:
 
 | Command | Purpose |
 | --- | --- |
@@ -107,8 +111,10 @@ build output, and secrets in sequence; a failure stops it. Individual commands:
 | `npm run format` / `npm run format:check` | Apply/check Biome formatting. |
 | `npm run lint` | Biome lint checks. |
 | `npm run typecheck` | Strict TypeScript validation of source and tests. |
-| `npm test` | Run offline core, experiment and secret-scanner regression tests. |
-| `npm run build` | Rebuild both workspace ESM packages and declarations. |
+| `npm test` | Run synthetic workspace and secret-scanner regression tests. |
+| `npm run build` | Rebuild all workspace packages and the local web application. |
+| `npm run test:emulators` | Run actual local Auth/API/Firestore/Storage ownership tests. |
+| `npm run test:browser` | Run the Chromium authenticated table journey with local emulators. |
 | `npm run secrets` | Secretlint with its recommended maintained rule preset. |
 
 Biome **2.5.15** checks supported JavaScript, TypeScript and JSON files. Markdown
@@ -126,21 +132,21 @@ scope checks, and synthetic candidate/job fixtures. Configuration is an explicit
 object with `mode: "offline"` and `logLevel: "silent"`, `"error"`, or `"info"`;
 there is no environment loader or live provider client. Unknown evidence remains
 unknown. Identity checks establish a domain boundary, not authenticated access or
-database/storage authorization. Those controls remain required in later slices.
+database/storage authorization. G4 separately tests these controls with Firebase
+emulators, without claiming production authentication readiness.
 
 Secret scanning covers tracked and nonignored untracked regular working-tree
 files, including dotfiles and forced-tracked ignored files; it skips symlinks.
 It is not proof of private or secret-free runtime artifacts. Scan Git history
 separately before publication. Keep private experiments in ignored `.local/`; inspect staged changes before each commit. No real CVs,
-provider captures or credentials belong in fixtures. Browser and emulator checks
-will be added with the UI and persistence layers; neither exists in G2.
+provider captures or credentials belong in fixtures. G4 adds browser and emulator checks; G2's historical evidence does not claim those checks existed earlier.
 
 ## Development status
 
 The proposed stack is TypeScript, React, Google Cloud, and Firebase. The initial
 provider route is GCP-managed Gemini, Brave and HTTP/Cheerio. The offline foundation
-uses private `packages/core` and `packages/experiment` workspaces; application
-framework and deployment tooling remain later choices. The G3 model/region route
+uses private core, experiment, discovery and server workspaces plus a React/Vite
+local web application. Deployment tooling remains outside the current slice. The G3 model/region route
 is provisional until actual operator access and terms are checked.
 No cloud resources have been provisioned.
 

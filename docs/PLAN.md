@@ -8,7 +8,7 @@ Updated: 2026-10-19. Status describes evidence, not estimated progress.
 | G1: feasibility brief | Complete | Accepted baseline, public-fetch policy, bounded experiment and fresh-session handoff. |
 | G2: development foundation | Complete | Reproducible offline TypeScript workspace, synthetic fixtures, verification gate, and configured CI. |
 | G3: feasibility experiment | In progress | Source, web search/page extraction, synthetic model and manual-package evidence; explicit blockers. |
-| G4: discovery slice | Planned | Traceable, deduplicated job discoveries in an authenticated UI and daily pipeline. |
+| G4: discovery slice | In progress | Traceable, deduplicated job discoveries in an authenticated UI and daily pipeline. |
 | G5: profile and matching | Planned | Approved profiles and evidence-based matching meet the fixture targets. |
 | G6: application assistant | Planned | Fact-grounded email/questionnaire packages in a shared review/copy dialog. |
 | G7: V1 release and handover | Planned | CV, manual-copy application packages and bounded daily discovery meet V1 acceptance. |
@@ -292,21 +292,104 @@ V1 release readiness. The shared dialog and browser/clipboard checks belong to G
 
 ## G4: discovery slice
 
-Dependencies: G2 and a viable source in G3.
+Dependencies: G2 and a viable source in G3. G3 remains incomplete and separate.
 
-- [ ] Resolve canonical job/source identities and revision semantics (Q5).
-- [ ] Implement source registry/adapters, normalization, stable identity, conservative
-      duplicate linking, revisions, cursor recovery, and source-isolated failures.
-- [ ] Implement web-search leads, bounded public-page fetching/extraction, shared
-      deduplication, source-policy handling, and traceable extraction evidence.
-- [ ] Build an authenticated job table sorted by fit score, original application
-      links, concise evidence/unknowns, and expandable details.
-- [ ] Add the bounded daily Europe/Berlin run, overlap protection, and diagnostics.
+Started 2026-10-19 under [START_PROMPT.md](START_PROMPT.md). Outcome: the first
+traceable, conservative discovery slice with an authenticated local table and
+bounded Berlin daily runs. No deployment or cloud schedule is requested.
+
+Acceptance: validated source/evidence contracts and immutable changed revisions;
+repeat ingestion without duplicate jobs; uncertainty links without unsafe merging;
+persisted bounded cursors/recovery, overlap protection and source-local errors;
+Firebase Auth plus server/rules owner isolation using two synthetic users;
+real-browser table with field evidence, unknowns and original links; repeatable
+permitted real-source normalization; integrated `npm run verify` and independent
+review with material findings resolved. G5 scores remain unavailable.
+
+Bounded ownership: coordinator owns ADRs 0013/0014, root integration, source-policy
+and private live operator/evidence; separate discovery implementer owns
+`packages/discovery`, application implementer owns `apps/web`, `packages/server`
+and emulator/rules configuration; independent reviewer owns inspection, not code.
+Planning completed before implementation. Shared source identities and local Auth
+contracts are recorded before persistence in [ADR 0013](adr/0013-discovery-identities-and-recovery.md)
+and [ADR 0014](adr/0014-local-firebase-authenticated-discovery.md).
+
+Source constraint: Brave remains disabled without an applicable storage/use grant.
+Existing G3 employer observations support only bounded anonymous public reads,
+not unrestricted mirroring. Review exact targets and source terms before a private
+real-source observation, enforce at most seven-day retention on all copies and
+reads, preserve G3's cumulative accounting and do not start A's discovery clock.
+Synthetic local progress does not fulfill the real-source exit criterion.
+
+- [x] Resolve discovery identities, meaningful-content revisions and timestamps (Q5)
+      in ADR 0013; package/profile state contracts remain G5/G6.
+- [x] Implement one operator-configured public-page adapter, strict normalization,
+      stable source identity, uncertain duplicate links, atomic revisions/cursors,
+      source-local failures and fenced recovery.
+- [x] Demonstrate two permitted private real-source reads, then hash-bound offline
+      normalization with one job/one revision and an authenticated local API import.
+- [ ] Enable broad web-search leads and bounded career-link traversal outside the
+      operator-seeded stream. Brave storage/AI-use rights remain unresolved.
+- [x] Build a local Firebase-authenticated table with original posting/application
+      links, field evidence, unknowns and expandable details. Sort by latest processed
+      observation; fit scores remain unavailable until G5 supplies validated matching.
+- [x] Add local bounded Europe/Berlin daily-run logic, persisted origin ownership,
+      cross-day cooldowns, overlap protection, request reservations and diagnostics.
+      No cloud schedule is installed.
+- [ ] Demonstrate repeatable useful daily live discovery beyond one seeded source;
+      the full G4 exit is not established by two immediate repeat reads.
 - [ ] Enable a second permitted adapter and demonstrate web-discovered vacancies
       outside the structured-source set before declaring V1 complete.
 
+Implemented/local verification (2026-10-19): `npm ci` succeeded with the pinned
+Node 24.22.0/npm 11.11.0. The final `npm run verify` passed Biome, strict types,
+97 offline tests (5 core, 67 experiment, 18 discovery, 3 API, 1 links, 3 scanner),
+all five workspace builds and Secretlint over 112 repository files. It also passed
+one real Firebase emulator integration and one Chromium journey. CI now explicitly
+installs Java 21 and Chromium; no remote CI run was observed.
+
+The emulator integration exercises actual Auth SDK tokens, server-derived ownership,
+two synthetic owners, anonymous/cross-owner Firestore and Storage denial, expired,
+invalid and disabled authentication, retained jobs beyond 101 expired projections,
+bounded physical cleanup and corrupt stored-owner rejection. Chromium exercises
+login, table, source links, evidence/unknowns and logout without opening application
+links or writing browser forms. The additional manual CUA browser connection was
+unavailable; no manual visual inspection is claimed.
+
+Real-source evidence remains private: `.local/g4/source-probe-v1/` contains two
+separately named live captures of the same existing G3 employer page, one request
+each. `.local/g4/normalization-v2/` binds the final source/build/script/capture hashes
+and replays the actual bytes offline: one stable job, one content revision,
+`newRevision` true then false, unknown decisive conditions and null fit score.
+Earlier v1 evidence is preserved separately. This is a specific observed advert,
+not a language/eligibility/freshness or broad-coverage pass. A separate local import
+and API proof returns 401 anonymously and the exact validated job with an emulator
+Auth token. Synthetic Chromium rendering and real-source API evidence remain distinct.
+All derived source copies retain the seven-day maximum. Preview services were stopped
+without exporting emulator state; private raw/replay evidence needs operator expiry
+cleanup, and production retention operations remain unimplemented.
+
+Independent review resolved and re-reviewed material findings in cross-day and
+cross-adapter backoff, hanging/late adapter work, source-data expiry, current-revision
+retention links, projection query limits/cleanup, email-route display and CI setup.
+Final disclosure: `npm audit` reports seven development-CLI dependency nodes
+(4 moderate/3 high); `npm ls` flags the explicit patched gRPC override against
+Firestore's original range. Neither command is claimed to pass; see
+[G4_LOCAL.md](G4_LOCAL.md#dependency-audit-limitation). Behavior verification passed.
+The unrelated concurrent `AGENTS.md` edit is preserved outside task-owned commits.
+
+G4 remains **in progress**, and G3 remains incomplete: no seven-day discovery clock,
+Brave call, additional model use, cloud schedule, deployment, production login or
+real applicant processing was introduced. The G3 ledger now has 24 settled HTTP
+attempts and the unchanged 30 model attempts. This first slice does not complete G4
+or V1. Next bounded task: establish a permitted web-search storage/use route, then
+implement and observe a bounded broad-discovery/career-link run with the same
+identity, policy, retention and recovery contracts. Reuse existing access; no new
+subscription or account/billing change is authorized by this handoff.
+
 Exit: repeatable daily discoveries are traceable and nonduplicated; UI works in a
-real browser and private data is inaccessible to unauthorized users.
+real browser and private data is inaccessible to unauthorized users. Synthetic
+emulator/browser evidence establishes the local boundary only, not the whole exit.
 
 ## G5: profile and matching
 

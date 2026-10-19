@@ -126,6 +126,10 @@ mailbox draft creation or automatic copying/submission is part of the workflow.
 
 The proposed stack is TypeScript, React, Cloud Run Job/API, Firebase Auth/Hosting,
 Firestore, private Cloud Storage, Secret Manager, and a replaceable LLM adapter.
+G4 now implements a local React/API discovery slice with Firebase Auth, Firestore
+and Storage emulators, conservative source identities and bounded Berlin runs.
+Local synthetic authentication is not a deployed Google login or V1 readiness;
+web-search rights, useful coverage and later profile/package work remain open.
 A GCP/Firebase project is designated privately with an EU preference. CLI/ADC
 project reads, enabled billing and Vertex API setup have been verified. Conservative
 model reservations and settled usage accounting are implemented, and EU synthetic

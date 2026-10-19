@@ -483,3 +483,26 @@ An explicit applicable grant or a separately selected permitted source is needed
 before the affected persistent-discovery use. No Brave request, account change,
 purchase or support message was made. This is not a source-coverage failure sample
 or a started seven-day observation window.
+
+
+## G4 private source follow-up
+
+On 2026-10-19, a separately prepared and independently reviewed operator fetched
+one previously inspected employer detail candidate twice. Both returned HTML in
+one request each. Exact source/redirect policy, public-fetch boundaries, hash guards,
+non-overwrite capture directories, the existing extraction lock/robots cache and
+persisted cooldowns were preserved. No browser interaction, credentials, new paid
+provider or model/search request was used. Source policy permits only this bounded
+private observation under ADR 0005; no unrestricted mirroring licence is asserted.
+
+Private source evidence: `.local/g4/source-probe-v1/`. The actual two capture bodies
+were independently inspected for one title/employer pair. Separately hash-bound
+offline normalization of those real bytes yields one source-pair job and one
+content revision on repeat. That replay is not another live request or a completed
+G3 extraction benchmark. The maximum seven-day retention also applies to normalized
+copies and projections. G4's actual local evidence is tracked in [PLAN.md](PLAN.md).
+
+The cumulative G3 ledger now has 24 HTTP attempts (the earlier 22 plus these two),
+all settled. Model attempts remain 30 and search/structured attempts remain zero;
+A's discovery clock remains unset. Existing captures, model content failures,
+original reservations and all unfinished G3 branch criteria remain unchanged.
