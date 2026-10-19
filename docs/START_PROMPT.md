@@ -1,6 +1,7 @@
 # Fresh-session continuation: G4 discovery slice
 
-Prepared 2026-10-19 at the user's request. G2 is complete. G3 remains incomplete;
+Prepared 2026-10-19 at the user's request. G2 is complete. G3 is paused for the
+requested session handoff and remains incomplete;
 read [current evidence](G3_SETUP.md) and [the plan](PLAN.md) before implementation.
 The prior completed G2 contract is [archived](archive/G2_START_PROMPT.md).
 
@@ -24,13 +25,16 @@ official versions and provider facts when adding dependencies or integrations.
 
 G3 is still incomplete. Its seven-day discovery clock has not started; B has a
 partial ten-target extraction pilot plus one separately versioned transport check.
+A further eight-detail cohort/operator is prepared privately at
+.local/g3/extraction-expansion-v1/; it has no live captures or independent operator
+review yet. Review the actual files/policy/hash guards before any dispatch.
 C has actual EU Vertex observations, including failed first-pass cases and two
 remaining package content findings. The 2026-10-19 model cap is reached: 30 requests,
 with nineteen matching cases still missing. Editorial corrections remain separate
 from model scoring; D requires human review of exact full package content.
 Read the latest results instead of assuming that schema validity, offline fixtures
-or a prepared operator passed a
-branch. Never reset .local/g3/state.json, overwrite old captures/results, restart
+or a prepared operator passed a branch. Never reset .local/g3/state.json,
+overwrite old captures/results, restart
 G2, waive the seven days, or mark G3 complete merely to begin G4.
 
 G4 depends on G2 and at least one viable, permitted source demonstrated in G3;
@@ -78,8 +82,8 @@ Preserve cumulative G3 caps and the EUR 50/month ceiling.
 The internal HTTP daily cap is removed under ADR 0012; the cumulative HTTP cap,
 bounded runs, source pacing and provider limits remain. Search/model daily controls
 and A's seven-day sampling protocol are separate internal experiment constraints.
-No new subscription, credit bundle, top-up, IAM/billing change, production deployment or real-CV use is
-authorized by this prompt. Reuse applicable existing authorization; ask only for
+No new subscription, credit bundle, top-up, IAM/billing change, production deployment
+or real-CV use is authorized by this prompt. Reuse applicable existing authorization; ask only for
 genuinely missing access, material unresolved choices or destructive/public actions.
 
 Use native Goals if available without inventing a budget or overwriting an unfinished

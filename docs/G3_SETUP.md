@@ -344,6 +344,17 @@ total 22, all settled, with no retained live lock or reconciliation requirement.
 Before model dispatch, paid API spend was EUR 0; the discovery clock had not started. No solver,
 browser, new dependency or provider account was used.
 
+## Prepared extraction continuation
+
+Session handoff, 2026-10-19: the user requested a pause before further execution.
+An additional eight-static-detail cohort across six hosted employer origins is
+prepared under `.local/g3/extraction-expansion-v1/`. Its manifest, source policy
+and capture script are hash-guarded to commit `13c8b6d`; syntax checking passed.
+The operator has not received independent review, refusal-path checks have not run,
+and no target has been fetched. Review those boundaries before dispatch. This
+preparation changes neither the original extraction results nor the cumulative
+22-HTTP/30-model ledger. G3 is incomplete; the seven-day discovery clock is unset.
+
 ## Conservative synthetic model dispatch
 
 The tested configuration is Gemini 3.5 Flash-Lite Standard PayGo in EU,

@@ -253,11 +253,16 @@ The integrated `npm run verify` passes Biome, strict types, 75 offline tests
 (5 core, 67 experiment, 3 scanner), both builds and Secretlint over 74 repository
 files. The private cumulative ledger is unchanged by these checks.
 
-Next bounded B cohort: prepare eight new static-detail targets across six hosted
-employer origins with separate source-policy records and a reviewed opt-in capture
-operator. Preserve original captures/labels and collect new labels before extraction.
+An additional B cohort/operator is prepared privately under
+`.local/g3/extraction-expansion-v1/`: eight new static-detail targets across six
+hosted employer origins, separate source-policy records and guarded opt-in capture.
+It is not independently reviewed or executed. Review before dispatch; preserve
+original captures/labels and collect new labels before extraction.
 Known source restrictions exclude affected targets; no solver or paid fallback is
 introduced. This cohort leaves JS, career and negative strata outstanding.
+The user requested session closure on 2026-10-19: pause G3 with the current ledger
+unchanged at 22 HTTP and 30 model attempts, no outstanding work and no A clock.
+The next fresh-session G4 prompt retains its viable-source prerequisite and G3 gaps.
 
 - [ ] Verify current provider/model/region, source rights/plan and operator access;
       reserve within the experiment caps before live execution.
