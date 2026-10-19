@@ -3,9 +3,9 @@
 Find student-friendly jobs in Berlin and remote jobs that can be performed from
 Germany. Review the evidence, prepare an application, and send it yourself.
 
-**Status:** G2's offline TypeScript foundation is being established. G1's experiment
-brief is complete. No application, infrastructure, source integration or Gmail
-connection has been implemented or tested.
+**Status:** G2's offline TypeScript foundation is complete and locally verified.
+The next goal is G3's bounded feasibility experiment. No application, cloud
+infrastructure, source integration or Gmail connection has been implemented or tested.
 
 The first pilot serves one person. Candidate data has explicit ownership from the
 start so other people can use the tool later without rebuilding the core model.
@@ -17,7 +17,7 @@ application text, and unsent Gmail drafts as well as job discovery.
 - [Current product concept and acceptance criteria](CONCEPT.md)
 - [Delivery plan and next goal](docs/PLAN.md)
 - [Conception closure and implementation handoff](docs/IMPLEMENTATION_START.md)
-- [Fresh-session start prompt for G2](docs/START_PROMPT.md)
+- [Completed G2 execution contract](docs/START_PROMPT.md)
 - [Bounded feasibility experiment for G3](docs/FEASIBILITY.md)
 - [Open decisions and validation needs](docs/OPEN_QUESTIONS.md)
 - [Agent working rules](AGENTS.md); `CLAUDE.md` links to the same file
@@ -54,8 +54,9 @@ V1; it does not need a complex dashboard to include a useful application assista
 
 1. Completed: define the initial providers, public-fetch policy, feasibility
    experiment, planning cost limits, and required evidence.
-2. Next: establish the TypeScript workspace, one verification command, and CI.
-3. Validate source/API access, web search and page extraction, useful Berlin/Germany
+2. Completed: establish the offline TypeScript workspace, one locally verified gate,
+   and configured CI with Biome, strict types, tests, build and secret scanning.
+3. Next: validate source/API access, web search and page extraction, useful Berlin/Germany
    coverage, and Gmail OAuth/draft behavior with authorized test access.
 4. Build discovery, CV/profile matching, and applications as internal slices of V1.
 5. Release V1 after Gmail, privacy, recovery, and operating acceptance pass; scope
@@ -97,7 +98,7 @@ build output, and secrets in sequence; a failure stops it. Individual commands:
 | `npm run format` / `npm run format:check` | Apply/check Biome formatting. |
 | `npm run lint` | Biome lint checks. |
 | `npm run typecheck` | Strict TypeScript validation of source and tests. |
-| `npm test` | Compile fresh test output and run Node's test runner. |
+| `npm test` | Run five compiled boundary tests and three scanner regressions. |
 | `npm run build` | Rebuild the core ESM package and declarations. |
 | `npm run secrets` | Secretlint with its recommended maintained rule preset. |
 
@@ -114,9 +115,10 @@ there is no environment loader or live provider client. Unknown evidence remains
 unknown. Identity checks establish a domain boundary, not authenticated access or
 database/storage authorization. Those controls remain required in later slices.
 
-Secret scanning is a repository check, not proof of private or secret-free runtime
-artifacts. Scan Git history separately before publication. Keep private experiments
-in ignored `.local/`; inspect staged changes before each commit. No real CVs,
+Secret scanning covers tracked and nonignored untracked regular working-tree
+files, including dotfiles and forced-tracked ignored files; it skips symlinks.
+It is not proof of private or secret-free runtime artifacts. Scan Git history
+separately before publication. Keep private experiments in ignored `.local/`; inspect staged changes before each commit. No real CVs,
 provider captures or credentials belong in fixtures. Browser and emulator checks
 will be added with the UI and persistence layers; neither exists in G2.
 

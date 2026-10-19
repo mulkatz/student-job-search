@@ -221,7 +221,9 @@ default cover-letter PDF templating.
 ## Immediate next outcome
 
 G1 is complete as a concept and [bounded feasibility brief](docs/FEASIBILITY.md).
-Start G2's offline development foundation in a fresh session using
-[START_PROMPT.md](docs/START_PROMPT.md). The experiment itself is G3 work and has not
-run. Live access, current provider conditions, model/region and account consent
-remain its entry checks; no subscriptions, deployment or real CV use follow from G2.
+G2's offline TypeScript foundation is complete with clean-checkout verification,
+synthetic boundary tests, Biome, build, secret scanning and configured CI; see
+[the delivery evidence](docs/PLAN.md#g2-development-foundation--complete).
+The next goal is G3's bounded feasibility experiment, which has not run. Live
+access, current provider conditions, model/region and account consent remain its
+entry checks. G2 authorizes no subscriptions, deployment or real CV use.

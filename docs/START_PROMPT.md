@@ -1,10 +1,12 @@
 # Fresh-session implementation start prompt
 
-Status: ready for G2; G1 is complete as an experiment brief. Live-access prerequisites
-remain G3 checks. Missing source/Gmail credentials do not block offline tooling.
-This is a bounded goal, not an instruction to implement all of V1 in one session.
+Status: G2 completed and locally verified on 2026-10-19; G3 is next. See
+[PLAN.md](PLAN.md#g2-development-foundation--complete) for executed evidence and
+limitations. Live-access prerequisites and explicit opt-in remain G3 checks.
 
-Copy the following prompt into a fresh session opened in the repository root:
+The following is the completed G2 execution contract, retained for traceability.
+Do not restart G2 from it. For G3, select the bounded experiment and prerequisites
+from [PLAN.md](PLAN.md#g3-feasibility-experiment) and [FEASIBILITY.md](FEASIBILITY.md).
 
 ```text
 Start Goal G2 for student-job-search: establish a reproducible TypeScript development

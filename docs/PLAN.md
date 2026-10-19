@@ -2,17 +2,17 @@
 
 Updated: 2026-10-19. Status describes evidence, not estimated progress.
 
-| Goal                              | Status      | Outcome                                                                                    |
-| --------------------------------- | ----------- | ------------------------------------------------------------------------------------------ |
-| G0: repository foundation         | Complete    | Local Git repository, concept, shared agent rules, ADRs, and plan.                         |
-| G1: feasibility brief             | Complete    | Accepted baseline, public-fetch policy, bounded experiment and fresh-session handoff.      |
-| G2: development foundation        | In progress | Executable TypeScript workspace, synthetic fixtures, verification gate, and CI.            |
-| G3: feasibility experiment        | Planned     | Source, web search/page extraction, and Gmail evidence; explicit blockers if a path fails. |
-| G4: discovery slice               | Planned     | Traceable, deduplicated job discoveries in an authenticated UI and daily pipeline.         |
-| G5: profile and matching          | Planned     | Approved profiles and evidence-based matching meet the fixture targets.                    |
-| G6: application assistant         | Planned     | Fact-grounded packages and recoverable, unsent Gmail drafts.                               |
-| G7: V1 release and handover       | Planned     | CV, application text, Gmail drafts, and bounded daily discovery meet V1 acceptance.        |
-| V2: broader use and search orders | Deferred    | Multi-user onboarding and individually managed search orders/schedules.                    |
+| Goal | Status | Outcome |
+| --- | --- | --- |
+| G0: repository foundation | Complete | Local Git repository, concept, shared agent rules, ADRs, and plan. |
+| G1: feasibility brief | Complete | Accepted baseline, public-fetch policy, bounded experiment and fresh-session handoff. |
+| G2: development foundation | Complete | Reproducible offline TypeScript workspace, synthetic fixtures, verification gate, and configured CI. |
+| G3: feasibility experiment | Next | Source, web search/page extraction, and Gmail evidence; explicit blockers if a path fails. |
+| G4: discovery slice | Planned | Traceable, deduplicated job discoveries in an authenticated UI and daily pipeline. |
+| G5: profile and matching | Planned | Approved profiles and evidence-based matching meet the fixture targets. |
+| G6: application assistant | Planned | Fact-grounded packages and recoverable, unsent Gmail drafts. |
+| G7: V1 release and handover | Planned | CV, application text, Gmail drafts, and bounded daily discovery meet V1 acceptance. |
+| V2: broader use and search orders | Deferred | Multi-user onboarding and individually managed search orders/schedules. |
 
 G1–G7 deliver V1. Discovery, matching, and application slices are internal delivery
 milestones, not a split that moves CV or Gmail to V2. A Gmail blocker may permit
@@ -21,9 +21,9 @@ continued discovery development but prevents claiming V1 complete.
 ## Working method
 
 The [conception closure and implementation handoff](IMPLEMENTATION_START.md) defines
-what needs resolving before live experiments and the exact first G2 outcome. The
-[fresh-session start prompt](START_PROMPT.md) initiates that bounded goal; it does
-not request the whole V1 in one run. G1 is complete as a brief; live results remain G3 work.
+what needs resolving before live experiments and retains the completed G2 contract.
+The [archived G2 start prompt](START_PROMPT.md) records that bounded scope. Select
+the next goal deliberately; G1 is complete as a brief and live results remain G3 work.
 
 For each goal, define the outcome, dependencies, acceptance criteria, and smallest
 reviewable tasks. Planning precedes substantive implementation; a separate reviewer
@@ -75,37 +75,50 @@ Documentation links, diffs, shared instructions and sensitive-content checks pas
 No live tests have run. G1 completion means a usable brief; it does not certify
 integration feasibility, source coverage, legal eligibility or a finished V1.
 
-## G2: development foundation
+## G2: development foundation — complete
 
-Dependencies: completed G1 brief; live credentials are not required for offline setup.
+Dependencies: completed G1 brief; live credentials were not required.
 
-Outcome: a clean checkout installs reproducibly and passes `npm run verify`; CI
-uses that same gate without provider secrets or live services. Acceptance follows
-[IMPLEMENTATION_START.md](IMPLEMENTATION_START.md#first-fresh-session-goal-g2).
+- [x] Pin Node 24.22.0, npm 11.11.0, direct tooling and the committed npm lockfile;
+      use one private `packages/core` workspace with strict TypeScript and Zod.
+- [x] Run Biome formatting/lint/import checks, strict types, meaningful tests,
+      build and maintained Secretlint rules behind `npm run verify` and configured CI.
+- [x] Validate explicit offline configuration, distinct synthetic owner/candidate
+      scopes, shared job facts and unknown evidence; reject invalid boundary inputs.
+- [x] Document setup and tool decisions in [README](../README.md),
+      [ADR 0006](adr/0006-offline-typescript-foundation.md) and the superseding
+      [ADR 0007](adr/0007-biome-formatting-and-linting.md).
+- [x] Complete separate planning, implementation and independent review; resolve
+      material findings and re-review the affected changes.
 
-Bounded work: a planning agent defines the minimal foundation; an implementation
-agent owns runtime/configuration, the core workspace, tests, CI and ADR 0006; the
-coordinator maintains setup/handoff documentation and clean-checkout evidence; a
-separate reviewer inspects the actual diff and checks. Q5 is resolved only for the
-synthetic owner/candidate boundary; persistence and external-write contracts remain
-for their delivery slices. No browser/emulator layer is implemented in G2.
+Evidence (2026-10-19): a new local clone of commit `6687255` installed with `npm ci`
+and passed `npm run verify` using the pinned runtime. All eight tests passed:
+five schema/identity/evidence tests and three secret-scanner subprocess regressions.
+Fresh test/build output was produced; repository secret scanning passed. Reversible
+clean-clone probes made the full gate fail with exit 1 for bad formatting, explicit
+`any`, and generated enabled-rule synthetic credentials in both a force-tracked
+ignored `.env` file and a scanner-special filename. All probes were removed.
 
-Tooling update: the user requested Biome instead of Prettier/ESLint during G2.
-The follow-up uses one Biome formatter/linter and keeps strict TypeScript checking
-separate; ADR 0007 records the superseding decision. Clean-checkout and negative
-probes must be repeated against the final tooling before completion.
+Independent review inspected actual code, tests, CI, decisions and evidence; it
+also ran Biome, types, core tests and scanner regressions. A material finding about
+Secretlint CLI filename exclusions was fixed by using the maintained engine's
+explicit-file API, covered by regression tests and independently rechecked. No
+material findings remain. Documentation links, relative `CLAUDE.md` symlink,
+diffs and staged content were reviewed; the final integrated gate passed before
+the completion commit.
 
-- [ ] Select and pin maintained runtime/package versions; define workspace structure
-      and one package manager. Record significant choices and actual commands.
-- [ ] Set up formatting, linting, strict types, meaningful tests, build, and secret
-      scanning behind one `verify` command and CI. No live external calls by default.
-- [ ] Add synthetic candidate/job fixtures, typed configuration, and a private
-      owner/candidate boundary (Q5); add emulator/browser checks as those layers appear.
-- [ ] Document local setup with placeholder-only configuration. Decide the license
-      before publication; this does not block private development.
+Limits: CI is configured for push/pull requests, including forks, with read-only
+permissions and no provider secrets; no remote CI run was observed or push made.
+Biome does not check Markdown/YAML, which received manual review. These synthetic
+scope checks are not production authentication or database/storage authorization.
+No UI, emulator, source, model, Gmail or live integration is implemented/tested;
+no browser check applies yet. Secret scanning covers selected working-tree files,
+not Git history or runtime artifacts. License choice remains pending publication.
 
-Exit: a clean checkout can install and run the documented gate; CI enforces it
-without secrets or paid services. Review independently before substantive product work.
+Next: G3's bounded feasibility experiment. Its model/region, access, source rights,
+OAuth, privacy and budget checks and explicit live opt-in remain prerequisites in
+[FEASIBILITY.md](FEASIBILITY.md). Q5's persistence/version/external-write contracts
+remain for G4–G6. G2 does not authorize live execution, spending or deployment.
 
 ## G3: feasibility experiment
 

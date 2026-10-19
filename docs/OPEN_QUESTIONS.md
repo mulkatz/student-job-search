@@ -131,7 +131,8 @@ an ADR, rather than copying the sample types as final contracts:
 **Needed before:** the affected slice or publication, not initial documentation.
 
 - G2 selects and pins the offline runtime, package manager, validation and test
-  tooling in [ADR 0006](adr/0006-offline-typescript-foundation.md), after checking
+  tooling in [ADR 0006](adr/0006-offline-typescript-foundation.md) and the
+  superseding [ADR 0007](adr/0007-biome-formatting-and-linting.md), after checking
   official documentation. Framework and deployment choices remain for their slices.
   The first LLM route is accepted:
   GCP-managed Gemini, with OpenRouter as an alternative behind the same boundary.
