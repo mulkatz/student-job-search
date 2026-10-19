@@ -2,17 +2,17 @@
 
 Updated: 2026-10-19. Status describes evidence, not estimated progress.
 
-| Goal | Status | Outcome |
-| --- | --- | --- |
-| G0: repository foundation | Complete | Local Git repository, concept, shared agent rules, ADRs, and plan. |
-| G1: feasibility brief | Complete | Accepted baseline, public-fetch policy, bounded experiment and fresh-session handoff. |
-| G2: development foundation | Next | Executable TypeScript workspace, synthetic fixtures, verification gate, and CI. |
-| G3: feasibility experiment | Planned | Source, web search/page extraction, and Gmail evidence; explicit blockers if a path fails. |
-| G4: discovery slice | Planned | Traceable, deduplicated job discoveries in an authenticated UI and daily pipeline. |
-| G5: profile and matching | Planned | Approved profiles and evidence-based matching meet the fixture targets. |
-| G6: application assistant | Planned | Fact-grounded packages and recoverable, unsent Gmail drafts. |
-| G7: V1 release and handover | Planned | CV, application text, Gmail drafts, and bounded daily discovery meet V1 acceptance. |
-| V2: broader use and search orders | Deferred | Multi-user onboarding and individually managed search orders/schedules. |
+| Goal                              | Status      | Outcome                                                                                    |
+| --------------------------------- | ----------- | ------------------------------------------------------------------------------------------ |
+| G0: repository foundation         | Complete    | Local Git repository, concept, shared agent rules, ADRs, and plan.                         |
+| G1: feasibility brief             | Complete    | Accepted baseline, public-fetch policy, bounded experiment and fresh-session handoff.      |
+| G2: development foundation        | In progress | Executable TypeScript workspace, synthetic fixtures, verification gate, and CI.            |
+| G3: feasibility experiment        | Planned     | Source, web search/page extraction, and Gmail evidence; explicit blockers if a path fails. |
+| G4: discovery slice               | Planned     | Traceable, deduplicated job discoveries in an authenticated UI and daily pipeline.         |
+| G5: profile and matching          | Planned     | Approved profiles and evidence-based matching meet the fixture targets.                    |
+| G6: application assistant         | Planned     | Fact-grounded packages and recoverable, unsent Gmail drafts.                               |
+| G7: V1 release and handover       | Planned     | CV, application text, Gmail drafts, and bounded daily discovery meet V1 acceptance.        |
+| V2: broader use and search orders | Deferred    | Multi-user onboarding and individually managed search orders/schedules.                    |
 
 G1–G7 deliver V1. Discovery, matching, and application slices are internal delivery
 milestones, not a split that moves CV or Gmail to V2. A Gmail blocker may permit
@@ -78,6 +78,17 @@ integration feasibility, source coverage, legal eligibility or a finished V1.
 ## G2: development foundation
 
 Dependencies: completed G1 brief; live credentials are not required for offline setup.
+
+Outcome: a clean checkout installs reproducibly and passes `npm run verify`; CI
+uses that same gate without provider secrets or live services. Acceptance follows
+[IMPLEMENTATION_START.md](IMPLEMENTATION_START.md#first-fresh-session-goal-g2).
+
+Bounded work: a planning agent defines the minimal foundation; an implementation
+agent owns runtime/configuration, the core workspace, tests, CI and ADR 0006; the
+coordinator maintains setup/handoff documentation and clean-checkout evidence; a
+separate reviewer inspects the actual diff and checks. Q5 is resolved only for the
+synthetic owner/candidate boundary; persistence and external-write contracts remain
+for their delivery slices. No browser/emulator layer is implemented in G2.
 
 - [ ] Select and pin maintained runtime/package versions; define workspace structure
       and one package manager. Record significant choices and actual commands.

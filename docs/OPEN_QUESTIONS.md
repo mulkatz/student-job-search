@@ -104,6 +104,12 @@ without working Gmail drafts. This is not a feature deferred to V2.
 
 **Needed before:** implementing the corresponding persistence/generation slice.
 
+**G2 boundary resolved:** [ADR 0006](adr/0006-offline-typescript-foundation.md) and
+synthetic tests define distinct owner/candidate identities and reject mismatched or
+missing private scopes. This is a local domain contract, not authentication or
+database/storage authorization. The persistence/version/state questions below
+remain unresolved for their respective slices.
+
 Resolve these inconsistencies in the original proposal through schemas/tests and
 an ADR, rather than copying the sample types as final contracts:
 
@@ -124,8 +130,10 @@ an ADR, rather than copying the sample types as final contracts:
 
 **Needed before:** the affected slice or publication, not initial documentation.
 
-- Select runtime/tool versions, framework, test tooling, and deployment approach
-  after checking maintained official documentation. The first LLM route is accepted:
+- G2 selects and pins the offline runtime, package manager, validation and test
+  tooling in [ADR 0006](adr/0006-offline-typescript-foundation.md), after checking
+  official documentation. Framework and deployment choices remain for their slices.
+  The first LLM route is accepted:
   GCP-managed Gemini, with OpenRouter as an alternative behind the same boundary.
   Select the exact model/region in G3; see [ADR 0004](adr/0004-provider-boundaries-and-initial-candidates.md).
 - HTTP/Cheerio is selected initially using [the delegated market research](EXTRACTION_OPTIONS.md).

@@ -43,3 +43,6 @@ ui-debug.log*
 *.tfplan
 terraform.tfvars
 *.auto.tfvars
+
+# Compiled synthetic tests
+dist-test/

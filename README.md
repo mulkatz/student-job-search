@@ -3,9 +3,9 @@
 Find student-friendly jobs in Berlin and remote jobs that can be performed from
 Germany. Review the evidence, prepare an application, and send it yourself.
 
-**Status:** concept and repository foundation. No application, infrastructure,
-source integration, or Gmail connection has been implemented or tested.
-G1's experiment brief is complete; the next goal is G2's offline development foundation.
+**Status:** G2's offline TypeScript foundation is being established. G1's experiment
+brief is complete. No application, infrastructure, source integration or Gmail
+connection has been implemented or tested.
 
 The first pilot serves one person. Candidate data has explicit ownership from the
 start so other people can use the tool later without rebuilding the core model.
@@ -64,13 +64,62 @@ V1; it does not need a complex dashboard to include a useful application assista
 Each goal has a measurable outcome, scoped tasks, and recorded verification.
 See [the plan](docs/PLAN.md) for exit criteria and dependencies.
 
+## Local development
+
+Use Node.js **24.22.0** (pinned in `.nvmrc`) and npm **11.11.0**. With nvm already
+installed, select the runtime and package manager:
+
+```sh
+nvm install
+nvm use
+npm install --global npm@11.11.0
+```
+
+From the repository root, install the locked dependencies and run the complete gate:
+
+```sh
+npm ci
+npm run verify
+```
+
+Dependency installation needs access to the public npm registry. Verification uses
+synthetic local data and needs no provider credentials, cloud account, `.env` file,
+or paid/live API. The same gate is configured in GitHub Actions for pushes and pull
+requests, including fork contributions; a local pass does not establish a remote
+CI run. No deployment command is provided.
+
+The gate checks runtime versions, formatting, lint, strict types, synthetic tests,
+build output, and secrets in sequence; a failure stops it. Individual commands:
+
+| Command                                   | Purpose                                                                               |
+| ----------------------------------------- | ------------------------------------------------------------------------------------- |
+| `npm run format` / `npm run format:check` | Format/check maintained files; historical research documents retain their formatting. |
+| `npm run lint`                            | ESLint, including TypeScript checks.                                                  |
+| `npm run typecheck`                       | Strict TypeScript validation of source and tests.                                     |
+| `npm test`                                | Compile fresh test output and run Node's test runner.                                 |
+| `npm run build`                           | Rebuild the core ESM package and declarations.                                        |
+| `npm run secrets`                         | Secretlint with its recommended maintained rule preset.                               |
+
+`packages/core` contains runtime-validated offline configuration, owner/candidate
+scope checks, and synthetic candidate/job fixtures. Configuration is an explicit
+object with `mode: "offline"` and `logLevel: "silent"`, `"error"`, or `"info"`;
+there is no environment loader or live provider client. Unknown evidence remains
+unknown. Identity checks establish a domain boundary, not authenticated access or
+database/storage authorization. Those controls remain required in later slices.
+
+Secret scanning is a repository check, not proof of private or secret-free runtime
+artifacts. Scan Git history separately before publication. Keep private experiments
+in ignored `.local/`; inspect staged changes before each commit. No real CVs,
+provider captures or credentials belong in fixtures. Browser and emulator checks
+will be added with the UI and persistence layers; neither exists in G2.
+
 ## Development status
 
 The proposed stack is TypeScript, React, Google Cloud, and Firebase. The initial
-provider route is GCP-managed Gemini, Brave and HTTP/Cheerio. Runtime and
-package versions, framework details, exact model/region, deployment tooling, and commands
-will be selected during setup and recorded as needed. There is no installation,
-test, build, or deployment command yet. No cloud resources have been provisioned.
+provider route is GCP-managed Gemini, Brave and HTTP/Cheerio. The offline foundation
+uses one private `packages/core` workspace; application
+framework, exact model/region and deployment tooling remain later choices.
+No cloud resources have been provisioned.
 
 Repository content and commits are written in English; discussion can be German.
 Use atomic semantic commits, such as `docs: define source feasibility criteria`.

@@ -10,17 +10,17 @@ recommended initial route: GCP-managed Gemini, Brave, and controlled HTTP retrie
 with Cheerio behind replaceable boundaries. CV processing, application text and
 Gmail drafts remain V1 requirements; the interface stays table-first.
 
-| Item | State | Needed for |
-| --- | --- | --- |
-| V1 scope, ownership, pilot language/location | Agreed; private preferences may remain unknown | All work |
-| Operating ceiling | EUR 50/month total; experiment planning sublimit EUR 5 | Costed G3 execution and operation |
-| Baseline providers | GCP-managed Gemini, existing Brave, HTTP/Cheerio; optional alternatives/fallbacks need measured benefit | G3 and affected slices |
-| Available accounts | Firebase/Blaze, Gmail test account and Brave reported available | Verify actual access/configuration during G3 |
-| Source/model/extraction/Gmail test contract | Defined in FEASIBILITY.md; no execution evidence yet | G3 |
-| Public-page fetch policy | ADR 0005; robots metadata alone does not exclude leads or block public fetches | G3 fetching and G4 |
-| Exact model/region, plans, IAM/OAuth and source rights | Live prerequisites explicitly recorded, not assumed verified | The affected G3 branch |
-| Data/version/state schemas | Resolve Q5 before the affected persistence/side-effect slice | G4–G6 |
-| Runtime/package versions and executable commands | Select and verify in G2 | Offline development foundation |
+| Item                                                   | State                                                                                                   | Needed for                                   |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| V1 scope, ownership, pilot language/location           | Agreed; private preferences may remain unknown                                                          | All work                                     |
+| Operating ceiling                                      | EUR 50/month total; experiment planning sublimit EUR 5                                                  | Costed G3 execution and operation            |
+| Baseline providers                                     | GCP-managed Gemini, existing Brave, HTTP/Cheerio; optional alternatives/fallbacks need measured benefit | G3 and affected slices                       |
+| Available accounts                                     | Firebase/Blaze, Gmail test account and Brave reported available                                         | Verify actual access/configuration during G3 |
+| Source/model/extraction/Gmail test contract            | Defined in FEASIBILITY.md; no execution evidence yet                                                    | G3                                           |
+| Public-page fetch policy                               | ADR 0005; robots metadata alone does not exclude leads or block public fetches                          | G3 fetching and G4                           |
+| Exact model/region, plans, IAM/OAuth and source rights | Live prerequisites explicitly recorded, not assumed verified                                            | The affected G3 branch                       |
+| Data/version/state schemas                             | Resolve Q5 before the affected persistence/side-effect slice                                            | G4–G6                                        |
+| Runtime/package versions and executable commands       | Select and verify in G2                                                                                 | Offline development foundation               |
 
 [FEASIBILITY.md](FEASIBILITY.md) owns the seven-day observation, samples, resource and
 cost caps, success criteria, stop/recovery behavior and evidence requirements. It
