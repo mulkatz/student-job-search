@@ -154,6 +154,9 @@ Independent review resolved the concurrent429 and evidence-label findings and
 rechecked affected changes. The integrated `npm run verify` passed: Biome, strict
 types, 33 tests, both workspace builds and Secretlint. Final independent
 documentation review and staged-content checks passed before the setup commit.
+A fresh local clone of setup commit `9009001` passed `npm ci` and the same
+33-test `npm run verify` gate with no tracked changes. No remote CI run or push
+was performed; live account setup and all branch measurements remain pending.
 
 Still needed: intended GCP project/region and actual ADC/IAM/API/terms, Brave key
 and storage-rights plan, consenting Gmail OAuth/test identity, reviewed live

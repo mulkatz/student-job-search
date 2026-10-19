@@ -112,8 +112,11 @@ EUR 0. The EUR 2 allocation is a reservation envelope, not spent money. Existing
 account billing was not inspected. No A-window clock or vacancy/sample count started.
 
 The integrated `npm run verify` passed with strict types, Biome, 33 offline tests,
-both workspace builds and Secretlint. Independent review separately ran experiment
-and affected network tests; the concurrency and marker-label findings were fixed
+both workspace builds and Secretlint. A fresh local clone of setup commit
+`9009001` also passed `npm ci` and `npm run verify` with the pinned runtime;
+its tracked worktree stayed clean. Installation reported no audit findings and
+one upstream deprecation warning for Cheerio's transitive `whatwg-encoding`.
+Independent review separately ran experiment and affected network tests; the concurrency and marker-label findings were fixed
 and rechecked. Markdown/YAML and relative documentation links were reviewed
 manually. CI remains configured; no remote CI run or push is claimed.
 
