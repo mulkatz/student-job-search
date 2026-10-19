@@ -3,7 +3,8 @@
 - Status: agreed product baseline; technical feasibility not yet validated
 - Updated: 2026-10-19
 - Pilot: one student based in Berlin; English as working language
-- Direction: reusable by other people later, without public onboarding in the pilot
+- V1: one-person discovery and application assistant, including CV and Gmail
+- V2: multi-user use and user-managed search orders/configuration
 
 ## Document authority
 
@@ -21,8 +22,9 @@ The tool discovers relevant opportunities, explains suitability using evidence,
 and prepares applications for the applicant to review and send.
 
 Success means a repeatable daily shortlist of new, traceable opportunities and
-truthful application packages. Gmail drafts are a later part of the full MVP;
-discovery remains useful without them. A shortlist is not a promise of a job offer
+truthful application packages. V1 includes CV processing, application text, and
+unsent Gmail drafts. Discovery remains usable during integration failures, but
+discovery alone does not complete V1. A shortlist is not a promise of a job offer
 or a legal assessment of the candidate's right to work.
 
 ## Pilot and later reuse
@@ -39,9 +41,14 @@ values, not global assumptions. The first interface can be provisioned privately
 Cross-owner denial is tested with synthetic users even during the one-person pilot.
 
 Public signup, account administration, invitations, shared profile access, billing,
-and a general service for multiple users are deferred. Explicit ownership reduces
+and a general service for multiple users are deferred to V2. Explicit ownership reduces
 later restructuring; it does not complete multi-user onboarding, OAuth readiness,
 capacity planning, or privacy obligations. See [ADR 0002](docs/adr/0002-pilot-and-ownership.md).
+
+V1 uses operator-configured search streams and one daily schedule. The candidate
+can correct profile facts and preferences; creating, activating, pausing, and
+scheduling separate search orders is V2. Profile personalization in V1 does not
+require a general search-order management interface.
 
 ## Search and eligibility
 
@@ -65,16 +72,19 @@ Candidate inputs still needed: approved CV facts, languages, schedule, start dat
 commute, sectors, compensation preferences, and relevant work restrictions supplied
 by the candidate. Do not assume nationality, residence status, or authorization.
 
-## Full MVP scope
+## V1 scope
 
 1. Secure PDF CV upload, factual extraction, correction, and explicit approval of
    an immutable profile version before personalized matching or generation.
-2. Permitted source adapters, normalized postings, traceable source references,
-   conservative deduplication, content revisions, and source health.
+2. Structured source adapters plus web search and targeted public-page extraction,
+   including smaller employers outside major platforms; normalized postings,
+   traceable references, conservative deduplication, revisions, and source health.
 3. Deterministic eligibility checks followed by schema-validated LLM assessment;
    fit score and evidence confidence remain separate and explainable.
-4. A minimal authenticated dashboard for jobs, reasons/evidence, unknowns, source
-   links, profile correction, application packages, and manually recorded status.
+4. A login-protected, table-first UI sorted by match score, with title, employer,
+   location/remote, employment type, freshness, and original application links.
+   Provide concise evidence/unknowns, profile correction, prepared text/draft
+   access, and manual application status without a complex dashboard.
 5. A daily bounded pipeline, run diagnostics, isolated source failures, and
    restart/retry behavior that avoids duplicate processing and side effects.
 6. English application text using only approved candidate facts and verified job
@@ -83,8 +93,9 @@ by the candidate. Do not assume nationality, residence status, or authorization.
 7. Disconnect/reconnect, ownership enforcement, private storage, retention,
    export/deletion, cost controls, and operating documentation.
 
-Delivery is incremental. The discovery slice is an intermediate release, not a
-claim that the full MVP has passed its application and Gmail acceptance criteria.
+Delivery is incremental. Discovery, matching, and application slices are internal
+V1 milestones. CV processing, application text, and Gmail drafts are required for
+the V1 release; an integration-blocked discovery slice is not a finished V1.
 
 ## Application controls
 
@@ -112,11 +123,26 @@ Prefer a deterministic pipeline; no agent orchestration framework, vector databa
 message bus, or unrestricted crawler in v1. The proposal's package tree is a guide;
 create packages when a delivery slice needs them rather than empty scaffolding.
 
-Adzuna, Greenhouse, and Lever are source candidates, not verified integrations.
-Employer boards need a curated list and may have limited Minijob coverage.
-Evaluate actual coverage and permitted use before treating any source as primary.
-LinkedIn/Indeed scraping, anti-bot evasion, and unsupported Bundesagentur access are
-outside the initial implementation. A new source needs a recorded policy review.
+Use three discovery paths in V1: structured job APIs/boards, a web-search provider,
+and bounded fetching of employer career pages and linked vacancies. Smaller local
+businesses, hostels, retailers, cultural venues, and university/local listings are
+explicit coverage targets. A vacancy need not appear on a large platform to enter
+the pipeline; a generic careers page without an actual vacancy is only a lead.
+
+Adzuna, Greenhouse, and Lever remain candidates, not verified integrations. Brave
+is a web-search candidate, with storage/AI-use terms and coverage to validate.
+Google Custom Search JSON API is not the default for a new implementation: Google's
+documentation says it is closed to new customers and ends on January 1, 2027.
+See [source discovery](docs/SOURCE_DISCOVERY.md) for dated official references,
+separate search/fetch/extraction stages, and the source-policy questions.
+
+The user explicitly requests coverage beyond robots-based exclusions. Do not
+silently narrow this to API-only or previously registered domains. Robots metadata,
+technical accessibility, source terms, and storage rights are separate concerns;
+the exact crawl policy is tracked in Q7, not assumed settled by this concept.
+No universal retrieval guarantee, credential bypass, CAPTCHA evasion, or unlimited
+retry/traffic mode is part of V1. Unretrieved leads remain visible with a link and
+unknown evidence; they cannot trigger unsupported matches or draft generation.
 
 Gmail OAuth scope, verification/testing constraints, refresh behavior, draft access,
 and recovery must be checked against current official documentation and a real test.
@@ -125,10 +151,14 @@ enforce the draft-only design. No OAuth connection or exemption is assumed.
 
 ## Acceptance and measurement
 
-The full MVP is complete only when the following have recorded evidence:
+V1 is complete only when the following have recorded evidence:
 
 - [ ] At least two permitted source adapters produce normalized jobs; one viable
-      source is enough to pass the initial feasibility gate, not the full MVP.
+      source is enough to pass the initial feasibility gate, not V1 acceptance.
+- [ ] Web-search discovery and direct-page extraction produce verifiable vacancies
+      outside the structured-source set, with query/URL provenance and source policy.
+- [ ] Unavailable pages, generic career leads, and confirmed vacancies have distinct
+      states; extracted facts and application channels are verified against source content.
 - [ ] A daily Europe/Berlin schedule runs with bounded work and visible diagnostics.
 - [ ] Repeated/overlapping runs avoid duplicate canonical jobs and application
       packages; uncertain cross-source duplicates are linked for review.
@@ -148,6 +178,8 @@ The full MVP is complete only when the following have recorded evidence:
 - [ ] OAuth expiry/revocation, source failure, and ambiguous draft creation have
       verified recovery paths without silent duplicate drafts.
 - [ ] Candidate can manually mark applied/ignored and distinguish that from API state.
+- [ ] The authenticated job table is sorted by match score, explains decisive
+      unknowns, opens original application URLs, and exposes prepared text/drafts.
 - [ ] Unauthorized users cannot read or mutate another owner's private records,
       files, evaluations, applications, or Gmail credentials.
 - [ ] Data export/deletion, retention, privacy controls, and cost/run diagnostics
@@ -156,11 +188,20 @@ The full MVP is complete only when the following have recorded evidence:
 Numerical targets measure the labeled fixture, not the whole job market. Real-world
 coverage and useful-shortlist volume need a separately agreed pilot benchmark.
 
-## Out of scope
+## V2 direction
+
+Make the tool available to additional users with onboarding, per-owner profiles,
+CVs, credentials, quotas, and data lifecycle. Add user-managed search orders with
+individual keywords, geography, employment preferences, frequency, and active/paused
+state. These are a V2 direction, not a completed design or a V1 dependency.
+See [ADR 0003](docs/adr/0003-release-scope-and-web-discovery.md).
+
+## Outside V1
 
 Automatic sending/submission, cold outreach, CAPTCHA bypass, uncontrolled crawling,
-public multi-user SaaS, payments, reply parsing, calendar automation, application
-success prediction, trained ranking models, and default cover-letter PDF templating.
+public multi-user onboarding, user-managed search orders, payments, reply parsing,
+calendar automation, application success prediction, trained ranking models, and
+default cover-letter PDF templating.
 
 ## Immediate next outcome
 

@@ -30,6 +30,8 @@
 - Unknown is not eligible or false. English advertisement text does not prove English is accepted; “remote” does not prove work from Germany is allowed. Confirmed blockers and missing evidence have different outcomes.
 - Keep fit score separate from evidence confidence; neither is a hiring probability or legal determination.
 - Use permitted sources with documented access, attribution, retention, and rate limits. Treat job descriptions, CVs, URLs, and model output as untrusted input, never executable instructions.
+- V1 includes CV processing, application text, Gmail drafts, web search, and targeted employer-page extraction. V2 adds multi-user onboarding and user-managed search orders. Internal discovery-only slices do not satisfy V1 release acceptance.
+- Preserve broad public-web discovery beyond major platforms and fixed domain lists. Distinguish search leads from fetched/verified vacancies, and robots metadata from authentication, source rights, and technical availability. Resolve Q7's crawl policy before implementing automatic public-page fetches; do not claim all pages are retrievable.
 - Check fetch targets and redirects against source policy; deny internal/metadata destinations. Sanitize displayed content and validate model output at boundaries.
 - Scope private profile versions, CVs, evaluations, applications, and OAuth credentials to the authenticated owner. Verify ownership server-side and in storage/database rules. Shared job data must contain no candidate annotations or credentials.
 - Pilot with one person without hardcoding a global profile, mailbox, language, or candidate ID. Avoid speculative multi-user administration and onboarding.

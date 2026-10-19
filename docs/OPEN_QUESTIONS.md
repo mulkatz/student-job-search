@@ -13,7 +13,10 @@ Keep personal candidate answers in private configuration rather than this file.
   inflexible full-time roles for the pilot.
 - Applicant sends/submits; the system prepares packages and unsent drafts.
 - Automatic drafting starts disabled; matching and generation use approved facts.
-- The initial repository is local. No remote creation or publication is included.
+- V1 includes CV processing, application text, Gmail drafts, web search, and direct
+  employer-page extraction. V2 adds multi-user use and user-managed search orders.
+- The user created `mulkatz/student-job-search` and authorized the first pushes;
+  `main` tracks `origin/main`. Runtime deployment is not part of that action.
 
 ## Q1: pilot search/profile details
 
@@ -35,7 +38,8 @@ and decisive missing evidence prevents automatic drafting. The original proposal
 Confirm the operator, cloud/billing project, monthly budget and per-test ceiling,
 available source credentials, consenting Gmail test account, and who may access
 candidate data. Decide LLM provider/data handling and retention before sending real
-CV-derived facts. Candidate consent is separate from the developer requesting work.
+CV-derived facts. Include search-provider queries and page-fetch limits in the cost
+ceiling. Candidate consent is separate from the developer requesting work.
 
 **Current handling:** documentation and offline synthetic setup can continue. No
 provider account, spend, OAuth consent, or personal-data access is assumed. The
@@ -50,7 +54,15 @@ Adzuna credentials, permitted reuse/retention/attribution, quotas, actual Berlin
 coverage, and a curated employer-board list are unverified. Greenhouse/Lever board
 availability alone does not establish useful student/Minijob coverage. Define a
 minimum useful unique shortlist across an agreed observation period and report
-the two search streams separately; the numerical threshold remains open.
+the two search streams separately; the numerical threshold remains open. Include
+search-discovered small-employer jobs, incremental coverage beyond structured
+sources, and the distinction between a generic careers page and an actual vacancy.
+
+Brave is a candidate, not a selected provider. Search-result storage rights must fit
+the chosen plan, and search API access does not grant rights to third-party pages.
+Google Custom Search JSON API is closed to new customers and scheduled to end on
+January 1, 2027; do not use it as an assumed available default. See dated official
+references in [SOURCE_DISCOVERY.md](SOURCE_DISCOVERY.md).
 
 **Required evidence:** current official terms/API references and review date, bounded
 sample results, duplicate rate, language/location uncertainty, source health, and
@@ -72,8 +84,9 @@ authorized, narrowly scoped draft lookup or manual reconciliation; neither may
 silently introduce mailbox monitoring or blind retries. Define stale pending-state
 recovery and how a user confirms whether a draft exists.
 
-**Fallback:** discovery and application text packages remain usable. Gmail acceptance
-stays incomplete until tested; a fallback does not waive full MVP criteria.
+**Degraded operation:** discovery and application text packages remain usable.
+Gmail acceptance stays incomplete until tested; V1 cannot be declared complete
+without working Gmail drafts. This is not a feature deferred to V2.
 
 ## Q5: identity, versions, and state contracts
 
@@ -107,3 +120,24 @@ an ADR, rather than copying the sample types as final contracts:
   repository's intended MIT license does not automatically decide this project's.
 - Broader use needs its own scope: onboarding, account lifecycle, OAuth production
   readiness, per-owner quotas/deletion, support, abuse prevention, and privacy review.
+
+## Q7: broad public-page crawl policy
+
+**Needed before:** automatic employer-page fetching; does not block offline fixtures.
+
+The user requests broad discovery including pages outside conventional platforms,
+without automatically excluding leads because of robots.txt or similar restrictions.
+Preserve that intent; do not silently limit results to APIs or a fixed employer list.
+
+Robots directives, actual authentication/access controls, site terms, provider
+retention rights, and technical availability are different inputs. RFC 9309 states
+that robots rules are not access authorization. A universal “fetch everything despite
+all restrictions” guarantee is not a feasible V1 contract. The exact policy for
+robots-disallowed/unknown pages and conflicting site conditions remains unresolved;
+it must be explicit and covered by tests before the live crawler is implemented.
+
+Define behavior for missing/unreadable robots files, HTTP 401/403/429, redirects,
+JS-only pages, and content unavailable to the extractor. Rate/budget limits, internal-
+network protection, and bounded link traversal remain technical requirements.
+Keep unavailable leads with their original URL and a reason when retention permits;
+they must not gain invented facts, verified channels, or automatic drafts.

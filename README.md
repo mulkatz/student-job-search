@@ -1,4 +1,4 @@
-# Job Search
+# Student Job Search
 
 Find student-friendly jobs in Berlin and remote jobs that can be performed from
 Germany. Review the evidence, prepare an application, and send it yourself.
@@ -8,7 +8,8 @@ source integration, or Gmail connection has been implemented or tested.
 
 The first pilot serves one person. Candidate data has explicit ownership from the
 start so other people can use the tool later without rebuilding the core model.
-Public onboarding and a multi-user service are outside the pilot.
+Public onboarding and a multi-user service belong to V2. V1 includes CV processing,
+application text, and unsent Gmail drafts as well as job discovery.
 
 ## Start here
 
@@ -18,6 +19,8 @@ Public onboarding and a multi-user service are outside the pilot.
 - [Agent working rules](AGENTS.md); `CLAUDE.md` links to the same file
 - [Development workflow decision](docs/adr/0001-development-workflow.md)
 - [Pilot scope and ownership decision](docs/adr/0002-pilot-and-ownership.md)
+- [V1/V2 and broader discovery decision](docs/adr/0003-release-scope-and-web-discovery.md)
+- [Web search and direct-page discovery](docs/SOURCE_DISCOVERY.md)
 - [Original technical proposal](berlin_job_research_pipeline_mvp_spec.md)
 
 `CONCEPT.md` is the current product baseline. The original proposal is preserved
@@ -32,17 +35,25 @@ Conflicts and unresolved design details are tracked in the documents above.
 - Distinguish confirmed suitability, uncertainty requiring review, and blockers.
 - Prepare fact-grounded application packages and unsent Gmail drafts when the
   recruitment address is verified. The applicant sends or submits applications.
-- Keep discovery usable if Gmail integration is unavailable.
+- Discover jobs through structured sources, web search, and targeted employer-page
+  retrieval, including smaller businesses outside the major job platforms.
+- Keep discovery usable during Gmail outages; Gmail remains a V1 release requirement.
+
+V1 has one pilot profile, a login, a table sorted by match score, original application
+links, and operator-configured daily searches. V2 adds use by multiple people and
+user-managed search orders, preferences, and schedules. The table is sufficient for
+V1; it does not need a complex dashboard to include a useful application assistant.
 
 ## Delivery sequence
 
 1. Resolve the few blocking product and operating choices; define the feasibility
    experiment, cost ceiling, and evidence to collect.
 2. Establish the TypeScript workspace, one verification command, and CI.
-3. Validate source access, useful Berlin/Germany coverage, and Gmail OAuth/draft
-   behavior with authorized test access and synthetic applicant data.
-4. Deliver a discovery slice, then approved-profile matching, then applications.
-5. Harden privacy, ownership, recovery, observability, and handover.
+3. Validate source/API access, web search and page extraction, useful Berlin/Germany
+   coverage, and Gmail OAuth/draft behavior with authorized test access.
+4. Build discovery, CV/profile matching, and applications as internal slices of V1.
+5. Release V1 after Gmail, privacy, recovery, and operating acceptance pass; scope
+   multi-user use and user-managed search orders as V2.
 
 Each goal has a measurable outcome, scoped tasks, and recorded verification.
 See [the plan](docs/PLAN.md) for exit criteria and dependencies.
@@ -60,5 +71,6 @@ Keep CVs, candidate details, credentials, provider responses, and local experime
 out of Git. Use `.local/` for private scratch work; ignore rules are not access
 controls or a substitute for checking staged content.
 
-This is a local Git repository. No remote, publication, or license has been set up.
-Choose the license and attribution before public distribution.
+GitHub repository: [mulkatz/student-job-search](https://github.com/mulkatz/student-job-search).
+`main` tracks `origin/main`. A license has not yet been selected; licensing and
+attribution remain an open decision before broader distribution.
