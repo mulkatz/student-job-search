@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "queries": [
+    {
+      "id": "berlin_01",
+      "stream": "berlin",
+      "query": "Berlin Minijob English jobs"
+    },
+    {
+      "id": "berlin_02",
+      "stream": "berlin",
+      "query": "Berlin part time English student jobs"
+    },
+    {
+      "id": "berlin_03",
+      "stream": "berlin",
+      "query": "Berlin Werkstudent Englisch Jobs"
+    },
+    {
+      "id": "berlin_04",
+      "stream": "berlin",
+      "query": "Berlin hostel jobs English part time"
+    },
+    {
+      "id": "berlin_05",
+      "stream": "berlin",
+      "query": "Berlin cafe bar restaurant jobs English Teilzeit"
+    },
+    {
+      "id": "berlin_06",
+      "stream": "berlin",
+      "query": "Berlin retail shop assistant English part time"
+    },
+    {
+      "id": "berlin_07",
+      "stream": "berlin",
+      "query": "Berlin museum gallery events student jobs English"
+    },
+    {
+      "id": "berlin_08",
+      "stream": "berlin",
+      "query": "Berlin university student assistant jobs English"
+    },
+    {
+      "id": "berlin_09",
+      "stream": "berlin",
+      "query": "Berlin logistics warehouse English Teilzeit Minijob"
+    },
+    {
+      "id": "berlin_10",
+      "stream": "berlin",
+      "query": "Berlin hotel reception English Teilzeit student jobs"
+    },
+    {
+      "id": "remote_01",
+      "stream": "germany_remote",
+      "query": "remote Germany English student jobs part time"
+    },
+    {
+      "id": "remote_02",
+      "stream": "germany_remote",
+      "query": "Werkstudent remote Deutschland Englisch Jobs"
+    },
+    {
+      "id": "remote_03",
+      "stream": "germany_remote",
+      "query": "Minijob Homeoffice Englisch Deutschland"
+    },
+    {
+      "id": "remote_04",
+      "stream": "germany_remote",
+      "query": "remote Germany English customer support part time employment"
+    },
+    {
+      "id": "remote_05",
+      "stream": "germany_remote",
+      "query": "remote Germany English data annotation student employee"
+    },
+    {
+      "id": "remote_06",
+      "stream": "germany_remote",
+      "query": "remote Germany English research assistant student jobs"
+    },
+    {
+      "id": "remote_07",
+      "stream": "germany_remote",
+      "query": "remote Germany English operations assistant part time"
+    },
+    {
+      "id": "remote_08",
+      "stream": "germany_remote",
+      "query": "remote Germany English content support working student"
+    },
+    {
+      "id": "remote_09",
+      "stream": "germany_remote",
+      "query": "remote Deutschland Englisch Teilzeit administration jobs"
+    },
+    {
+      "id": "remote_10",
+      "stream": "germany_remote",
+      "query": "Germany remote English quality assurance working student jobs"
+    }
+  ]
+}

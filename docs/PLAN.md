@@ -7,7 +7,7 @@ Updated: 2026-10-19. Status describes evidence, not estimated progress.
 | G0: repository foundation | Complete | Local Git repository, concept, shared agent rules, ADRs, and plan. |
 | G1: feasibility brief | Complete | Accepted baseline, public-fetch policy, bounded experiment and fresh-session handoff. |
 | G2: development foundation | Complete | Reproducible offline TypeScript workspace, synthetic fixtures, verification gate, and configured CI. |
-| G3: feasibility experiment | Next | Source, web search/page extraction, and Gmail evidence; explicit blockers if a path fails. |
+| G3: feasibility experiment | In progress | Source, web search/page extraction, and Gmail evidence; explicit blockers if a path fails. |
 | G4: discovery slice | Planned | Traceable, deduplicated job discoveries in an authenticated UI and daily pipeline. |
 | G5: profile and matching | Planned | Approved profiles and evidence-based matching meet the fixture targets. |
 | G6: application assistant | Planned | Fact-grounded packages and recoverable, unsent Gmail drafts. |
@@ -124,6 +124,44 @@ remain for G4–G6. G2 does not authorize live execution, spending or deployment
 
 Dependencies: the completed G1 brief, G2 tooling and the applicable live-access checks in
 [FEASIBILITY.md](FEASIBILITY.md). Each branch needs actual access and live opt-in.
+
+Started 2026-10-19 at the user's request. No live discovery observation has begun;
+the seven-day window starts with the first live discovery attempt, not setup.
+Outcome and branch acceptance remain [FEASIBILITY.md](FEASIBILITY.md).
+
+Bounded tasks: the coordinator establishes private operator/provider access and
+current rights/rates, freezes twenty non-personal queries, and owns live evidence
+and documentation. The implementation agent owns an experiment-only resumable
+runner, cap reservations and offline failure tests, with ADR 0008. A separate
+reviewer checks actual changes and evidence before handoff. No production UI,
+authentication, persistence service or deployment is part of this setup slice.
+Missing access affects its branch only; incomplete observations never pass G3.
+
+Current setup evidence (2026-10-19): [G3_SETUP.md](G3_SETUP.md) records the
+consumed allocation example, exact init/status commands, frozen manifest and current
+provider-document checks. The private ledger initialized successfully and remains
+without a discovery start. A reviewed real-HTTPS documentation smoke recorded two
+zero-cost HTTP attempts: robots text retrieved; one page stopped at a conservative
+HTML challenge marker. No vacancy, model or Gmail result follows from this probe.
+
+Implemented: strict experiment configuration/state, exclusive initialization and
+one-writer atomic persistence, cumulative/day cap and branch-budget reservations,
+ambiguity/overrun handling, Berlin observation status, plus bounded public HTTP
+and conservative Cheerio extraction. Offline regressions cover synthetic
+control state, malformed inputs, restarts/locks, caps, DNS/redirect safety,
+Retry-After concurrency, challenge labels and unconfirmed/truncated job pages.
+Independent review resolved the concurrent429 and evidence-label findings and
+rechecked affected changes. The integrated `npm run verify` passed: Biome, strict
+types, 33 tests, both workspace builds and Secretlint. Final independent
+documentation review and staged-content checks passed before the setup commit.
+
+Still needed: intended GCP project/region and actual ADC/IAM/API/terms, Brave key
+and storage-rights plan, consenting Gmail OAuth/test identity, reviewed live
+adapters, labeled samples and all seven observation days. Provider credentials
+were not supplied in this session; the access question is pending. No paid
+provider call, vacancy discovery, model request, real CV processing or Gmail write
+has run. Optional alternative providers/renderers remain unexecuted. G3 stays
+in progress; no branch acceptance or V1 completion is claimed.
 
 - [ ] Verify the current provider/model/region, source rights/plan and operator/OAuth
       prerequisites; reserve within the experiment caps before live execution.

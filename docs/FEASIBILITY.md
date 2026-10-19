@@ -1,12 +1,13 @@
 # G3: bounded feasibility experiment
 
-- Status: experiment brief ready; execution not started
+- Status: G3 setup in progress; live observations not started
 - Defined: 2026-10-19
 - Prerequisite: G2's reproducible tooling and applicable live-access checks below
 - Initial route: GCP-managed Gemini, Brave, controlled HTTP retrieval with Cheerio
 
 This is the G1 deliverable and G3 execution contract. It defines observations and
 stop conditions; no source, model, extraction, CV, or Gmail result is claimed yet.
+Current access readiness and setup commands are in [G3_SETUP.md](G3_SETUP.md).
 Prices and provider features researched earlier remain dated inputs in
 [PROVIDERS_AND_COSTS.md](PROVIDERS_AND_COSTS.md) and
 [EXTRACTION_OPTIONS.md](EXTRACTION_OPTIONS.md); recheck the actual plan before use.
@@ -24,8 +25,9 @@ Prices and provider features researched earlier remain dated inputs in
 
 ## Entry checks and execution boundaries
 
-- Use G2's documented install/verify commands; no executable experiment command
-  exists at the concept stage. Add actual commands during G3 implementation.
+- Use G2's documented install/verify commands. G3 adds an experiment-only local
+  runner; [G3_SETUP.md](G3_SETUP.md) distinguishes its control-state commands from
+  the live branch adapters and observations still required.
 - Resolve operator access privately to the existing Firebase/Blaze project, region,
   service identity, enabled APIs, and a supported GCP Gemini model/endpoint. Check
   schema support, current rates/lifecycle, retention and processing-region behavior.

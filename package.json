@@ -9,7 +9,8 @@
     "npm": "11.11.0"
   },
   "workspaces": [
-    "packages/core"
+    "packages/core",
+    "packages/experiment"
   ],
   "scripts": {
     "check:runtime": "node scripts/check-runtime.mjs",
@@ -21,7 +22,8 @@
     "build": "npm run build --workspaces",
     "secrets": "node scripts/scan-secrets.mjs",
     "verify": "npm run check:runtime && npm run check && npm run typecheck && npm test && npm run build && npm run secrets",
-    "check": "biome ci . --error-on-warnings"
+    "check": "biome ci . --error-on-warnings",
+    "experiment": "npm run build --workspace=@job-search/experiment && node packages/experiment/dist/cli.js"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",

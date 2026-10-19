@@ -1,8 +1,9 @@
 # Conception closure and implementation handoff
 
-Updated: 2026-10-19. **G1 and G2 are complete; G3 is next.**
-G2 is locally verified with synthetic data. No application, source, model, crawler,
-CV-processing or Gmail integration is tested.
+Updated: 2026-10-19. **G1 and G2 are complete; G3 setup is in progress.**
+G2 is locally verified with synthetic data. [G3 setup](G3_SETUP.md) has offline
+controls and a documentation-only HTTP probe; no vacancy/source/model/CV/Gmail
+integration acceptance is established.
 
 ## Accepted baseline and handoff state
 

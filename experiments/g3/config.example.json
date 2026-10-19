@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "allocationsMicroEuro": {
+    "discovery": 1000000,
+    "extraction": 0,
+    "model": 1000000,
+    "gmail": 0
+  }
+}

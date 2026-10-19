@@ -224,6 +224,7 @@ G1 is complete as a concept and [bounded feasibility brief](docs/FEASIBILITY.md)
 G2's offline TypeScript foundation is complete with clean-checkout verification,
 synthetic boundary tests, Biome, build, secret scanning and configured CI; see
 [the delivery evidence](docs/PLAN.md#g2-development-foundation--complete).
-The next goal is G3's bounded feasibility experiment, which has not run. Live
-access, current provider conditions, model/region and account consent remain its
-entry checks. G2 authorizes no subscriptions, deployment or real CV use.
+G3's bounded feasibility experiment is in setup; live observations have not
+started. [Current readiness](docs/G3_SETUP.md) distinguishes local control tests
+from the source/model/Gmail evidence still needed. Operator access, current
+provider conditions, model/region and account consent remain live entry checks. G2 authorizes no subscriptions, deployment or real CV use.

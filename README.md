@@ -4,8 +4,9 @@ Find student-friendly jobs in Berlin and remote jobs that can be performed from
 Germany. Review the evidence, prepare an application, and send it yourself.
 
 **Status:** G2's offline TypeScript foundation is complete and locally verified.
-The next goal is G3's bounded feasibility experiment. No application, cloud
-infrastructure, source integration or Gmail connection has been implemented or tested.
+G3's bounded feasibility experiment is in setup; see [current readiness](docs/G3_SETUP.md).
+No deployed application, verified vacancy-source integration or Gmail connection
+is available. No cloud resources have been provisioned.
 
 The first pilot serves one person. Candidate data has explicit ownership from the
 start so other people can use the tool later without rebuilding the core model.
@@ -19,6 +20,7 @@ application text, and unsent Gmail drafts as well as job discovery.
 - [Conception closure and implementation handoff](docs/IMPLEMENTATION_START.md)
 - [Completed G2 execution contract](docs/START_PROMPT.md)
 - [Bounded feasibility experiment for G3](docs/FEASIBILITY.md)
+- [G3 setup, private access requirements and observation status](docs/G3_SETUP.md)
 - [Open decisions and validation needs](docs/OPEN_QUESTIONS.md)
 - [Agent working rules](AGENTS.md); `CLAUDE.md` links to the same file
 - [Development workflow decision](docs/adr/0001-development-workflow.md)
@@ -56,7 +58,7 @@ V1; it does not need a complex dashboard to include a useful application assista
    experiment, planning cost limits, and required evidence.
 2. Completed: establish the offline TypeScript workspace, one locally verified gate,
    and configured CI with Biome, strict types, tests, build and secret scanning.
-3. Next: validate source/API access, web search and page extraction, useful Berlin/Germany
+3. In progress: prepare and validate source/API access, web search/page extraction, Berlin/Germany
    coverage, and Gmail OAuth/draft behavior with authorized test access.
 4. Build discovery, CV/profile matching, and applications as internal slices of V1.
 5. Release V1 after Gmail, privacy, recovery, and operating acceptance pass; scope
@@ -98,8 +100,8 @@ build output, and secrets in sequence; a failure stops it. Individual commands:
 | `npm run format` / `npm run format:check` | Apply/check Biome formatting. |
 | `npm run lint` | Biome lint checks. |
 | `npm run typecheck` | Strict TypeScript validation of source and tests. |
-| `npm test` | Run five compiled boundary tests and three scanner regressions. |
-| `npm run build` | Rebuild the core ESM package and declarations. |
+| `npm test` | Run offline core, experiment and secret-scanner regression tests. |
+| `npm run build` | Rebuild both workspace ESM packages and declarations. |
 | `npm run secrets` | Secretlint with its recommended maintained rule preset. |
 
 Biome **2.5.15** checks supported JavaScript, TypeScript and JSON files. Markdown
@@ -107,6 +109,10 @@ and YAML are reviewed manually; the gate does not claim automated formatting or
 lint coverage for them. Strict `tsc` validation remains independent of Biome.
 The tooling choice and its limits are recorded in
 [ADR 0007](docs/adr/0007-biome-formatting-and-linting.md).
+
+`packages/experiment` holds G3's bounded local runner and synthetic tests. Its
+setup commands and limits are documented in [G3_SETUP.md](docs/G3_SETUP.md); it is
+not production authentication or a completed live benchmark.
 
 `packages/core` contains runtime-validated offline configuration, owner/candidate
 scope checks, and synthetic candidate/job fixtures. Configuration is an explicit
@@ -126,8 +132,9 @@ will be added with the UI and persistence layers; neither exists in G2.
 
 The proposed stack is TypeScript, React, Google Cloud, and Firebase. The initial
 provider route is GCP-managed Gemini, Brave and HTTP/Cheerio. The offline foundation
-uses one private `packages/core` workspace; application framework, exact model/region
-and deployment tooling remain later choices.
+uses private `packages/core` and `packages/experiment` workspaces; application
+framework and deployment tooling remain later choices. The G3 model/region route
+is provisional until actual operator access and terms are checked.
 No cloud resources have been provisioned.
 
 Repository content and commits are written in English; discussion can be German.
