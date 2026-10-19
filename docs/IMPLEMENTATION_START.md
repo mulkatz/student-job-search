@@ -1,74 +1,44 @@
 # Conception closure and implementation handoff
 
-Updated: 2026-10-19. G1 is still open; this document prepares the handoff, not a
-claim that source access, coverage, crawling, or Gmail have been validated.
+Updated: 2026-10-19. **G1 is complete as a concept/experiment brief; G2 is next.**
+No application, source, model, crawler, CV-processing or Gmail integration is tested.
 
-## What needs to be settled now
+## Accepted baseline and handoff state
 
-The V1/V2 boundary is agreed in [CONCEPT.md](../CONCEPT.md) and ADR 0003. Do not
-reopen CV/application/Gmail scope just to simplify the first coding task. Keep the
-interface small and implement the complete V1 through independently verified goals.
+The V1/V2 boundary is agreed in [CONCEPT.md](../CONCEPT.md). The user accepted the
+recommended initial route: GCP-managed Gemini, Brave, and controlled HTTP retrieval
+with Cheerio behind replaceable boundaries. CV processing, application text and
+Gmail drafts remain V1 requirements; the interface stays table-first.
 
-| Item | Current state | Needed for |
+| Item | State | Needed for |
 | --- | --- | --- |
-| V1 scope, one-person pilot, ownership boundary | Agreed | All work |
-| Monthly operating ceiling | EUR 50 total for cloud, search, and LLM; user confirmed | Costed live experiment and operation |
-| Cloud and provider/test accounts | Firebase/Blaze, Gmail test account, and Brave API reported available; access/region/IAM/OAuth/plan checks pending | Affected live integration, not offline tooling |
-| First LLM route and alternatives | GCP-managed Gemini recommended; OpenRouter remains an alternative; no model selected | G3 LLM tests, not G2 offline tooling |
-| Extraction tools | Delegated research complete; HTTP/Cheerio recommended, one possible Playwright/Firecrawl fallback to compare | G3 extraction experiment |
-| Source-coverage threshold and bounded experiment | Proposal below; not yet accepted as the benchmark | G3 evaluation |
-| Automatic-fetch/crawl policy | Q7 remains open; broad discovery intent is agreed | Live page fetching |
-| Exact data/version/state contracts | Resolve just before their affected slices, as Q5 describes | Persistence and side-effect implementation |
-| Tool/runtime versions and actual commands | Select and verify during G2 | Development foundation |
+| V1 scope, ownership, pilot language/location | Agreed; private preferences may remain unknown | All work |
+| Operating ceiling | EUR 50/month total; experiment planning sublimit EUR 5 | Costed G3 execution and operation |
+| Baseline providers | GCP-managed Gemini, existing Brave, HTTP/Cheerio; optional alternatives/fallbacks need measured benefit | G3 and affected slices |
+| Available accounts | Firebase/Blaze, Gmail test account and Brave reported available | Verify actual access/configuration during G3 |
+| Source/model/extraction/Gmail test contract | Defined in FEASIBILITY.md; no execution evidence yet | G3 |
+| Public-page fetch policy | ADR 0005; robots metadata alone does not exclude leads or block public fetches | G3 fetching and G4 |
+| Exact model/region, plans, IAM/OAuth and source rights | Live prerequisites explicitly recorded, not assumed verified | The affected G3 branch |
+| Data/version/state schemas | Resolve Q5 before the affected persistence/side-effect slice | G4–G6 |
+| Runtime/package versions and executable commands | Select and verify in G2 | Offline development foundation |
 
-The EUR 50 ceiling is a planning/operating constraint, not a request to purchase
-subscriptions or provision resources now. A proposed provider mix must fit the
-total; if it cannot, surface that conflict rather than silently increasing spend.
-Agree a per-experiment limit before paid live tests. Missing provider accounts do
-not block offline work.
+[FEASIBILITY.md](FEASIBILITY.md) owns the seven-day observation, samples, resource and
+cost caps, success criteria, stop/recovery behavior and evidence requirements. It
+replaces this document's earlier proposed benchmark. Accepted decisions are in
+[ADR 0004](adr/0004-provider-boundaries-and-initial-candidates.md) and
+[ADR 0005](adr/0005-bounded-experiment-and-public-fetch-policy.md). Provider and
+extraction research remain reference snapshots, not compatibility tests.
 
-## Remaining G1 work in this session
+The readiness check distinguishes a complete brief from an executed experiment.
+Missing live access does not block G2. G3 must verify current prices/terms, operator
+access, privacy/region and OAuth conditions, then explicitly opt into live work;
+this handoff does not request subscriptions, purchases, deployment or real CV use.
+Candidate-specific facts/preferences remain private onboarding inputs. Unknowns
+must remain visible and cannot be invented to satisfy eligibility or package tests.
 
-1. Finish the account/access inventory: Firebase/Blaze, Gmail test account, and Brave
-   access are reported available; remaining project/IAM/OAuth/plan details need checks.
-   Keep tokens, addresses, real CVs, and personal details private. Use
-   [provider recommendations and cost examples](PROVIDERS_AND_COSTS.md) to select the
-   initial LLM route and a bounded search-provider comparison.
-2. Finalize the bounded feasibility checklist: sample sizes, observation period,
-   query/fetch/model/draft caps, expected evidence, and cleanup. Use the existing
-   [source findings](SOURCE_DISCOVERY.md), not an assumption that APIs are accessible.
-3. Define the exact crawl policy for Q7 and record it as a decision before fetching
-   live employer pages. Source discovery must retain reach beyond major platforms.
-4. Confirm the benchmark below or replace it with an equally measurable criterion;
-   document provider/Gmail blockers separately from product scope.
-5. Reconcile the concept, plan, and open questions. G1 can finish with unavailable
-   access explicitly recorded as a G3 prerequisite, not invented or treated as tested.
-
-Candidate-specific preferences may remain unknown until private onboarding. They
-do not need to delay tooling, and they must not become invented matching evidence.
-Detailed schemas, final prompts, polished UI designs, and every later ADR are not
-prerequisites for finishing the initial conception.
-
-## Proposed source-feasibility benchmark
-
-This is a proposed experiment criterion, not a market forecast or accepted result:
-
-- Observe an agreed seven-day window and report Berlin and Germany-remote streams
-  separately, with explicit request and cost caps set before testing.
-- Find at least 10 distinct, current vacancies manually judged compatible with
-  the pilot's core language, location, and work-format constraints. Count unresolved
-  decisive requirements separately; do not count them as confirmed suitable.
-- Include at least 3 additional verified vacancies discovered through web search/
-  employer pages outside the structured-source sample after cross-source deduplication.
-- Report source yield, blocked/unavailable pages, useful-job rate, duplicate rate,
-  and cost. If either stream has no confirmed suitable vacancies, record the gap.
-- A failed benchmark triggers a source/query/scope decision. It does not justify
-  inventing vacancies or expanding the UI while the core value remains unproven.
-
-Keep the separate Gmail feasibility criterion from G3: one visible unsent test
-draft with synthetic text and a test attachment in the consenting test account,
-plus explicit token/recovery findings. No automatic sending. CV parsing and matching
-need their own synthetic checks; success in one integration does not prove another.
+G1's brief received independent review. Findings about vacuously passing extraction
+and model gates were resolved by adding minimum successful samples, recall/coverage,
+positive-case outcomes and bounded repairs. Live results are still pending G3.
 
 ## First fresh-session goal: G2
 
@@ -107,7 +77,7 @@ actual layers; do not create placeholder checks that merely return success.
 
 ## Session and goal cadence
 
-Finish G1 here, then open a fresh session in this repository using
+G1 is complete as an experiment brief. Open a fresh session in this repository using
 [START_PROMPT.md](START_PROMPT.md). A fresh session is a project workflow choice,
 not a requirement to discard context after every task. Use a new session at a
 meaningful goal boundary or when the current context becomes difficult to navigate.

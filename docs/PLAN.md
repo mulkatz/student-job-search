@@ -5,8 +5,8 @@ Updated: 2026-10-19. Status describes evidence, not estimated progress.
 | Goal | Status | Outcome |
 | --- | --- | --- |
 | G0: repository foundation | Complete | Local Git repository, concept, shared agent rules, ADRs, and plan. |
-| G1: feasibility brief | Next | Resolve blocking choices and define a bounded, measurable experiment. |
-| G2: development foundation | Planned | Executable TypeScript workspace, synthetic fixtures, verification gate, and CI. |
+| G1: feasibility brief | Complete | Accepted baseline, public-fetch policy, bounded experiment and fresh-session handoff. |
+| G2: development foundation | Next | Executable TypeScript workspace, synthetic fixtures, verification gate, and CI. |
 | G3: feasibility experiment | Planned | Source, web search/page extraction, and Gmail evidence; explicit blockers if a path fails. |
 | G4: discovery slice | Planned | Traceable, deduplicated job discoveries in an authenticated UI and daily pipeline. |
 | G5: profile and matching | Planned | Approved profiles and evidence-based matching meet the fixture targets. |
@@ -23,7 +23,7 @@ continued discovery development but prevents claiming V1 complete.
 The [conception closure and implementation handoff](IMPLEMENTATION_START.md) defines
 what needs resolving before live experiments and the exact first G2 outcome. The
 [fresh-session start prompt](START_PROMPT.md) initiates that bounded goal; it does
-not request the whole V1 in one run. G1 remains open pending its remaining decisions.
+not request the whole V1 in one run. G1 is complete as a brief; live results remain G3 work.
 
 For each goal, define the outcome, dependencies, acceptance criteria, and smallest
 reviewable tasks. Planning precedes substantive implementation; a separate reviewer
@@ -48,44 +48,36 @@ external integration is claimed. Initial sensitive-content checks passed. The us
 subsequently created the GitHub repository and authorized pushing `main`; the
 initial commit is now on `origin/main`.
 
-## G1: feasibility brief — next
+## G1: feasibility brief — complete
 
-Dependencies: G0. No external account access is needed for the brief itself.
+- [x] G1.1a: Record the user-confirmed EUR 50 total monthly operating ceiling.
+- [x] G1.1b: Define the EUR 5 experiment planning sublimit and explicitly record
+      project/IAM/region/OAuth/plan checks as G3 prerequisites, not verified facts.
+- [x] G1.1c: Record user-reported Firebase/Blaze, Gmail test account and Brave access.
+- [x] G1.2: Define a seven-day coverage benchmark: 10 compatible unique vacancies,
+      including 3 incremental web discoveries; report the two streams separately.
+- [x] G1.3: Record core pilot defaults and keep private candidate facts/preferences
+      unknown until onboarding; do not block offline tooling on missing CV details.
+- [x] G1.4: Write [FEASIBILITY.md](FEASIBILITY.md) with sample sizes, shared cost/work
+      caps, positive/negative-case criteria, manual Gmail reconciliation and evidence.
+- [x] G1.5: Resolve Q7 through ADR 0005's broad public-fetch policy; specific source
+      rights and actual provider storage/access behavior remain G3 checks.
+- [x] G1.6: Adopt GCP-managed Gemini and Brave behind replaceable boundaries;
+      alternatives remain bounded comparisons, not required production integrations.
+- [x] G1.7a: Complete delegated [extraction market research](EXTRACTION_OPTIONS.md).
+- [x] G1.7b: Adopt HTTP/Cheerio initially; define the fallback comparison and limit
+      any later fallback adoption to one justified by measured benefit.
+- [x] Independently review the experiment contract; resolve non-vacuity findings
+      with minimum successes and explicit recall/positive-case criteria.
 
-- [x] G1.1a: Record the user-confirmed EUR 50 total monthly ceiling for cloud/search/LLM.
-- [x] G1.1c: Record user-reported Firebase/Blaze, Gmail test account, and Brave access;
-      distinguish availability from live verification.
-- [ ] G1.1b: Confirm account/project ownership, per-experiment cost ceiling, and
-      live-test access (Q2). Missing credentials need not block synthetic tooling.
-- [ ] G1.2: Define source-coverage measures and a go/no-go threshold (Q3): inspect
-      both Berlin on-site and Germany-remote streams; report unique, fresh,
-      plausible roles by employment type, language evidence, and review outcome.
-      Include incremental coverage from small employer pages beyond structured sources.
-- [ ] G1.3: Confirm available pilot search/profile defaults (Q1); record remaining
-      unknowns without delaying offline tooling. Keep private candidate answers
-      out of repository documentation.
-- [ ] G1.4: Write a concise experiment checklist with current official references,
-      request/token/draft caps, synthetic applicant input, evidence format, and
-      cleanup. Confirm Gmail feasibility separately from source coverage (Q4).
-- [ ] G1.5: Resolve the public-page crawl policy (Q7) and select a candidate search
-      provider/plan with compatible retention and AI use. Reference the dated
-      findings in [SOURCE_DISCOVERY.md](SOURCE_DISCOVERY.md).
-- [ ] G1.6: Choose the initial LLM route and confirm the bounded provider experiment;
-      [provider recommendations and cost examples](PROVIDERS_AND_COSTS.md) compare
-      GCP-managed Gemini/OpenRouter and Brave/Serper/Tavily/Exa.
-- [x] G1.7a: Complete delegated [extraction market research](EXTRACTION_OPTIONS.md)
-      on Cheerio, Crawlee, Playwright, and Firecrawl using official sources.
-- [ ] G1.7b: Choose the initial extraction dependency and define the bounded fallback
-      comparison; research is not evidence of successful live extraction.
-
-Exit: measurable source success criteria and a bounded test plan exist; all live
-actions have the necessary access, consent, and cost authorization before execution.
-Document an incomplete discovery slice if Gmail is blocked. Do not invent access or label
-a test passed because the documentation suggests it should work.
+Evidence: the accepted ADRs 0004/0005, experiment contract and implementation handoff.
+Documentation links, diffs, shared instructions and sensitive-content checks pass.
+No live tests have run. G1 completion means a usable brief; it does not certify
+integration feasibility, source coverage, legal eligibility or a finished V1.
 
 ## G2: development foundation
 
-Dependencies: G1's scope; live credentials are not required for offline setup.
+Dependencies: completed G1 brief; live credentials are not required for offline setup.
 
 - [ ] Select and pin maintained runtime/package versions; define workspace structure
       and one package manager. Record significant choices and actual commands.
@@ -101,8 +93,11 @@ without secrets or paid services. Review independently before substantive produc
 
 ## G3: feasibility experiment
 
-Dependencies: G1, minimal G2 tooling, and authorized provider access.
+Dependencies: the completed G1 brief, G2 tooling and the applicable live-access checks in
+[FEASIBILITY.md](FEASIBILITY.md). Each branch needs actual access and live opt-in.
 
+- [ ] Verify the current provider/model/region, source rights/plan and operator/OAuth
+      prerequisites; reserve within the experiment caps before live execution.
 - [ ] Review source terms, attribution, storage/retention, quotas, endpoints, and
       redirects. Record source-policy evidence and enable only permitted sources.
 - [ ] Fetch bounded samples; curate five employer boards if available and measure
@@ -114,11 +109,17 @@ Dependencies: G1, minimal G2 tooling, and authorized provider access.
       to the consenting test account with a test attachment. Never send it.
 - [ ] Check token lifecycle/reconnect and document recovery constraints. Keep tokens,
       captures, account identifiers, and provider-controlled private data out of Git.
+- [ ] Execute the synthetic CV, 20-case matching and 5-package model branch with
+      the positive/negative-case and repair limits from FEASIBILITY.md.
+- [ ] Report all four required branches with counts, evidence, costs and decisions;
+      distinguish optional unexecuted comparisons from required missing observations.
 
-Exit: at least one permitted source meets the coverage threshold and a separate
-search/page-extraction sample reports its outcome. Gmail draft creation has direct
-evidence or remains an explicit V1 blocker. Internal discovery work can continue,
-but source success cannot imply Gmail success or V1 release readiness.
+Exit: the required seven-day observations and source/extraction/model/Gmail branches
+have executed findings and explicit decisions. A supported negative finding can
+complete the investigation but is not a passed criterion; revise the affected
+delivery plan. A required branch blocked before observation keeps G3 incomplete.
+Independent work may continue, but source success cannot imply Gmail success or
+V1 release readiness. Optional comparisons are reported separately.
 
 ## G4: discovery slice
 

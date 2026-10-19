@@ -121,8 +121,8 @@ The proposed stack is TypeScript, React, Cloud Run Job/API, Firebase Auth/Hostin
 Firestore, private Cloud Storage, Secret Manager, and a replaceable LLM adapter.
 Firebase/Blaze, a Gmail test account, and Brave API access are user-reported available;
 their integration/configuration remains unverified. GCP-managed Gemini is the
-recommended first LLM route, with OpenRouter as an alternative behind the same
-boundary; provider/model selection is still open. See
+accepted first LLM route, with OpenRouter as an alternative behind the same
+boundary; the exact model/endpoint remains unselected. See
 [provider options and cost model](docs/PROVIDERS_AND_COSTS.md).
 
 Prefer a deterministic pipeline; no agent orchestration framework, vector database,
@@ -142,16 +142,18 @@ documentation says it is closed to new customers and ends on January 1, 2027.
 See [source discovery](docs/SOURCE_DISCOVERY.md) for dated official references,
 separate search/fetch/extraction stages, and the source-policy questions.
 
-The extraction recommendation is controlled HTTP retrieval plus Cheerio. Compare
+The accepted initial extraction approach is controlled HTTP retrieval plus Cheerio. Compare
 Playwright rendering with Firecrawl only where static extraction misses useful
 vacancies, and choose at most one additional fallback based on measured benefit.
-No extraction dependency has been adopted or tested. See the delegated
+Cheerio is selected for the first implementation; no extraction integration is tested.
+See the delegated
 [extraction market research](docs/EXTRACTION_OPTIONS.md).
 
 The user explicitly requests coverage beyond robots-based exclusions. Do not
-silently narrow this to API-only or previously registered domains. Robots metadata,
-technical accessibility, source terms, and storage rights are separate concerns;
-the exact crawl policy is tracked in Q7, not assumed settled by this concept.
+silently narrow this to API-only or previously registered domains. ADR 0005 makes
+robots metadata non-blocking by itself for leads and public-page retrieval; source
+terms, storage rights and actual access/network/resource controls remain separate.
+Apply the [accepted public-fetch policy](docs/adr/0005-bounded-experiment-and-public-fetch-policy.md).
 No universal retrieval guarantee, credential bypass, CAPTCHA evasion, or unlimited
 retry/traffic mode is part of V1. Unretrieved leads remain visible with a link and
 unknown evidence; they cannot trigger unsupported matches or draft generation.
@@ -197,8 +199,9 @@ V1 is complete only when the following have recorded evidence:
 - [ ] Data export/deletion, retention, privacy controls, and cost/run diagnostics
       are implemented and documented before unattended operation with real data.
 
-Numerical targets measure the labeled fixture, not the whole job market. Real-world
-coverage and useful-shortlist volume need a separately agreed pilot benchmark.
+Numerical targets measure the labeled fixture, not the whole job market. The first
+real-world coverage benchmark is in [FEASIBILITY.md](docs/FEASIBILITY.md); its results
+do not promise recurring market-wide coverage or a fixed daily shortlist volume.
 
 ## V2 direction
 
@@ -217,7 +220,8 @@ default cover-letter PDF templating.
 
 ## Immediate next outcome
 
-Complete goal G1 in [the plan](docs/PLAN.md): resolve the blocking operating choices
-and define a bounded feasibility experiment. Do not treat this documentation setup
-as authorization to provision paid services, connect someone else's account, or
-process a real CV without the candidate's consent.
+G1 is complete as a concept and [bounded feasibility brief](docs/FEASIBILITY.md).
+Start G2's offline development foundation in a fresh session using
+[START_PROMPT.md](docs/START_PROMPT.md). The experiment itself is G3 work and has not
+run. Live access, current provider conditions, model/region and account consent
+remain its entry checks; no subscriptions, deployment or real CV use follow from G2.

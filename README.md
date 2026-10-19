@@ -5,6 +5,7 @@ Germany. Review the evidence, prepare an application, and send it yourself.
 
 **Status:** concept and repository foundation. No application, infrastructure,
 source integration, or Gmail connection has been implemented or tested.
+G1's experiment brief is complete; the next goal is G2's offline development foundation.
 
 The first pilot serves one person. Candidate data has explicit ownership from the
 start so other people can use the tool later without rebuilding the core model.
@@ -17,6 +18,7 @@ application text, and unsent Gmail drafts as well as job discovery.
 - [Delivery plan and next goal](docs/PLAN.md)
 - [Conception closure and implementation handoff](docs/IMPLEMENTATION_START.md)
 - [Fresh-session start prompt for G2](docs/START_PROMPT.md)
+- [Bounded feasibility experiment for G3](docs/FEASIBILITY.md)
 - [Open decisions and validation needs](docs/OPEN_QUESTIONS.md)
 - [Agent working rules](AGENTS.md); `CLAUDE.md` links to the same file
 - [Development workflow decision](docs/adr/0001-development-workflow.md)
@@ -50,9 +52,9 @@ V1; it does not need a complex dashboard to include a useful application assista
 
 ## Delivery sequence
 
-1. Resolve the few blocking product and operating choices; define the feasibility
-   experiment, cost ceiling, and evidence to collect.
-2. Establish the TypeScript workspace, one verification command, and CI.
+1. Completed: define the initial providers, public-fetch policy, feasibility
+   experiment, planning cost limits, and required evidence.
+2. Next: establish the TypeScript workspace, one verification command, and CI.
 3. Validate source/API access, web search and page extraction, useful Berlin/Germany
    coverage, and Gmail OAuth/draft behavior with authorized test access.
 4. Build discovery, CV/profile matching, and applications as internal slices of V1.
@@ -64,8 +66,9 @@ See [the plan](docs/PLAN.md) for exit criteria and dependencies.
 
 ## Development status
 
-The proposed stack is TypeScript, React, Google Cloud, and Firebase. Runtime and
-package versions, framework details, LLM provider, deployment tooling, and commands
+The proposed stack is TypeScript, React, Google Cloud, and Firebase. The initial
+provider route is GCP-managed Gemini, Brave and HTTP/Cheerio. Runtime and
+package versions, framework details, exact model/region, deployment tooling, and commands
 will be selected during setup and recorded as needed. There is no installation,
 test, build, or deployment command yet. No cloud resources have been provisioned.
 

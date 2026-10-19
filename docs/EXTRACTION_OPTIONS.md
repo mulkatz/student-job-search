@@ -1,6 +1,7 @@
 # Public-page extraction options
 
-Status: research and recommendation, not an accepted dependency decision or tested integration.
+Status: research; HTTP/Cheerio accepted as the initial implementation approach in
+ADR 0004. Fallbacks remain unselected and no integration has been tested.
 Official sources opened and reviewed: 2026-10-19. No provider calls, accounts,
 subscriptions, installations, or real candidate data were used.
 
@@ -113,8 +114,8 @@ validate extracted schemas and treat page/model instructions as untrusted conten
 
 ## Access policy and Cloud Run operation
 
-Resolve [Q7](OPEN_QUESTIONS.md#q7-broad-public-page-crawl-policy) before automatic
-fetching. Keep new domains discoverable; no fixed approved-domain list is proposed.
+Apply [ADR 0005's public-fetch policy](adr/0005-bounded-experiment-and-public-fetch-policy.md)
+for automatic fetching. Keep new domains discoverable; no fixed approved-domain list is proposed.
 Robots directives are distinct from access authorization under
 [RFC 9309](https://www.rfc-editor.org/rfc/rfc9309.html); neither robots metadata
 nor technical extractability establishes source reuse rights. Firecrawl states
@@ -141,7 +142,7 @@ untrusted websites as a different isolation case from trusted tests.
 
 ## Bounded comparison before adoption
 
-Proposed G3 experiment, subject to the agreed live-test budget and Q7: manually
+G3's [bounded experiment](FEASIBILITY.md), subject to its live-access checks: manually
 label 30 public URLs spanning static detail pages, JS vacancies, careers lists,
 expired/missing pages and small employers. Compare HTTP first; test each fallback
 only on the same unresolved subset. Count correct fields with traceable evidence,

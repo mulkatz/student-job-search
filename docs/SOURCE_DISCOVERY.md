@@ -68,7 +68,7 @@ in search queries. Query/fetch budgets are set after the operator's cost ceiling
 8. Deduplicate across all paths before scoring, model calls, or package generation.
    Record inaccessible or inconclusive leads separately from confirmed job records.
 
-Recommend controlled HTTP retrieval plus Cheerio for the first extraction slice.
+Use controlled HTTP retrieval plus Cheerio for the first extraction slice.
 The [extraction market research](EXTRACTION_OPTIONS.md) compares Cheerio, Crawlee,
 Playwright, and Firecrawl. Benchmark browser rendering against a hosted extractor
 only where the feasibility sample demonstrates useful missed vacancies; choose
@@ -76,13 +76,14 @@ at most one additional fallback. This does not imply CAPTCHA solving, credential
 bypass, or stealth scraping infrastructure.
 No provider search call, page fetch, or rendering step is allowed an unbounded retry.
 
-## Crawl-policy boundary to resolve
+## Public-page fetch policy
 
-The user wants coverage independent of robots-based exclusions. The concept does
-not adopt a blanket robots-based lead filter or a fixed preapproved-domain-only
-search scope. The precise automatic-fetch treatment of disallowed/unknown robots
-responses and conflicting site conditions is still Q7 in
-[OPEN_QUESTIONS.md](OPEN_QUESTIONS.md), and must be defined before live crawling.
+The user wants coverage independent of robots-based exclusions. The accepted
+[policy in ADR 0005](adr/0005-bounded-experiment-and-public-fetch-policy.md) records
+robots metadata without using it alone to exclude leads or block public-page
+fetches. There is no fixed preapproved-employer-only discovery scope. Source-specific
+rights, storage conditions and technical access/network/traffic boundaries remain
+separate checks; the policy is not a claim of universal permission or compatibility.
 
 Record robots information separately from authentication, source terms, HTTP status,
 and extraction success. RFC 9309 explicitly distinguishes robots rules from access
@@ -137,7 +138,7 @@ the sample and report these measures separately:
 - Unavailable pages, reasons, extraction errors, stale snippets, and generic careers
   pages without a vacancy; zero useful results is a valid failed experiment.
 
-G1 sets numerical coverage thresholds and budgets before testing. V1 needs an
+G1 defined numerical thresholds and limits in [FEASIBILITY.md](FEASIBILITY.md). V1 needs an
 operational web-search/direct-page path that finds verifiable vacancies outside the
 structured set; documentation research alone cannot pass that acceptance criterion.
 Keep captures private unless storage and redistribution are permitted. Offline tests

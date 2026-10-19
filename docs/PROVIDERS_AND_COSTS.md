@@ -1,7 +1,8 @@
 # Provider options and pilot cost model
 
-Updated/researched: 2026-10-19. Recommendations and published price examples below
-are not live integration results, selected subscriptions, or a complete monthly quote.
+Updated/researched: 2026-10-19. The user accepted GCP/Gemini, Brave and HTTP/Cheerio
+as the initial route. Alternatives and published price examples below are not live
+integration results, selected subscriptions, or a complete monthly quote.
 
 ## Available access
 
@@ -12,18 +13,19 @@ and Brave plan/storage conditions still need checking. No OpenRouter account, mo
 endpoint access, alternative search account, or credential is assumed.
 
 The total monthly operating ceiling is **EUR 50**, across cloud, search, LLM, and any
-hosted extraction. A per-experiment paid-test ceiling remains open. No account,
+hosted extraction. The experiment planning sublimit is EUR 5; see
+[FEASIBILITY.md](FEASIBILITY.md) for live-entry checks and work limits. No account,
 billing setting, subscription, API key, or live provider request was changed by
 this research.
 
-## LLM recommendation
+## Initial LLM route
 
 Keep an application-owned structured-generation boundary with typed inputs, schema
 validation, timeouts, token limits, versioning, and usage/cost reporting. Provider
 SDKs and routing settings stay behind it. Start with one backend; a provider-neutral
 boundary does not require implementing every adapter in V1.
 
-**Recommended first backend:** Gemini directly through the GCP-managed model service
+**Accepted first backend:** Gemini directly through the GCP-managed model service
 (Vertex AI; current documentation redirects to Gemini Enterprise Agent Platform).
 This reuses the existing cloud/billing context and avoids adding a router for the
 first working slice. Blaze alone does not prove model access. Select a supported
@@ -69,7 +71,7 @@ References: [Brave](https://brave.com/search/api/), [Serper](https://serper.dev/
 Alternative-provider accounts, retention/redistribution rights, and availability
 are not yet verified. Do not automatically query every provider on every run.
 
-Proposed comparison: 20 fixed English/German queries spanning the two search streams,
+The experiment uses 20 fixed English/German queries spanning the two search streams,
 review the top 10 results per query, and test Brave against one available alternative
 within an agreed test cap. Measure confirmed suitable vacancies, incremental unique
 employer/job coverage, freshness, errors, and total search/extraction/model cost per
@@ -107,7 +109,7 @@ aggregate hard EUR cap across independent providers.
 
 ## Next decisions
 
-Confirm the first LLM route after discussing this recommendation; then check model
-access, lifecycle, region/privacy, and schema support with synthetic inputs in G3.
-Resolve the actual Brave plan, source-policy questions, extraction approach, and
-paid experiment cap before live tests. G2 can still proceed entirely offline.
+The first route and experiment planning limits are set in ADRs 0004/0005. Check exact
+model access/lifecycle, region/privacy, schema support, the actual Brave plan and
+source-specific rights before live G3 work. Only compare alternatives under the
+shared experiment caps. G2 proceeds entirely offline.

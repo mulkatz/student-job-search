@@ -38,13 +38,15 @@ and decisive missing evidence prevents automatic drafting. The original proposal
 **Confirmed:** the user set a total monthly operating ceiling of EUR 50 for cloud,
 search, and LLM on 2026-10-19. This is a budget constraint; no subscription or
 resource provisioning is requested by the conception/setup task.
+The G3 experiment has a EUR 5 planning sublimit and shared work caps in
+[FEASIBILITY.md](FEASIBILITY.md); live execution still needs its entry checks and opt-in.
 
 **Available, user-reported:** Firebase project with Blaze enabled, Gmail test account,
 and Brave Search API. No live connection, model endpoint, OAuth client/refresh flow,
 or Brave storage-rights plan has been verified. Project/IAM/region details and other
 provider accounts remain unspecified.
 
-Confirm the operator/project access, per-test ceiling, OAuth setup, actual source
+Verify operator/project access, OAuth setup, actual source
 plan/credentials configuration, and who may access candidate data. Decide LLM
 provider/data handling and retention before sending real CV-derived facts.
 Include search-provider queries and page-fetch limits in the cost
@@ -57,15 +59,15 @@ authorization or a validated budget.
 
 ## Q3: source rights and useful coverage
 
-**Needed before:** enabling a source; coverage threshold before G3 measurements.
+**Needed before:** enabling a source; actual coverage is measured in G3.
 
 Adzuna credentials, permitted reuse/retention/attribution, quotas, actual Berlin
 coverage, and a curated employer-board list are unverified. Greenhouse/Lever board
-availability alone does not establish useful student/Minijob coverage. Define a
-minimum useful unique shortlist across an agreed observation period and report
-the two search streams separately; the numerical threshold remains open. Include
-search-discovered small-employer jobs, incremental coverage beyond structured
-sources, and the distinction between a generic careers page and an actual vacancy.
+availability alone does not establish useful student/Minijob coverage. G1 defined
+the initial benchmark in [FEASIBILITY.md](FEASIBILITY.md): 10 compatible unique
+vacancies over seven days, including 3 additional web discoveries, with separate
+stream results. Actual yield is unmeasured. Distinguish generic career leads from
+vacancies and cross-source duplicates from additional coverage.
 
 Brave access is available, but remains an unverified integration and plan. Consider
 Serper, Tavily, and Exa alongside it using the comparison in
@@ -89,11 +91,10 @@ refresh behavior, and reconnect. The proposed scope also permits sending; code a
 tests must enforce the narrower product behavior. Do not assume verification
 exemptions, seven-day token behavior, or a sender identity without checking.
 
-The proposal excludes mailbox monitoring. Reconciliation after “Gmail succeeded,
-database write failed” still needs a precise method. Choose either an explicitly
-authorized, narrowly scoped draft lookup or manual reconciliation; neither may
-silently introduce mailbox monitoring or blind retries. Define stale pending-state
-recovery and how a user confirms whether a draft exists.
+The initial policy is manual inspection/reconciliation after an ambiguous Gmail
+write, as ADR 0005 records. Do not blindly retry or add mailbox monitoring. Exact
+stale-pending transitions and crash tests remain G6 work; OAuth refresh/reconnect
+and actual draft compatibility are G3 observations, not inferred from the account.
 
 **Degraded operation:** discovery and application text packages remain usable.
 Gmail acceptance stays incomplete until tested; V1 cannot be declared complete
@@ -124,36 +125,28 @@ an ADR, rather than copying the sample types as final contracts:
 **Needed before:** the affected slice or publication, not initial documentation.
 
 - Select runtime/tool versions, framework, test tooling, and deployment approach
-  after checking maintained official documentation. The first LLM route is open:
-  GCP-managed Gemini is recommended initially; OpenRouter remains an alternative
-  behind the same boundary. See [the proposed provider ADR](adr/0004-provider-boundaries-and-initial-candidates.md).
-- Select the first extraction dependency using [the delegated market research](EXTRACTION_OPTIONS.md):
-  controlled HTTP/Cheerio is recommended, with at most one evidence-driven
-  Playwright/Firecrawl fallback. Costs and access conditions still need live evaluation.
-- Define the human-label rubric, metric denominators, and minimum positive examples;
-  tune provisional fit/confidence thresholds against the labeled fixture.
+  after checking maintained official documentation. The first LLM route is accepted:
+  GCP-managed Gemini, with OpenRouter as an alternative behind the same boundary.
+  Select the exact model/region in G3; see [ADR 0004](adr/0004-provider-boundaries-and-initial-candidates.md).
+- HTTP/Cheerio is selected initially using [the delegated market research](EXTRACTION_OPTIONS.md).
+  A possible Playwright/Firecrawl fallback remains a measured G3 comparison; its
+  costs and access conditions are not yet verified.
+- G3's initial labels, minimum positives and metric definitions are in FEASIBILITY.md.
+  Extend the rubric for G5's final 50-posting fixture and calibrate provisional
+  fit/confidence thresholds against it.
 - Select a license and attribution before public distribution. The reference
   repository's intended MIT license does not automatically decide this project's.
 - Broader use needs its own scope: onboarding, account lifecycle, OAuth production
   readiness, per-owner quotas/deletion, support, abuse prevention, and privacy review.
 
-## Q7: broad public-page crawl policy
+## Q7: broad public-page crawl policy — resolved for initial implementation
 
-**Needed before:** automatic employer-page fetching; does not block offline fixtures.
-
-The user requests broad discovery including pages outside conventional platforms,
-without automatically excluding leads because of robots.txt or similar restrictions.
-Preserve that intent; do not silently limit results to APIs or a fixed employer list.
-
-Robots directives, actual authentication/access controls, site terms, provider
-retention rights, and technical availability are different inputs. RFC 9309 states
-that robots rules are not access authorization. A universal “fetch everything despite
-all restrictions” guarantee is not a feasible V1 contract. The exact policy for
-robots-disallowed/unknown pages and conflicting site conditions remains unresolved;
-it must be explicit and covered by tests before the live crawler is implemented.
-
-Define behavior for missing/unreadable robots files, HTTP 401/403/429, redirects,
-JS-only pages, and content unavailable to the extractor. Rate/budget limits, internal-
-network protection, and bounded link traversal remain technical requirements.
-Keep unavailable leads with their original URL and a reason when retention permits;
-they must not gain invented facts, verified channels, or automatic drafts.
+**Decision:** [ADR 0005](adr/0005-bounded-experiment-and-public-fetch-policy.md).
+Robots metadata is recorded and is not by itself a lead exclusion or public-fetch
+block. New domains remain discoverable. Authentication/CAPTCHA/401/403 stop the
+page attempt; 429/Retry-After, network safety and bounded resource limits apply.
+Source-specific terms, storage rights and actual hosted-provider behavior remain
+G3 checks. Known conflicting restrictions need resolution for that use. This is
+an operating policy, not a universal extraction/permission guarantee. Preserve
+unavailable or policy-unresolved leads where retention permits, without fabricated
+facts or automatic drafts. Tests must cover the policy when fetches are implemented.

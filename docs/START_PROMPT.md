@@ -1,9 +1,8 @@
 # Fresh-session implementation start prompt
 
-Status: prepared for G2. Use after the G1 handoff is reconciled, or explicitly choose
-offline-only G2 while live-access prerequisites remain open. Missing source/Gmail
-credentials alone do not block offline tooling. This is a bounded goal, not an
-instruction to implement all of V1 in one session.
+Status: ready for G2; G1 is complete as an experiment brief. Live-access prerequisites
+remain G3 checks. Missing source/Gmail credentials do not block offline tooling.
+This is a bounded goal, not an instruction to implement all of V1 in one session.
 
 Copy the following prompt into a fresh session opened in the repository root:
 
@@ -46,6 +45,9 @@ configured CI, locally passing checks, and an observed remote CI run.
 Keep this goal offline and synthetic. The monthly operating ceiling is EUR 50 across
 cloud, search, and LLM; no paid provisioning, provider subscription, live crawling,
 real CV processing, OAuth account connection, or deployment is requested by G2.
+The accepted initial route is GCP-managed Gemini, Brave, and HTTP/Cheerio; the
+exact live model/region/plan and optional alternatives are G3 checks. Use accepted
+ADRs 0004/0005 and docs/FEASIBILITY.md only when that context affects this goal.
 V1 still includes CV processing, application text, Gmail drafts, and broad discovery.
 V2 multi-user onboarding and user-managed search orders stay out of scope.
 
