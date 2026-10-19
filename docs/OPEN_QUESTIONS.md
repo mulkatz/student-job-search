@@ -44,10 +44,11 @@ resource provisioning is requested by the conception/setup task.
 The G3 experiment has a EUR 5 planning sublimit and shared work caps in
 [FEASIBILITY.md](FEASIBILITY.md); live execution still needs its entry checks and opt-in.
 
-**Current access:** a GCP/Firebase project was designated privately, with an EU
-preference. Read-only metadata checks failed; IAM, ADC, API enablement, actual
-billing and model endpoint remain unverified. Brave key and storage-rights plan
-remain missing. Account/project identifiers stay private.
+**Current access:** the EU-preferred project is designated privately. CLI/ADC
+project reads and enabled billing are verified, and Vertex API enablement succeeded.
+Actual inference compatibility and conservative reasoning/output bounds remain
+unresolved. The local Brave credential is located; plan/storage entitlement remains
+unverified. Account/project identifiers and credential values stay private.
 
 Verify operator/project access, authentication setup, actual source
 plan/credentials configuration, and who may access candidate data. Decide LLM
@@ -55,8 +56,10 @@ provider/data handling and retention before sending real CV-derived facts.
 Include search-provider queries and page-fetch limits in the cost
 ceiling. Candidate consent is separate from the developer requesting work.
 
-**Current handling:** documentation and offline synthetic setup can continue. No
-unreported provider account, spend, or personal-data access is assumed.
+**Current handling:** a partial direct-page pilot is measured; no paid inference
+or Brave benchmark has run. Alpha's synthetic facts are explicitly approved
+privately; this does not approve real candidate facts or generated packages. No
+unreported provider account, spend or personal-data access is assumed.
 The original 400 listings / 40 evaluations / 5 drafts caps are proposals, not spending
 authorization or a validated budget.
 

@@ -1,6 +1,6 @@
 # Fresh-session implementation start prompt
 
-Status: G2 completed and locally verified on 2026-10-19; G3 setup is in progress. See
+Status: G2 completed and locally verified on 2026-10-19; G3 has partial live B evidence. See
 [PLAN.md](PLAN.md#g2-development-foundation--complete) for executed evidence and
 limitations. Live-access prerequisites and explicit opt-in remain G3 checks.
 

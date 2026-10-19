@@ -1,10 +1,11 @@
 # Conception closure and implementation handoff
 
-Updated: 2026-10-19. **G1 and G2 are complete; G3 setup is in progress.**
-G2 is locally verified with synthetic data. [G3 setup](G3_SETUP.md) has offline
-controls and two documentation-only HTTP probes; no vacancy/source/model/manual-
-package acceptance is established. Offline C fixtures/schemas/scoring are in
-progress; the current integrated gate and actual profile approval remain pending.
+Updated: 2026-10-19. **G1 and G2 are complete; G3 is in progress.**
+G2 is locally verified with synthetic data. [G3 setup](G3_SETUP.md) records a
+ten-target extraction pilot and its incomplete measured baseline; no branch
+acceptance is established. Offline C fixtures/schemas/scoring are verified and
+Alpha's synthetic facts are approved privately. No model output or generated
+package review exists; the discovery window has not started.
 
 ## Accepted baseline and handoff state
 
@@ -20,7 +21,7 @@ Firebase Auth login identity, without Gmail API/mailbox OAuth integration.
 | V1 scope, ownership, pilot language/location | Agreed; private preferences may remain unknown | All work |
 | Operating ceiling | EUR 50/month total; experiment planning sublimit EUR 5 | Costed G3 execution and operation |
 | Baseline providers | GCP-managed Gemini, existing Brave, HTTP/Cheerio; optional alternatives/fallbacks need measured benefit | G3 and affected slices |
-| Access | Intended GCP/Firebase project designated privately; EU preferred; read-only metadata check denied; Brave key/plan missing | Verify actual IAM/ADC/API/billing and source rights during G3 |
+| Access | Project/ADC reads and enabled billing verified; Vertex API enabled; local Brave key located | Model compatibility/bounded usage and actual Brave storage entitlement |
 | Source/model/extraction/manual-package contract | Defined in FEASIBILITY.md; no branch acceptance yet | G3 |
 | Public-page fetch policy | ADR 0005; robots metadata alone does not exclude leads or block public fetches | G3 fetching and G4 |
 | Exact model/region, plans, IAM/ADC and source rights | Live prerequisites explicitly recorded, not assumed verified | The affected G3 branch |

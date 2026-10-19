@@ -231,14 +231,51 @@ test("challenge markers are distinguished from HTTP authentication or access den
     );
   }
   const run = setup({
-    transport: async () =>
-      html("<p>Documentation discusses CAPTCHA integration.</p>"),
+    transport: async () => html("<h1>CAPTCHA</h1>"),
   });
   const result = await run.fetch("https://example.org/documentation");
   assert.ok(
     "reason" in result &&
       result.reason === "authentication_or_challenge_marker",
   );
+});
+
+test("public job text survives incidental CAPTCHA code, documentation and embedded forms", async () => {
+  for (const body of [
+    "<h1>Barista</h1><p>Part-time role in Berlin.</p><script>const captchaEnabled = true; const docs = 'verify you are human';</script>",
+    "<h1>CAPTCHA integration guide</h1><p>Documentation discusses CAPTCHA integration.</p>",
+    "<h1>Barista</h1><p>We are hiring a part-time barista for our Berlin cafe. The role includes serving coffee and welcoming our guests.</p><form><p>Complete the CAPTCHA to continue</p><div class='h-captcha'></div><button>Apply</button></form><footer>This site is protected by hCaptcha.</footer>",
+  ]) {
+    const run = setup({ transport: async () => html(body) });
+    assert.equal((await run.fetch("https://example.org/job")).kind, "html");
+    assert.equal(run.reserved.length, 1);
+  }
+});
+
+test("strong access instructions, challenge paths, password gates and isolated widgets stop", async () => {
+  for (const body of [
+    "<title>CAPTCHA</title><h1>CAPTCHA</h1>",
+    "<h1>Verify you are human</h1>",
+    "<p>Please complete the CAPTCHA to continue.</p>",
+    "<p>CAPTCHA is required before viewing this page.</p>",
+    "<p>Checking your browser before accessing the site.</p>",
+    "<script src='/cdn-cgi/challenge-platform/h/g/orchestrate/chl_page/v1'></script>",
+    "<title>Just a moment...</title><h1>Just a moment...</h1><script>const s=document.createElement('script');s.src='/cdn-cgi/challenge-platform/h/g/orchestrate/chl_page/v1';</script>",
+    "<div id='cf-chl-widget'>Challenge</div>",
+    "<form><input type='password'></form>",
+    "<form><div class='g-recaptcha'></div></form>",
+    "<h1>Example Employer</h1><form><p>Verify you are human</p><div class='g-recaptcha'></div><button>Continue</button></form>",
+    "<header>Example Employer: welcome to our official company website and career opportunities</header><form><div class='g-recaptcha'></div><button>Continue</button></form>",
+    "<iframe src='https://challenges.cloudflare.com/turnstile/widget'></iframe>",
+  ]) {
+    const run = setup({ transport: async () => html(body) });
+    const result = await run.fetch("https://example.org/job");
+    assert.ok(
+      "reason" in result &&
+        result.reason === "authentication_or_challenge_marker",
+    );
+    assert.equal(run.reserved.length, 1);
+  }
 });
 
 test("Retry-After is retained and blocks subsequent requests; robots are counted metadata", async () => {

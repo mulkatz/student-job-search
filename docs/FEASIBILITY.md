@@ -1,13 +1,14 @@
 # G3: bounded feasibility experiment
 
-- Status: G3 setup in progress; live observations not started
+- Status: G3 in progress; partial live B pilot recorded, A window not started
 - Defined: 2026-10-19
 - Prerequisite: G2's reproducible tooling and applicable live-access checks below
 - Initial route: GCP-managed Gemini, Brave, controlled HTTP retrieval with Cheerio
 
 This is the G1 deliverable and G3 execution contract. It defines observations and
-stop conditions. Two documentation-only HTTP diagnostics do not establish any
-branch result; no vacancy/model observations or profile approvals are claimed.
+stop conditions. A ten-target B pilot is measured but incomplete; documentation
+diagnostics are separate. Synthetic Alpha facts are approved privately, with no
+model output or generated package-content approval yet.
 Current access readiness and setup commands are in [G3_SETUP.md](G3_SETUP.md).
 Prices and provider features researched earlier remain dated inputs in
 [PROVIDERS_AND_COSTS.md](PROVIDERS_AND_COSTS.md) and

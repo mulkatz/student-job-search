@@ -126,9 +126,10 @@ mailbox draft creation or automatic copying/submission is part of the workflow.
 
 The proposed stack is TypeScript, React, Cloud Run Job/API, Firebase Auth/Hosting,
 Firestore, private Cloud Storage, Secret Manager, and a replaceable LLM adapter.
-A GCP/Firebase project has been designated privately with an EU preference; read-only
-metadata checks failed, so API enablement, IAM, ADC and actual billing remain
-unverified. Brave credentials and the exact storage-rights plan remain missing.
+A GCP/Firebase project is designated privately with an EU preference. CLI/ADC
+project reads, enabled billing and Vertex API setup have been verified; actual
+inference compatibility and conservative billed-token bounds remain to be checked.
+The local Brave credential is located; the exact storage-rights plan remains unverified.
 GCP-managed Gemini is the accepted first LLM route, with OpenRouter as an alternative behind the same
 boundary; the exact model/endpoint remains unselected. See
 [provider options and cost model](docs/PROVIDERS_AND_COSTS.md).
@@ -235,9 +236,10 @@ G1 is complete as a concept and [bounded feasibility brief](docs/FEASIBILITY.md)
 G2's offline TypeScript foundation is complete with clean-checkout verification,
 synthetic boundary tests, Biome, build, secret scanning and configured CI; see
 [the delivery evidence](docs/PLAN.md#g2-development-foundation--complete).
-G3's bounded feasibility experiment is in setup; live observations have not
-started. [Current readiness](docs/G3_SETUP.md) distinguishes local control tests
-from the source/model/manual-package evidence still needed. Offline C corpus and
-validation work is in progress; no model observations or profile approvals exist.
-Operator access, provider conditions and model/region remain live entry checks.
+G3 has a measured partial extraction pilot; the full benchmark and seven-day
+discovery window remain incomplete. [Current readiness](docs/G3_SETUP.md) separates
+local checks, live observations and the remaining acceptance samples. Offline C
+validation is verified and synthetic Alpha facts are approved privately; no model
+output or generated package review exists. Actual plan rights and bounded model
+configuration remain live entry checks.
 G2 authorizes no subscriptions, deployment or real CV use.

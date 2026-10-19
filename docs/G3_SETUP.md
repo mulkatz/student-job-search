@@ -1,10 +1,10 @@
 # G3 setup and resumable experiment
 
-Status: setup in progress, 2026-10-19. G3 is not complete. No vacancy discovery,
-vacancy extraction, model call or Gmail write has run. Gmail now serves Firebase
+Status: partial live extraction pilot recorded, 2026-10-19. G3 is not complete.
+No discovery benchmark or model call has run. Gmail now serves Firebase
 Auth login only under [ADR 0010](adr/0010-manual-application-packages.md); no mailbox
-API/OAuth integration is part of current V1/G3. Two public-documentation
-HTTP diagnostics are recorded below; neither is a vacancy observation. The
+API/OAuth integration is part of current V1/G3. The pilot and separate diagnostics
+are recorded below; they do not pass branch acceptance. The
 seven-day observation window has not started. [FEASIBILITY.md](FEASIBILITY.md)
 remains the experiment contract.
 
@@ -12,18 +12,22 @@ remains the experiment contract.
 
 | Branch | Evidence available | Still needed before live execution |
 | --- | --- | --- |
-| A: discovery | Twenty non-personal queries frozen by the private ledger; official Brave/Greenhouse documentation checked | Intended Brave key and exact plan/storage entitlement; source-specific rights and up to five useful initial boards; reviewed live runner |
-| B: extraction | Implemented/offline-reviewed bounded HTTP/Cheerio library; counted documentation-only transport smoke | Thirty labeled vacancy/career/negative URLs, source-specific rights/retention, orchestration and measured live extraction accuracy |
-| C: model | Provisional EU Gemini candidate; implemented/offline-verified 3-profile/5-PDF/20-job/5-package corpus, strict schemas/prompts/scorer; local PDF text/page checks | Intended privately designated project access, region/endpoint, ADC/IAM/API/billing/terms; explicit profile approval and reviewed live runner |
+| A: discovery | Twenty frozen non-personal queries; local Brave credential located without disclosure | Exact plan/storage entitlement; source-specific rights and up to five useful initial boards; reviewed live runner |
+| B: extraction | Ten-target live pilot and frozen, independently reviewed labels; measured JSON-LD-only baseline; corrected access-marker heuristic | Complete 30-URL stratification, at least 30 present decisive values, sufficient retrieved details and a separately versioned next measurement |
+| C: model | Project/ADC access and enabled billing verified; Vertex API enabled; synthetic Alpha facts explicitly approved privately; offline CV/model corpus and scorer | Supported EU model configuration with conservative billed-token bounds, actual model compatibility/usage, reviewed live runner and generated results |
 | D: manual packages | Revised bounded rubric for same 5 C packages (2 email + 3 questionnaire) | Generated full content, source-evidenced questions mapped by internal IDs, supported claims, exact reviewed content hashes and explicit human review; no UI/clipboard acceptance yet |
 
-The user designated the intended GCP/Firebase project privately, preferring an EU
-region. A read-only project metadata check failed with a permission-denied result;
-project access is not established. Local CLI login/configuration and an ADC file
-are not proof of valid ADC, IAM, enabled APIs or actual billing. None of these
-checks authorized provisioning or established model access. Account/project IDs,
-credential paths and raw diagnostic output remain private. Brave key and exact
-storage-rights plan are still missing. Never paste keys or tokens into chat or Git.
+The intended GCP/Firebase project is designated privately, with an EU preference.
+After the earlier permission failure, current CLI and ADC project reads succeeded,
+and enabled billing was verified. The existing project's Vertex AI API
+(`aiplatform.googleapis.com`) was enabled successfully; no deployment, IAM or
+billing change was made. This establishes access prerequisites, not GenerateContent
+compatibility or an inference result. Private evidence: `gcp-current-check.json`,
+`vertex-api-setup.json` and `adc-check.json` under `.local/g3/`.
+The local Brave variable was normalized to `BRAVE_API_KEY`; no value was printed.
+The user has not confirmed the tariff/storage entitlement, so persistent Brave
+result storage and the discovery benchmark remain disabled. Firestore is the
+planned database; it does not confer Brave's contractual storage rights.
 
 The offline synthetic corpus has three profiles, three textual PDFs, one scan-only
 PDF, one malformed PDF, twenty labeled jobs and five package cases. The five pages
@@ -32,7 +36,10 @@ the scan has no extractable text and the malformed input fails local parsing.
 The strict corpus, prompts and report scorer are implemented and locally verified.
 The parsed corpus SHA-256 is
 `46d5eae10c2d38673429817e9da772ca9e14cb975825561a1a7a52697a160df3`.
-No model output or actual profile/package approval exists. Final private PDFs,
+The user explicitly approved Alpha's ten synthetic facts; the corpus-bound receipt
+is private at `.local/g3/profile-approval.json`. This is test-only approval, not real
+applicant data or approval of generated package content. Public fixtures remain
+pending; no model output or package-content review exists. Final private PDFs,
 page-text JSON and the source-hash manifest are under
 `.local/g3/model-fixtures-v1-final/`; their five PDFs are byte-identical to the
 visually inspected inputs. The final manifest matches the current corpus file.
@@ -186,17 +193,17 @@ and all fourteen model tests passed independently. Question/source and channel/s
 binding findings and the generator identifier-path guard were fixed and rechecked;
 no material findings remain.
 
-All four required experiment branches remain unexecuted against their acceptance
-samples. The transport smoke is not a passed source, extraction, model or manual
-package-review branch. Configure the intended private accounts/rights, finish the actual live
-adapters and fixture approvals, then start the seven-day coverage window with the frozen
+The ten-target pilot below is partial B evidence. A/C/D remain unexecuted against
+their required samples; no branch is passed. Resolve the remaining plan/model
+conditions and complete the actual live adapters, then start A's seven-day coverage window with the frozen
 queries. After that first discovery dispatch, use `status` for the next due Berlin
 date and record gaps; do not keep an agent waiting for calendar time.
 
 ## Current provider references
 
-Reviewed 2026-10-19; these are public-document checks, not account compatibility
-results. Existing subscriptions, credits, quotas, IAM and billing are unverified.
+Reviewed 2026-10-19. Project/ADC access, billing enablement and API setup have private
+observations above. Actual plan entitlements, credits, inference compatibility,
+quotas and account-specific billed rates remain unverified.
 
 - Brave currently lists USD 5 per 1,000 Search requests. One hundred attempts are
   forecast at USD 0.50 before account-specific credits, currency and taxes. Do not
@@ -226,6 +233,12 @@ results. Existing subscriptions, credits, quotas, IAM and billing are unverified
   also apply. Use only synthetic facts and GenerateContent without additional
   grounding/storage features. [Retention](https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention).
   CLI login does not establish ADC. [Local ADC setup](https://docs.cloud.google.com/docs/authentication/set-up-adc-local-dev-environment).
+  Gemini 3's `MINIMAL` thinking is not documented as disabling billed reasoning;
+  do not assume a 2,048 response setting bounds the combined reasoning/response
+  reservation without provider evidence. [Thinking controls](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/thinking).
+  The 2.5 Flash/Flash-Lite alternatives document thinking-off controls but retire
+  on 2026-10-20; they are not selected as a lasting default to evade this issue.
+  [Lifecycle](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions).
 Historical Gmail scope research and the documentation URL in the smoke table are
 retained as investigation history, not an integration prerequisite. ADR 0010
 replaces that branch with manual package review; do not request mailbox scopes,
@@ -239,3 +252,56 @@ USD provides currency/tax headroom for the above USD 0.94 subtotal; it is not an
 exchange-rate quote or invoice guarantee. Recompute if actual prices or tax/FX
 conditions do not fit. No new subscriptions, prepaid purchases, provisioning,
 automatic top-ups or deployment are authorized by this setup.
+
+## First live extraction pilot
+
+On 2026-10-19 an independently reviewed private operator script fetched ten
+operator-seeded Berlin employer URLs: four detail candidates, four career/list
+pages and two negative/unavailable candidates. This is a partial pilot, not the
+required 12/6/6/6 benchmark, a Brave result or an A coverage observation.
+Every page, redirect and robots send used the shared public-fetch boundary and
+durable `extraction`/`http` reservation. No credential, cookie, form interaction,
+rendering or automatic retry was used. Source-policy review and permitted private
+captures remain under `.local/g3/extraction/`; no raw listing is redistributed.
+Private retention is capped at seven days from capture, with shorter source
+restrictions taking priority. This is an operator limit, not a source licence.
+
+Three pages returned HTML; seven stopped at the original conservative challenge
+marker. Independent source inspection labeled one specific advert, one multi-role
+career page with a stale update date, and one maintenance page. Blocked captures
+retain ambiguous facts. Four decisive values were present on the specific advert;
+no candidate compatibility or current-vacancy coverage is inferred.
+
+Labels were frozen before the first extractor run and bound to capture hashes:
+manifest `e0a76c49fb51f4f9b1bb3688da7b9d26c4cd82b98c6ae9b289b382b746104b4a`,
+labels `dc72ba974708f80272b6e2093bd22b83925a5f7d204098b2d36b24e69e2bb2f9`.
+The JSON-LD-only extractor at `e4dbb153baf68bab3e320dcec3f75a3846917fb5`
+missed that visible-text advert: 0 correct details, 0/4 recovered decisive values,
+0 populated claims and 0 false confirmations. Recall is 0%; precision is undefined,
+not 100%. The scorer reports `incomplete` because the sample is too small.
+Private evidence: `captures.json`, `labels.json`, `freeze-receipt.json` and
+`baseline-report.json` in the same private directory.
+
+One separately reviewed diagnostic repeated a selected marker-blocked URL with
+identical anonymous headers and pinned transport. It retained only bounded inert
+metadata, not HTML: HTTP 200, ordinary job title/heading and readable text, without
+the inspected access-gate signals. That supports correcting incidental CAPTCHA
+word matching; it is not proof that all seven stops were false positives.
+The correction preserves strong Cloudflare loaders, password gates, explicit human
+checks and isolated widgets. It neither interacts with a challenge nor changes
+network/source limits. Original captures and baseline scores remain unchanged;
+new measurements must record the changed fetch method separately.
+
+HTTP attempts now total 21: 2 earlier documentation diagnostics, 18 pilot sends
+(10 pages and 8 robots requests), and 1 marker diagnostic. All are settled, paid
+API spend remains EUR 0, and A's seven-day clock remains unstarted. The offline
+benchmark rejects changed evidence, duplicate final pages and unsupported claims;
+synthetic tests do not establish live accuracy, source rights or human approval.
+
+After affected-code and evidence re-review, `npm run verify` passed Biome, strict
+types, 59 offline tests (5 core, 51 experiment, 3 scanner), both builds and
+Secretlint over 68 repository files. Independent review separately passed all
+10 benchmark and 13 fetch tests and adjudicated the three captured HTML pages.
+Documentation links, whitespace and the relative instruction symlink also passed.
+No new UI/browser journey, remote CI run, paid inference or source coverage pass is
+claimed by these checks.

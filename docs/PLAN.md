@@ -159,24 +159,37 @@ A fresh local clone of setup commit `9009001` passed `npm ci` and the same
 33-test `npm run verify` gate with no tracked changes. No remote CI run or push
 was performed; live account setup and all branch measurements remain pending.
 
-Current follow-up: the user designated the intended GCP/Firebase project privately
-with an EU preference. Read-only metadata checks failed, leaving actual API
-availability, billing, ADC/IAM and endpoint access unverified. Brave key and exact
-storage-rights plan are still missing; no project/account IDs belong in Git.
+Current follow-up: after the initial permission failure, the privately designated
+EU-preferred project's CLI/ADC reads and enabled billing were verified. Vertex AI
+API enablement succeeded without deployment, IAM or billing changes. The local
+Brave credential is located; actual plan/storage entitlement remains unresolved.
+No project/account IDs or credential values belong in Git.
 Offline C corpus work is implemented and locally verified: three synthetic profiles,
 five PDF inputs, twenty labeled jobs, five packages, strict schemas, prompts and scoring.
 Five valid PDF
 pages were visually inspected, scan-only text absence checked and malformed input
 rejected locally. The final corpus hash and private artifact references are in
 [G3_SETUP.md](G3_SETUP.md). The follow-up integrated gate passed Biome, strict types,
-47 offline tests, builds and Secretlint. No generated model observations or actual profile/content approvals
-exist; fixture/scorer code does not establish C or D acceptance.
+47 offline tests, builds and Secretlint. The user has since explicitly approved
+Alpha's ten synthetic facts in a private corpus-bound receipt. No generated model
+observations or package-content approvals exist; C/D remain incomplete.
 
-No paid provider call, vacancy discovery, model request, real CV processing or Gmail
-write has run. The two historical documentation HTTP diagnostics are the only
-counted transport probes; no seven-day observation window has started. Optional
-alternative providers/renderers remain unexecuted. The original 33-test setup gate
-above is historical evidence; the separate 47-test gate covers this follow-up.
+The first live B pilot examined ten local employer targets: three HTML captures,
+seven marker stops, one independently labeled specific advert and four present
+decisive values. Frozen labels preceded extraction. The JSON-LD-only baseline
+recovered 0/4 values and 0 correct details; precision is undefined with no populated
+claims. This small pilot is incomplete evidence. A separate bounded diagnostic
+identified an incidental-marker false positive and informed a reviewed correction;
+old results remain unchanged. The evidence and remaining 30-URL requirements are
+in [G3_SETUP.md](G3_SETUP.md#first-live-extraction-pilot).
+HTTP attempts total 21, all settled; no paid provider/model call, real CV processing
+or discovery benchmark has run. A's seven-day window remains unstarted. Optional
+alternative providers/renderers remain unexecuted. The final benchmark/fetch gate
+passed Biome, strict types, 59 offline tests, both builds and Secretlint over
+68 repository files. Independent review resolved findings and rechecked the
+affected code, three captured HTML pages, frozen labels and actual pilot score.
+Earlier 33/47-test gates remain historical evidence; no UI journey or remote CI
+run is claimed.
 
 - [ ] Verify current provider/model/region, source rights/plan and operator access;
       reserve within the experiment caps before live execution.
@@ -187,8 +200,9 @@ above is historical evidence; the separate 47-test gate covers this follow-up.
 - [ ] Test search-query → employer career page → vacancy extraction on smaller local
       employers; measure additional unique vacancies beyond structured samples.
 - [x] Implement offline C corpus, schemas, prompts and scorer; run the integrated gate.
-- [ ] Obtain explicit synthetic profile approval and execute the synthetic CV,
-      twenty-case matching and five-package model branch within the repair caps.
+- [x] Record explicit approval of the synthetic facts used for matching/generation.
+- [ ] Resolve the model's combined billed-token reservation boundary and execute
+      synthetic CV, twenty-case matching and five-package generation within caps.
 - [ ] Manually review those same five full packages: two email and three questionnaire
       packages, internal field IDs mapped to source-evidenced question text, correct missing/action states,
       no unsupported claims, and exact reviewed full-content hashes (ADR 0010).

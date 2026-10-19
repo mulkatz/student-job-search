@@ -1,6 +1,8 @@
 # Source discovery for V1
 
-Status: concept and provider research; no live connector or crawler implemented.
+Status: provider research and bounded experimental HTTP fetching; a partial live
+extraction pilot is recorded in [G3_SETUP.md](G3_SETUP.md#first-live-extraction-pilot).
+No production source connector or successful discovery benchmark is established.
 Official documentation reviewed: 2026-10-19. Access, costs, coverage, and page-level
 conditions still need a bounded feasibility test.
 

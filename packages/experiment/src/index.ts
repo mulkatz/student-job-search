@@ -1,4 +1,5 @@
 export * from "./extract.js";
+export * from "./extraction-benchmark.js";
 export { berlinDate, manifestHash } from "./ledger.js";
 export * from "./model-corpus.js";
 export * from "./model-prompts.js";

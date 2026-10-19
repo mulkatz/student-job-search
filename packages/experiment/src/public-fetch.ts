@@ -3,6 +3,7 @@ import { request as httpRequest } from "node:http";
 import { request as httpsRequest } from "node:https";
 import type { LookupFunction } from "node:net";
 import { setTimeout as delay } from "node:timers/promises";
+import { load } from "cheerio";
 import ipaddr from "ipaddr.js";
 
 export type PublicAddress = { address: string; family: 4 | 6 };
@@ -161,6 +162,52 @@ function abortable<T>(promise: Promise<T>, signal: AbortSignal): Promise<T> {
       .then(resolve, reject)
       .finally(() => signal.removeEventListener("abort", abort));
   });
+}
+
+function hasAccessChallenge(html: string): boolean {
+  // Strong Cloudflare challenge paths can also occur in inert inline loaders.
+  if (/cf-chl-|\/cdn-cgi\/challenge-platform\//i.test(html)) return true;
+  const $ = load(html);
+  if (
+    $(
+      "input[type='password'],[id*='cf-chl-'],[class*='cf-chl-'],script[src*='/cdn-cgi/challenge-platform/'],iframe[src*='/cdn-cgi/challenge-platform/']",
+    ).length
+  )
+    return true;
+  const widget =
+    $(
+      ".g-recaptcha,.h-captcha,.cf-turnstile,iframe[src*='recaptcha'],iframe[src*='hcaptcha.com'],iframe[src*='challenges.cloudflare.com']",
+    ).length > 0;
+  // Parse inertly: incidental scripts, documentation and embedded application
+  // widgets do not establish an access barrier. No widget is ever executed.
+  $("script,style,noscript,template,[hidden],[aria-hidden='true']").remove();
+  const headings = $("title,h1")
+    .toArray()
+    .map((element) => $(element).text().trim());
+  if (
+    headings.some((heading) =>
+      /^(?:captcha|security check|human verification)[\s.!:]*$|attention required.*cloudflare/i.test(
+        heading,
+      ),
+    )
+  )
+    return true;
+  // A public page may embed an application/newsletter CAPTCHA. Ignore that
+  // form's instructions while checking the surrounding public content.
+  $("form,footer,nav").remove();
+  const text = $("body").text().replace(/\s+/g, " ").trim();
+  const content = $("body").clone();
+  content.find("header,h1,h2,h3,h4,h5,h6").remove();
+  const surrounding = content.text().replace(/\s+/g, " ").trim();
+  // Branding/chrome alone must not turn a CAPTCHA-only gate into public content.
+  const substantive =
+    surrounding.length >= 40 && surrounding.split(" ").length >= 6;
+  return (
+    /\b(?:verify|confirm|prove) (?:that )?you(?: are|'re) (?:a )?human\b|\bcaptcha (?:is )?required\b|\b(?:complete|solve|pass) (?:the |a |this )?(?:captcha|security check) (?:to|before you can) (?:continue|proceed|access|view)\b|\bchecking your browser before (?:accessing|continuing)\b/i.test(
+      text,
+    ) ||
+    (widget && !substantive)
+  );
 }
 
 export function createPublicFetcher(options: PublicFetcherOptions) {
@@ -332,14 +379,8 @@ export function createPublicFetcher(options: PublicFetcherOptions) {
           };
         }
         const text = response.body.toString("utf8");
-        // Conservative marker heuristic can also match ordinary documentation;
-        // this outcome is not evidence that the source presented an auth wall.
-        if (
-          purpose === "page" &&
-          /(?:captcha|cf-chl-|verify you are human|<input[^>]+type\s*=\s*["']?password)/i.test(
-            text,
-          )
-        ) {
+        // Marker evidence remains conservative, not proof of an auth wall.
+        if (purpose === "page" && hasAccessChallenge(text)) {
           return {
             kind: "blocked",
             reason: "authentication_or_challenge_marker",
