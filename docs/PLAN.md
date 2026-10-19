@@ -242,6 +242,23 @@ the user, and observe the remaining nineteen matching cases from 2026-10-20 with
 caps. Source rights and the unstarted seven-day discovery window remain separate
 dependencies; a handoff to G4 does not complete them.
 
+The user challenged the internal 40-HTTP/day throttle. The experimental daily
+restriction is removed under ADR 0012 while retaining the cumulative 200-request cap,
+all existing accounting, explicit bounded runs, source limits, pacing and persisted
+429/Retry-After handling. This is a local runner rule, not an observed provider
+quota. Search/model daily controls and A's seven-day sampling protocol are separate.
+Acceptance: more than 40 same-day HTTP attempts survive restart, attempt 200 fits
+and attempt 201 is denied, while failures/outstanding work and the other caps count.
+The integrated `npm run verify` passes Biome, strict types, 75 offline tests
+(5 core, 67 experiment, 3 scanner), both builds and Secretlint over 74 repository
+files. The private cumulative ledger is unchanged by these checks.
+
+Next bounded B cohort: prepare eight new static-detail targets across six hosted
+employer origins with separate source-policy records and a reviewed opt-in capture
+operator. Preserve original captures/labels and collect new labels before extraction.
+Known source restrictions exclude affected targets; no solver or paid fallback is
+introduced. This cohort leaves JS, career and negative strata outstanding.
+
 - [ ] Verify current provider/model/region, source rights/plan and operator access;
       reserve within the experiment caps before live execution.
 - [ ] Review source terms, attribution, storage/retention, quotas, endpoints and

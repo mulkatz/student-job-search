@@ -71,7 +71,7 @@ usage limits and provider controls are both required. No automatic top-ups.
 | --- | --- | --- |
 | Search requests across all providers | 100 attempts | Max 40/day; pagination/retries count |
 | Structured-source API requests | 100 attempts | Up to 5 initial employer boards; provider quotas also apply |
-| Direct-page HTTP traffic | 200 requests | Max 40/day; robots, redirects, retries and browser subrequests count |
+| Direct-page HTTP traffic | 200 requests | No daily cap; robots, redirects, retries and browser subrequests count |
 | Raw job/lead records examined | 400 | Stop backfill expansion at this bound |
 | LLM requests across all tasks/providers | 100 attempts | Max 30/day, 500k input and 100k billed output tokens total |
 | Optional fallback sample | 10 unresolved URLs per candidate | At most one browser and one hosted comparison; shared global caps apply |
@@ -80,6 +80,10 @@ usage limits and provider controls are both required. No automatic top-ups.
 Limits are experiment defaults, not the unattended production configuration. Do not
 buy a subscription or credit bundle to satisfy a sample. If a provider cannot bound
 its cost or fit within the plan, record that constraint and leave its branch blocked.
+The former 40 HTTP requests/day limit was a local experiment control, not a tool or
+provider quota; [ADR 0012](adr/0012-http-experiment-throughput.md) removes it without
+resetting cumulative usage. Source-specific pacing, provider quotas and handling of
+429/`Retry-After` still apply; search and LLM daily limits are unchanged.
 
 ## A. Discovery and useful coverage
 

@@ -47,6 +47,19 @@ visually inspected inputs. The final manifest matches the current corpus file.
 
 ## Runner boundary
 
+The earlier 40 direct-HTTP requests/day was an internal G3 planning throttle,
+enforced by `assertResourceCaps` in `packages/experiment/src/ledger.ts`; it was not
+a Firebase, Brave or browser quota. At the user's request, ADR 0012 removes this
+HTTP daily restriction. The cumulative 200-HTTP cap, explicit bounded runs,
+per-origin pacing, source-specific limits and 429/Retry-After handling remain.
+Search's 40/day and model's 30/day are separate internal experiment controls;
+neither is evidence that an external provider has rejected a request at that count.
+No existing ledger/configuration is reset or migrated.
+The updated integrated `npm run verify` passed Biome, strict types, 75 offline
+tests, both builds and Secretlint. Synthetic restart coverage admits all 200 HTTP
+attempts on one Berlin date and refuses attempt 201, retaining failed/outstanding
+accounting. No test calls an external provider or changes the private live ledger.
+
 The first runner slice manages local control state. Initialize it only once:
 
 ```sh
@@ -441,6 +454,9 @@ search/structured requests remain zero and the discovery clock remains unstarted
 The 30/day model cap prevents further model calls on 2026-10-19 Europe/Berlin.
 The next possible model date is 2026-10-20, subject to cumulative caps and current
 operator/source checks; do not reset the ledger or wait in a loop for midnight.
+The model operators remain frozen against their original source/build hashes.
+After the HTTP-cap code change, prepare/review a new guarded operator version
+before further model dispatch; do not edit old manifests to hide that change.
 
 ## Brave account and storage condition
 

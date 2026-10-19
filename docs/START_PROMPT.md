@@ -13,7 +13,7 @@ daily runs. Work in the existing repository; this is not a new scaffold or deplo
 
 Read AGENTS.md, CONCEPT.md, docs/PLAN.md and docs/G3_SETUP.md first. Consult
 docs/FEASIBILITY.md, docs/OPEN_QUESTIONS.md and accepted ADRs 0002/0004/0005,
-0008/0010/0011 where relevant. Inspect the actual branch, commits and worktree;
+0008/0010/0011/0012 where relevant. Inspect the actual branch, commits and worktree;
 preserve unrelated changes. Use separate planning, implementation and independent
 review agents with bounded file ownership, and resolve/re-review material findings.
 
@@ -74,8 +74,11 @@ Never invent candidate facts, work authorization, recruiter identities or addres
 Keep project/account identifiers, credentials, real applicant data, licensed results
 and raw captures out of Git. Inspect private operator state only where needed; never
 print secrets. Use placeholders in tracked config and read current credentials privately.
-Preserve cumulative G3 caps and the EUR 50/month ceiling. No new subscription,
-credit bundle, top-up, IAM/billing change, production deployment or real-CV use is
+Preserve cumulative G3 caps and the EUR 50/month ceiling.
+The internal HTTP daily cap is removed under ADR 0012; the cumulative HTTP cap,
+bounded runs, source pacing and provider limits remain. Search/model daily controls
+and A's seven-day sampling protocol are separate internal experiment constraints.
+No new subscription, credit bundle, top-up, IAM/billing change, production deployment or real-CV use is
 authorized by this prompt. Reuse applicable existing authorization; ask only for
 genuinely missing access, material unresolved choices or destructive/public actions.
 

@@ -196,7 +196,6 @@ test("frozen manifest and malformed stored state fail closed after restart", () 
 test("daily and whole-experiment request caps count reservations and retries across restarts", () => {
   for (const [kind, daily, total, branch] of [
     ["search", 40, 100, "discovery"],
-    ["http", 40, 200, "extraction"],
     ["llm", 30, 100, "model"],
     ["structured", 100, 100, "discovery"],
   ] as const) {
@@ -230,6 +229,55 @@ test("daily and whole-experiment request caps count reservations and retries acr
     } finally {
       fixture.cleanup();
     }
+  }
+});
+
+test("HTTP has no daily cap while all attempts retain the cumulative 200 cap across restarts", () => {
+  const fixture = setup();
+  const httpRequest = (id: string) =>
+    request(id, {
+      kind: "http",
+      branch: "extraction",
+      queryId: undefined,
+    });
+  try {
+    fixture.store.reserve(httpRequest("http_failed"), start);
+    fixture.store.beginLiveAttempt("http_failed", { liveOptIn: true }, start);
+    fixture.store.settle(
+      "http_failed",
+      { outcome: "failed", actualCostMicroEuro: 0 },
+      start,
+    );
+    fixture.store.reserve(httpRequest("http_retry_1"), start);
+    fixture.store.beginLiveAttempt("http_retry_1", { liveOptIn: true }, start);
+    let store = fixture.store;
+    for (let index = 2; index < 200; index++) {
+      if (index === 40) {
+        store = new ExperimentStore(fixture.root, manifest);
+        assert.equal(store.status(start).usage.attempts.http, 40);
+      }
+      store.reserve(httpRequest(`http_${index}`), start);
+    }
+    const restarted = new ExperimentStore(fixture.root, manifest);
+    const state = restarted.read();
+    assert.equal(state.attempts.length, 200);
+    assert.equal(state.attempts[0]?.outcome, "failed");
+    assert.equal(state.attempts[1]?.outcome, "dispatched");
+    assert.equal(state.attempts[199]?.outcome, "reserved");
+    assert.deepEqual(
+      [...new Set(state.attempts.map((attempt) => attempt.reservedAt))],
+      [start.toISOString()],
+    );
+    assert.equal(restarted.status(start).usage.attempts.http, 200);
+    assert.equal(restarted.status(start).usage.costMicroEuro.extraction, 199);
+    assert.equal(restarted.status(start).observation.startedAt, null);
+    assert.throws(
+      () => restarted.reserve(httpRequest("http_201"), start),
+      /Whole-experiment http cap reached/,
+    );
+    assert.equal(restarted.read().attempts.length, 200);
+  } finally {
+    fixture.cleanup();
   }
 });
 

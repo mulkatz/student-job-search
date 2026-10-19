@@ -113,7 +113,6 @@ export function assertResourceCaps(
   )) {
     for (const [kind, cap] of Object.entries({
       search: 40,
-      http: 40,
       llm: 30,
     })) {
       if (

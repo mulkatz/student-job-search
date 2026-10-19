@@ -4,6 +4,7 @@
 - Date: 2026-10-19
 - Partially superseded: Gmail/mailbox integration clauses only by
   [ADR 0010](0010-manual-application-packages.md); other decisions remain accepted.
+- Daily HTTP limit superseded by [ADR 0012](0012-http-experiment-throughput.md).
 
 ## Context
 
