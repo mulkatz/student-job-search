@@ -30,6 +30,34 @@ export function windowEnd(state: State): string | null {
 export function effectiveCost(attempt: Attempt): number {
   return attempt.actualCostMicroEuro ?? attempt.request.upperCostMicroEuro;
 }
+function effectiveTokens(attempt: Attempt) {
+  return {
+    input:
+      attempt.actualModelUsage?.inputTokens ?? attempt.request.upperInputTokens,
+    output: attempt.actualModelUsage
+      ? attempt.actualModelUsage.candidateTokens +
+        attempt.actualModelUsage.thoughtTokens
+      : attempt.request.upperOutputTokens,
+  };
+}
+export function tokenOverrun(state: State): boolean {
+  const counts = usage(state);
+  return (
+    counts.effectiveInputTokens > 500_000 ||
+    counts.effectiveOutputTokens > 100_000 ||
+    state.attempts.some((attempt) => {
+      const tokens = effectiveTokens(attempt);
+      return (
+        tokens.input > attempt.request.upperInputTokens ||
+        tokens.output > attempt.request.upperOutputTokens
+      );
+    })
+  );
+}
+export function assertNoTokenOverrun(state: State): void {
+  if (tokenOverrun(state))
+    throw new Error("Observed model token overrun requires reconciliation.");
+}
 export function usage(state: State) {
   const costMicroEuro = Object.fromEntries(
     branches.map((branch) => [
@@ -55,6 +83,14 @@ export function usage(state: State) {
       (sum, attempt) => sum + attempt.request.upperOutputTokens,
       0,
     ),
+    effectiveInputTokens: state.attempts.reduce(
+      (sum, attempt) => sum + effectiveTokens(attempt).input,
+      0,
+    ),
+    effectiveOutputTokens: state.attempts.reduce(
+      (sum, attempt) => sum + effectiveTokens(attempt).output,
+      0,
+    ),
     upperRecords: state.attempts.reduce(
       (sum, attempt) => sum + attempt.request.upperRecords,
       0,
@@ -62,7 +98,10 @@ export function usage(state: State) {
     costMicroEuro,
   };
 }
-export function assertResourceCaps(state: State): void {
+export function assertResourceCaps(
+  state: State,
+  preserveObservedOverruns = false,
+): void {
   const counts = usage(state);
   const wholeCaps = { search: 100, structured: 100, http: 200, llm: 100 };
   for (const [kind, cap] of Object.entries(wholeCaps)) {
@@ -88,9 +127,33 @@ export function assertResourceCaps(state: State): void {
       }
     }
   }
+  // Validate admission bounds without discarding an unexpected observed overrun.
+  // Reserve/dispatch use actual effective totals and separately block any overrun.
+  const input = preserveObservedOverruns
+    ? state.attempts.reduce(
+        (sum, attempt) =>
+          sum +
+          Math.min(
+            effectiveTokens(attempt).input,
+            attempt.request.upperInputTokens,
+          ),
+        0,
+      )
+    : counts.effectiveInputTokens;
+  const output = preserveObservedOverruns
+    ? state.attempts.reduce(
+        (sum, attempt) =>
+          sum +
+          Math.min(
+            effectiveTokens(attempt).output,
+            attempt.request.upperOutputTokens,
+          ),
+        0,
+      )
+    : counts.effectiveOutputTokens;
   if (
-    counts.upperInputTokens > 500_000 ||
-    counts.upperOutputTokens > 100_000 ||
+    input > 500_000 ||
+    output > 100_000 ||
     counts.upperRecords > 400 ||
     new Set(
       state.attempts
@@ -160,7 +223,7 @@ export function validateState(input: unknown, manifest: Manifest): State {
     if (end !== null && berlinDate(attempt.reservedAt) > end)
       throw new Error("Attempt outside the observation window.");
   }
-  assertResourceCaps(state);
+  assertResourceCaps(state, true);
   return state;
 }
 export function observationStatus(state: State, now: string) {

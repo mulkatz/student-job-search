@@ -204,6 +204,18 @@ same bytes. Original pilot labels/scores remain unchanged. This is transport
 evidence only, not a full B, freshness or compatibility pass; see
 [the follow-up evidence](G3_SETUP.md#post-correction-transport-check).
 
+Next bounded C task: preserve immutable per-call reservations while accounting
+complete settled model usage separately (ADR 0011), add pure Vertex request/response
+validation, and independently review the private opt-in operator before dispatch.
+Acceptance: pending/ambiguous usage keeps its full bound, all existing caps remain,
+reported overruns persist and block new calls, and a sequential synthetic live case
+records its real endpoint, payload, output, usage and first-pass validation.
+CountTokens is a separate free preflight, conservatively counted against model
+request limits; it is not a generated CV or matching result. No solver or V1 UI is added.
+The accounting/helpers and private operator are independently reviewed, with
+findings fixed and rechecked. The integrated gate passes 74 offline tests, Biome,
+strict types, both builds and Secretlint; no dispatch is claimed by that gate.
+
 - [ ] Verify current provider/model/region, source rights/plan and operator access;
       reserve within the experiment caps before live execution.
 - [ ] Review source terms, attribution, storage/retention, quotas, endpoints and

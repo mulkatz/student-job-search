@@ -127,11 +127,13 @@ mailbox draft creation or automatic copying/submission is part of the workflow.
 The proposed stack is TypeScript, React, Cloud Run Job/API, Firebase Auth/Hosting,
 Firestore, private Cloud Storage, Secret Manager, and a replaceable LLM adapter.
 A GCP/Firebase project is designated privately with an EU preference. CLI/ADC
-project reads, enabled billing and Vertex API setup have been verified; actual
-inference compatibility and conservative billed-token bounds remain to be checked.
+project reads, enabled billing and Vertex API setup have been verified. Conservative
+model reservations and settled usage accounting are implemented; actual inference
+compatibility remains to be checked.
 The local Brave credential is located; the exact storage-rights plan remains unverified.
 GCP-managed Gemini is the accepted first LLM route, with OpenRouter as an alternative behind the same
-boundary; the exact model/endpoint remains unselected. See
+boundary; the next synthetic test selects Gemini 3.5 Flash-Lite via the EU v1 endpoint,
+without a live compatibility result yet. See
 [provider options and cost model](docs/PROVIDERS_AND_COSTS.md).
 
 Prefer a deterministic pipeline; no agent orchestration framework, vector database,

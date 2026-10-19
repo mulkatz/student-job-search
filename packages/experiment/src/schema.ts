@@ -90,6 +90,27 @@ export const requestSchema = z
   });
 
 const timestamp = z.iso.datetime({ precision: 3 });
+export const modelUsageSchema = z
+  .strictObject({
+    inputTokens: integer,
+    candidateTokens: integer,
+    thoughtTokens: integer,
+    evidenceRef: z
+      .string()
+      .max(500)
+      .regex(/^\.local\/[a-zA-Z0-9_./-]+$/)
+      .refine((value) =>
+        value
+          .split("/")
+          .slice(1)
+          .every((part) => part && part !== "." && part !== ".."),
+      ),
+  })
+  .refine(
+    (usage) =>
+      Number.isSafeInteger(usage.candidateTokens + usage.thoughtTokens),
+    "Combined output token count must be a safe integer.",
+  );
 export const attemptSchema = z
   .strictObject({
     request: requestSchema,
@@ -104,6 +125,7 @@ export const attemptSchema = z
     ]),
     settledAt: timestamp.optional(),
     actualCostMicroEuro: integer.optional(),
+    actualModelUsage: modelUsageSchema.optional(),
   })
   .superRefine((attempt, context) => {
     const terminal =
@@ -121,7 +143,11 @@ export const attemptSchema = z
         attempt.settledAt < (attempt.dispatchedAt ?? attempt.reservedAt)) ||
       (attempt.dispatchedAt === undefined &&
         terminal &&
-        attempt.actualCostMicroEuro !== 0)
+        attempt.actualCostMicroEuro !== 0) ||
+      (attempt.actualModelUsage !== undefined &&
+        (attempt.request.kind !== "llm" ||
+          !terminal ||
+          attempt.dispatchedAt === undefined))
     ) {
       context.addIssue({
         code: "custom",

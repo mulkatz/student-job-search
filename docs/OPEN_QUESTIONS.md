@@ -46,8 +46,9 @@ The G3 experiment has a EUR 5 planning sublimit and shared work caps in
 
 **Current access:** the EU-preferred project is designated privately. CLI/ADC
 project reads and enabled billing are verified, and Vertex API enablement succeeded.
-Actual inference compatibility and conservative reasoning/output bounds remain
-unresolved. The local Brave credential is located; plan/storage entitlement remains
+Conservative combined-output reservations and settled usage accounting are
+implemented; actual inference compatibility and reported usage remain unverified.
+The local Brave credential is located; plan/storage entitlement remains
 unverified. Account/project identifiers and credential values stay private.
 
 Verify operator/project access, authentication setup, actual source

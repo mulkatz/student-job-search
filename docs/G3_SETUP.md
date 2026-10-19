@@ -233,9 +233,12 @@ quotas and account-specific billed rates remain unverified.
   also apply. Use only synthetic facts and GenerateContent without additional
   grounding/storage features. [Retention](https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention).
   CLI login does not establish ADC. [Local ADC setup](https://docs.cloud.google.com/docs/authentication/set-up-adc-local-dev-environment).
-  Gemini 3's `MINIMAL` thinking is not documented as disabling billed reasoning;
-  do not assume a 2,048 response setting bounds the combined reasoning/response
-  reservation without provider evidence. [Thinking controls](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/thinking).
+  Gemini 3's `MINIMAL` thinking does not disable billed reasoning. The
+  GenerateContent-specific guide now explicitly describes a combined
+  thought/answer cutoff. Together with the Cloud model's maximum output limit,
+  this supports the conservative 65,536-token per-call reservation below; the
+  exact Cloud v1/model page does not itself repeat the combined definition.
+  [Combined cutoff](https://ai.google.dev/gemini-api/docs/generate-content/thinking#token-limits-and-max_output_tokens).
   The 2.5 Flash/Flash-Lite alternatives document thinking-off controls but retire
   on 2026-10-20; they are not selected as a lasting default to evade this issue.
   [Lifecycle](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions).
@@ -326,3 +329,43 @@ captures, frozen labels and baseline scores are unchanged. HTTP attempts now
 total 22, all settled, with no retained live lock or reconciliation requirement.
 Paid API spend remains EUR 0; the discovery clock has not started. No solver,
 browser, new dependency or provider account was used.
+
+## Conservative synthetic model dispatch
+
+The next selected configuration is Gemini 3.5 Flash-Lite Standard PayGo in EU,
+with a single direct v1 `generateContent` response, `candidateCount: 1`, JSON
+response schemas, `maxOutputTokens: 2048` and `thinkingLevel: MINIMAL`.
+No tools, grounding, continuation loop, explicit cache or thought summaries are
+requested. The smaller configured output is not treated as thinking-off: reserve
+the full documented 65,536 model output maximum before each generation.
+[ADR 0011](adr/0011-settled-model-token-accounting.md) accounts for complete settled
+input/candidate/thought usage while retaining original bounds and every existing
+500k/100k, daily/whole-attempt and monetary cap. Unknown usage retains its bound;
+unexpected overruns remain recorded and stop further dispatch.
+
+Pure helpers validate request shapes, one-candidate text responses, complete usage
+totals and conservative EUR cost. These offline checks do not establish live
+compatibility. The private single-case operator must be reviewed before execution;
+its source/build/script hashes, actual synthetic PDF/text and raw provider evidence
+remain private. No generated result exists yet.
+
+Each case first uses the same payload in `CountTokens`, then reserves the greater
+of its estimated input plus 1,024 tokens or full request UTF-8 bytes plus 1,024.
+The preflight is free but conservatively counts as an LLM request in the ledger;
+it consumes no billed generation tokens. Thus preflight calls and actual generation
+results are reported separately, with both counted against request caps.
+[CountTokens pricing and quota](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/get-token-count#pricing-and-quota),
+[request fields](https://docs.cloud.google.com/gemini-enterprise-agent-platform/reference/rest/v1/projects.locations.publishers.models/countTokens).
+Google's pricing states non-200 responses are not charged for input/output tokens;
+that does not authorize inventing usage metadata or releasing unknown generation
+token bounds. [Pricing](https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing).
+The operator has no automatic retry, and persists 429 cooldowns. A timeout or
+unusable usage response retains the reservation and requires reconciliation.
+
+After independent review resolved incomplete-usage and cooldown-concurrency
+findings, `npm run verify` passed Biome, strict types, 74 offline tests (5 core,
+66 experiment, 3 scanner), both builds and Secretlint over 72 repository files.
+Independent isolated checks also passed all eight Vertex and seven usage tests.
+The private operator passed syntax and three opt-in/input rejection checks without
+changing the real ledger. Fresh local parsing of all three textual PDFs matches
+the inspected artifact hashes/text. These are pre-dispatch checks, not C/D results.

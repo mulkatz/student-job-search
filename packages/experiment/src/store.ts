@@ -16,9 +16,12 @@ import { join, resolve } from "node:path";
 import { z } from "zod";
 import {
   assertBudget,
+  assertNoTokenOverrun,
+  assertResourceCaps,
   berlinDate,
   manifestHash,
   observationStatus,
+  tokenOverrun,
   usage,
   validateState,
   windowEnd,
@@ -27,6 +30,7 @@ import {
   configSchema,
   type Manifest,
   manifestSchema,
+  modelUsageSchema,
   requestSchema,
   type State,
 } from "./schema.js";
@@ -40,6 +44,7 @@ const settlementSchema = z.discriminatedUnion("outcome", [
       .int()
       .nonnegative()
       .max(Number.MAX_SAFE_INTEGER),
+    actualModelUsage: modelUsageSchema.optional(),
   }),
   z.strictObject({ outcome: z.literal("ambiguous") }),
 ]);
@@ -179,6 +184,7 @@ export class ExperimentStore {
     const request = requestSchema.parse(input);
     return this.update(now, (state, timestamp) => {
       assertBudget(state);
+      assertNoTokenOverrun(state);
       const end = windowEnd(state);
       if (end !== null && berlinDate(timestamp) > end)
         throw new Error("Observation window ended; no new attempts.");
@@ -190,6 +196,7 @@ export class ExperimentStore {
         outcome: "reserved",
       });
       assertBudget(state);
+      assertResourceCaps(state);
     });
   }
 
@@ -197,6 +204,7 @@ export class ExperimentStore {
     optInSchema.parse(optInInput);
     return this.update(now, (state, timestamp) => {
       assertBudget(state);
+      assertNoTokenOverrun(state);
       const attempt = state.attempts.find((entry) => entry.request.id === id);
       if (attempt?.outcome !== "reserved")
         throw new Error("Attempt is not an undispatched reservation.");
@@ -230,9 +238,12 @@ export class ExperimentStore {
       }
       attempt.outcome = settlement.outcome;
       attempt.settledAt = timestamp;
-      if (settlement.outcome !== "ambiguous")
+      if (settlement.outcome !== "ambiguous") {
         attempt.actualCostMicroEuro = settlement.actualCostMicroEuro;
-      // Persist unexpected real-cost overruns; the next reservation/dispatch fails closed.
+        if (settlement.actualModelUsage !== undefined)
+          attempt.actualModelUsage = settlement.actualModelUsage;
+      }
+      // Preserve observed cost/token overruns; subsequent reserve/dispatch fails closed.
     });
   }
 
@@ -249,6 +260,7 @@ export class ExperimentStore {
       manifestHash: state.manifestHash,
       usage: usage(state),
       budgetOverrun,
+      tokenOverrun: tokenOverrun(state),
       outstandingAttempts: state.attempts.filter((attempt) =>
         ["reserved", "dispatched", "ambiguous"].includes(attempt.outcome),
       ).length,
