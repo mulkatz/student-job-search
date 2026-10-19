@@ -182,7 +182,7 @@ claims. This small pilot is incomplete evidence. A separate bounded diagnostic
 identified an incidental-marker false positive and informed a reviewed correction;
 old results remain unchanged. The evidence and remaining 30-URL requirements are
 in [G3_SETUP.md](G3_SETUP.md#first-live-extraction-pilot).
-HTTP attempts total 21, all settled; no paid provider/model call, real CV processing
+HTTP attempts total 22, all settled; no paid provider/model call, real CV processing
 or discovery benchmark has run. A's seven-day window remains unstarted. Optional
 alternative providers/renderers remain unexecuted. The final benchmark/fetch gate
 passed Biome, strict types, 59 offline tests, both builds and Secretlint over
@@ -197,6 +197,12 @@ and the existing access policy. It remains a deferred, untested candidate in
 the pilot has no confirmed real CAPTCHA gate, and research does not supersede
 ADR 0005's stop rule or authorize US processing, purchases or application-form writes.
 The user explicitly deferred solver work until after the current gate.
+A separately versioned post-correction fetch retrieved one new career/list page
+in one request. Independent inspection confirmed readable role summaries and
+incidental CAPTCHA text; the old marker applied offline would have stopped those
+same bytes. Original pilot labels/scores remain unchanged. This is transport
+evidence only, not a full B, freshness or compatibility pass; see
+[the follow-up evidence](G3_SETUP.md#post-correction-transport-check).
 
 - [ ] Verify current provider/model/region, source rights/plan and operator access;
       reserve within the experiment caps before live execution.

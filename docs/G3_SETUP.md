@@ -10,7 +10,7 @@ remains the experiment contract.
 
 ## Current readiness
 
-| Branch | Evidence available | Still needed before live execution |
+| Branch | Evidence available | Remaining prerequisites or measurements |
 | --- | --- | --- |
 | A: discovery | Twenty frozen non-personal queries; local Brave credential located without disclosure | Exact plan/storage entitlement; source-specific rights and up to five useful initial boards; reviewed live runner |
 | B: extraction | Ten-target live pilot and frozen, independently reviewed labels; measured JSON-LD-only baseline; corrected access-marker heuristic | Complete 30-URL stratification, at least 30 present decisive values, sufficient retrieved details and a separately versioned next measurement |
@@ -292,7 +292,7 @@ checks and isolated widgets. It neither interacts with a challenge nor changes
 network/source limits. Original captures and baseline scores remain unchanged;
 new measurements must record the changed fetch method separately.
 
-HTTP attempts now total 21: 2 earlier documentation diagnostics, 18 pilot sends
+At the first pilot's close, HTTP attempts totaled 21: 2 documentation diagnostics, 18 pilot sends
 (10 pages and 8 robots requests), and 1 marker diagnostic. All are settled, paid
 API spend remains EUR 0, and A's seven-day clock remains unstarted. The offline
 benchmark rejects changed evidence, duplicate final pages and unsupported claims;
@@ -305,3 +305,24 @@ Secretlint over 68 repository files. Independent review separately passed all
 Documentation links, whitespace and the relative instruction symlink also passed.
 No new UI/browser journey, remote CI run, paid inference or source coverage pass is
 claimed by these checks.
+
+## Post-correction transport check
+
+A separately prepared and independently reviewed one-target follow-up used fetch
+method `8321304372e1c58326eb96bc129102b5f282ab4a`, with guarded source/build/script
+hashes. It shared the original lock, persisted cooldowns and robots cache.
+One new career-page URL returned HTML in one request on 2026-10-19 at 17:41:45 UTC.
+Independent inspection found a readable list with three role summaries/detail
+links and incidental CAPTCHA text, without inspected access-gate evidence.
+Applying the old marker offline to these same captured bytes would have stopped
+the page. This is one concrete post-correction observation, not proof that all
+seven earlier stops were false positives. It establishes no vacancy freshness,
+candidate compatibility, extraction accuracy or full B pass.
+
+Private evidence is under `.local/g3/extraction-followup/`: `method.json`,
+`reeham_careers/capture.json`, `source-inspection.json` and `marker-comparison.json`.
+The capture uses the same maximum seven-day private retention; original pilot
+captures, frozen labels and baseline scores are unchanged. HTTP attempts now
+total 22, all settled, with no retained live lock or reconciliation requirement.
+Paid API spend remains EUR 0; the discovery clock has not started. No solver,
+browser, new dependency or provider account was used.
