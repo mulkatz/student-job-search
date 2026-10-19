@@ -1,0 +1,45 @@
+# Local configuration and private scratch data
+.DS_Store
+.local/
+.env
+.env.*
+!.env.example
+*.local
+*.local.*
+*.log
+
+# Credentials and personal applicant files (use .local/ for private captures)
+*.pem
+*.key
+credentials*.json
+client_secret*.json
+service-account*.json
+serviceAccount*.json
+cv*.pdf
+resume*.pdf
+*.docx
+
+# Dependencies, build output, caches, and test artifacts
+node_modules/
+.pnpm-store/
+.turbo/
+.cache/
+dist/
+build/
+coverage/
+playwright-report/
+test-results/
+artifacts/
+*.tsbuildinfo
+
+# Local cloud/emulator and infrastructure state
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+terraform.tfvars
+*.auto.tfvars
