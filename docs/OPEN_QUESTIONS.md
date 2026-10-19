@@ -39,15 +39,20 @@ and decisive missing evidence prevents automatic drafting. The original proposal
 search, and LLM on 2026-10-19. This is a budget constraint; no subscription or
 resource provisioning is requested by the conception/setup task.
 
-Confirm the operator, cloud/billing project, per-test ceiling,
-available source credentials, consenting Gmail test account, and who may access
-candidate data. Decide LLM provider/data handling and retention before sending real
-CV-derived facts. Include search-provider queries and page-fetch limits in the cost
+**Available, user-reported:** Firebase project with Blaze enabled, Gmail test account,
+and Brave Search API. No live connection, model endpoint, OAuth client/refresh flow,
+or Brave storage-rights plan has been verified. Project/IAM/region details and other
+provider accounts remain unspecified.
+
+Confirm the operator/project access, per-test ceiling, OAuth setup, actual source
+plan/credentials configuration, and who may access candidate data. Decide LLM
+provider/data handling and retention before sending real CV-derived facts.
+Include search-provider queries and page-fetch limits in the cost
 ceiling. Candidate consent is separate from the developer requesting work.
 
 **Current handling:** documentation and offline synthetic setup can continue. No
-provider account, spend, OAuth consent, or personal-data access is assumed. The
-original 400 listings / 40 evaluations / 5 drafts caps are proposals, not spending
+unreported provider account, spend, OAuth consent, or personal-data access is assumed.
+The original 400 listings / 40 evaluations / 5 drafts caps are proposals, not spending
 authorization or a validated budget.
 
 ## Q3: source rights and useful coverage
@@ -62,7 +67,9 @@ the two search streams separately; the numerical threshold remains open. Include
 search-discovered small-employer jobs, incremental coverage beyond structured
 sources, and the distinction between a generic careers page and an actual vacancy.
 
-Brave is a candidate, not a selected provider. Search-result storage rights must fit
+Brave access is available, but remains an unverified integration and plan. Consider
+Serper, Tavily, and Exa alongside it using the comparison in
+[PROVIDERS_AND_COSTS.md](PROVIDERS_AND_COSTS.md). Search-result storage rights must fit
 the chosen plan, and search API access does not grant rights to third-party pages.
 Google Custom Search JSON API is closed to new customers and scheduled to end on
 January 1, 2027; do not use it as an assumed available default. See dated official
@@ -116,8 +123,13 @@ an ADR, rather than copying the sample types as final contracts:
 
 **Needed before:** the affected slice or publication, not initial documentation.
 
-- Select runtime/tool versions, framework, test tooling, deployment approach, and
-  LLM provider after checking maintained official documentation.
+- Select runtime/tool versions, framework, test tooling, and deployment approach
+  after checking maintained official documentation. The first LLM route is open:
+  GCP-managed Gemini is recommended initially; OpenRouter remains an alternative
+  behind the same boundary. See [the proposed provider ADR](adr/0004-provider-boundaries-and-initial-candidates.md).
+- Select the first extraction dependency using [the delegated market research](EXTRACTION_OPTIONS.md):
+  controlled HTTP/Cheerio is recommended, with at most one evidence-driven
+  Playwright/Firecrawl fallback. Costs and access conditions still need live evaluation.
 - Define the human-label rubric, metric denominators, and minimum positive examples;
   tune provisional fit/confidence thresholds against the labeled fixture.
 - Select a license and attribution before public distribution. The reference

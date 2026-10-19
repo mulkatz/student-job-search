@@ -23,6 +23,8 @@ application text, and unsent Gmail drafts as well as job discovery.
 - [Pilot scope and ownership decision](docs/adr/0002-pilot-and-ownership.md)
 - [V1/V2 and broader discovery decision](docs/adr/0003-release-scope-and-web-discovery.md)
 - [Web search and direct-page discovery](docs/SOURCE_DISCOVERY.md)
+- [Provider options and pilot cost model](docs/PROVIDERS_AND_COSTS.md)
+- [Page-extraction market research](docs/EXTRACTION_OPTIONS.md)
 - [Original technical proposal](berlin_job_research_pipeline_mvp_spec.md)
 
 `CONCEPT.md` is the current product baseline. The original proposal is preserved

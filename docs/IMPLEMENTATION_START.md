@@ -13,7 +13,9 @@ interface small and implement the complete V1 through independently verified goa
 | --- | --- | --- |
 | V1 scope, one-person pilot, ownership boundary | Agreed | All work |
 | Monthly operating ceiling | EUR 50 total for cloud, search, and LLM; user confirmed | Costed live experiment and operation |
-| Cloud/project ownership and available provider/test accounts | Awaiting user inventory; never store credentials here | Affected live integration, not offline tooling |
+| Cloud and provider/test accounts | Firebase/Blaze, Gmail test account, and Brave API reported available; access/region/IAM/OAuth/plan checks pending | Affected live integration, not offline tooling |
+| First LLM route and alternatives | GCP-managed Gemini recommended; OpenRouter remains an alternative; no model selected | G3 LLM tests, not G2 offline tooling |
+| Extraction tools | Delegated research complete; HTTP/Cheerio recommended, one possible Playwright/Firecrawl fallback to compare | G3 extraction experiment |
 | Source-coverage threshold and bounded experiment | Proposal below; not yet accepted as the benchmark | G3 evaluation |
 | Automatic-fetch/crawl policy | Q7 remains open; broad discovery intent is agreed | Live page fetching |
 | Exact data/version/state contracts | Resolve just before their affected slices, as Q5 describes | Persistence and side-effect implementation |
@@ -27,8 +29,11 @@ not block offline work.
 
 ## Remaining G1 work in this session
 
-1. Record available accounts, project ownership, and the intended test identity
-   as availability only. Keep tokens, addresses, real CVs, and personal details private.
+1. Finish the account/access inventory: Firebase/Blaze, Gmail test account, and Brave
+   access are reported available; remaining project/IAM/OAuth/plan details need checks.
+   Keep tokens, addresses, real CVs, and personal details private. Use
+   [provider recommendations and cost examples](PROVIDERS_AND_COSTS.md) to select the
+   initial LLM route and a bounded search-provider comparison.
 2. Finalize the bounded feasibility checklist: sample sizes, observation period,
    query/fetch/model/draft caps, expected evidence, and cleanup. Use the existing
    [source findings](SOURCE_DISCOVERY.md), not an assumption that APIs are accessible.

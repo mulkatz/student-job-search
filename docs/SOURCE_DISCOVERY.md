@@ -21,7 +21,7 @@ individually managed searches, schedules, and multiple users.
 | Path | Purpose | V1 treatment |
 | --- | --- | --- |
 | Structured job APIs and employer boards | Normalized vacancies with stable source IDs | Adzuna/Greenhouse/Lever candidates; validate access and useful coverage. |
-| Web-search API | Find vacancies and career pages outside the structured set | Brave candidate behind a replaceable adapter; validate plan/retention and coverage. |
+| Web-search API | Find vacancies and career pages outside the structured set | Existing Brave access as first test candidate behind a replaceable adapter; validate plan/retention and coverage against alternatives. |
 | Direct public-page retrieval | Extract and recheck the actual vacancy | Bounded fetch/extract/follow pipeline for discovered or operator-seeded employer pages. |
 
 Search and extraction feed the same normalization, canonical identity, deduplication,
@@ -68,9 +68,12 @@ in search queries. Query/fetch budgets are set after the operator's cost ceiling
 8. Deduplicate across all paths before scoring, model calls, or package generation.
    Record inaccessible or inconclusive leads separately from confirmed job records.
 
-Start with HTTP parsing. A bounded browser-rendering fallback may be added only
-when the feasibility sample demonstrates useful JS-only vacancies; it does not
-imply CAPTCHA solving, credential bypass, or stealth scraping infrastructure.
+Recommend controlled HTTP retrieval plus Cheerio for the first extraction slice.
+The [extraction market research](EXTRACTION_OPTIONS.md) compares Cheerio, Crawlee,
+Playwright, and Firecrawl. Benchmark browser rendering against a hosted extractor
+only where the feasibility sample demonstrates useful missed vacancies; choose
+at most one additional fallback. This does not imply CAPTCHA solving, credential
+bypass, or stealth scraping infrastructure.
 No provider search call, page fetch, or rendering step is allowed an unbounded retry.
 
 ## Crawl-policy boundary to resolve
@@ -97,8 +100,9 @@ page is extractable or permits bypassing access controls.
 
 - **Brave Web Search:** offers programmatic web results, country/language parameters,
   and freshness filters. These can support discovery; they do not prove job location,
-  accepted work language, or vacancy publication time. Candidate provider, not yet
-  selected or tested. [Official API reference](https://api-dashboard.search.brave.com/api-reference/web/search/get).
+  accepted work language, or vacancy publication time. Access is user-reported
+  available; the actual plan and integration remain unverified.
+  [Official API reference](https://api-dashboard.search.brave.com/api-reference/web/search/get).
 - **Brave retention and content rights:** its FAQ requires a plan explicitly granting
   storage rights to retain API results, and says API access grants no rights to
   third-party webpages. The published base terms restrict persistent result storage.
@@ -112,6 +116,11 @@ page is extractable or permits bypassing access controls.
   Do not choose this API as the default for a new project. This finding concerns
   that specific API, not every Google search product.
   [Official overview](https://developers.google.com/custom-search/v1/overview).
+
+Compare Brave with Serper, Tavily, or Exa on useful incremental job coverage before
+adding production providers. Published rates, prepayment/credit differences, and a
+bounded comparison proposal are in [PROVIDERS_AND_COSTS.md](PROVIDERS_AND_COSTS.md).
+Search-provider selection is separate from the page-fetch/parser/rendering choice.
 
 ## Feasibility evidence and V1 acceptance
 

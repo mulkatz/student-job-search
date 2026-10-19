@@ -119,6 +119,12 @@ evaluation. These are policy defaults to validate, not calibrated probabilities.
 
 The proposed stack is TypeScript, React, Cloud Run Job/API, Firebase Auth/Hosting,
 Firestore, private Cloud Storage, Secret Manager, and a replaceable LLM adapter.
+Firebase/Blaze, a Gmail test account, and Brave API access are user-reported available;
+their integration/configuration remains unverified. GCP-managed Gemini is the
+recommended first LLM route, with OpenRouter as an alternative behind the same
+boundary; provider/model selection is still open. See
+[provider options and cost model](docs/PROVIDERS_AND_COSTS.md).
+
 Prefer a deterministic pipeline; no agent orchestration framework, vector database,
 message bus, or unrestricted crawler in v1. The proposal's package tree is a guide;
 create packages when a delivery slice needs them rather than empty scaffolding.
@@ -135,6 +141,12 @@ Google Custom Search JSON API is not the default for a new implementation: Googl
 documentation says it is closed to new customers and ends on January 1, 2027.
 See [source discovery](docs/SOURCE_DISCOVERY.md) for dated official references,
 separate search/fetch/extraction stages, and the source-policy questions.
+
+The extraction recommendation is controlled HTTP retrieval plus Cheerio. Compare
+Playwright rendering with Firecrawl only where static extraction misses useful
+vacancies, and choose at most one additional fallback based on measured benefit.
+No extraction dependency has been adopted or tested. See the delegated
+[extraction market research](docs/EXTRACTION_OPTIONS.md).
 
 The user explicitly requests coverage beyond robots-based exclusions. Do not
 silently narrow this to API-only or previously registered domains. Robots metadata,

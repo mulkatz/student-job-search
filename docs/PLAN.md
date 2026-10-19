@@ -53,6 +53,8 @@ initial commit is now on `origin/main`.
 Dependencies: G0. No external account access is needed for the brief itself.
 
 - [x] G1.1a: Record the user-confirmed EUR 50 total monthly ceiling for cloud/search/LLM.
+- [x] G1.1c: Record user-reported Firebase/Blaze, Gmail test account, and Brave access;
+      distinguish availability from live verification.
 - [ ] G1.1b: Confirm account/project ownership, per-experiment cost ceiling, and
       live-test access (Q2). Missing credentials need not block synthetic tooling.
 - [ ] G1.2: Define source-coverage measures and a go/no-go threshold (Q3): inspect
@@ -68,6 +70,13 @@ Dependencies: G0. No external account access is needed for the brief itself.
 - [ ] G1.5: Resolve the public-page crawl policy (Q7) and select a candidate search
       provider/plan with compatible retention and AI use. Reference the dated
       findings in [SOURCE_DISCOVERY.md](SOURCE_DISCOVERY.md).
+- [ ] G1.6: Choose the initial LLM route and confirm the bounded provider experiment;
+      [provider recommendations and cost examples](PROVIDERS_AND_COSTS.md) compare
+      GCP-managed Gemini/OpenRouter and Brave/Serper/Tavily/Exa.
+- [x] G1.7a: Complete delegated [extraction market research](EXTRACTION_OPTIONS.md)
+      on Cheerio, Crawlee, Playwright, and Firecrawl using official sources.
+- [ ] G1.7b: Choose the initial extraction dependency and define the bounded fallback
+      comparison; research is not evidence of successful live extraction.
 
 Exit: measurable source success criteria and a bounded test plan exist; all live
 actions have the necessary access, consent, and cost authorization before execution.
