@@ -30,7 +30,9 @@ import {
   configSchema,
   type Manifest,
   manifestSchema,
+  modelRequestPolicySchema,
   modelUsageSchema,
+  observationPolicySchema,
   requestSchema,
   type State,
 } from "./schema.js";
@@ -180,6 +182,57 @@ export class ExperimentStore {
     });
   }
 
+  /** Records the explicit duration-gate waiver; this never resets history or resource caps. */
+  adoptBoundedSnapshotPolicy(input: unknown, now = new Date()): State {
+    const authorization = observationPolicySchema
+      .pick({ authorizationRef: true, decisionRef: true })
+      .parse(input);
+    return this.update(now, (state) => {
+      const existing = state.observationPolicy;
+      if (existing) {
+        if (
+          existing.authorizationRef !== authorization.authorizationRef ||
+          existing.decisionRef !== authorization.decisionRef
+        )
+          throw new Error(
+            "Observation policy authorization is already recorded.",
+          );
+        return;
+      }
+      state.observationPolicy = {
+        mode: "bounded_snapshot",
+        ...authorization,
+        authorizedAt: now.toISOString(),
+      };
+    });
+  }
+
+  /** One-way G3-only throughput authorization; free preflights still consume requests. */
+  adoptModelRequestPolicy(input: unknown, now = new Date()): State {
+    const authorization = modelRequestPolicySchema
+      .pick({ dailyLimit: true, authorizationRef: true, decisionRef: true })
+      .parse(input);
+    return this.update(now, (state) => {
+      const existing = state.modelRequestPolicy;
+      if (existing) {
+        if (
+          existing.authorizationRef !== authorization.authorizationRef ||
+          existing.decisionRef !== authorization.decisionRef ||
+          existing.dailyLimit !== authorization.dailyLimit
+        )
+          throw new Error(
+            "Model request policy authorization is already recorded.",
+          );
+        return;
+      }
+      state.modelRequestPolicy = {
+        scope: "remaining_g3",
+        ...authorization,
+        authorizedAt: now.toISOString(),
+      };
+    });
+  }
+
   reserve(input: unknown, now = new Date()): State {
     const request = requestSchema.parse(input);
     return this.update(now, (state, timestamp) => {
@@ -259,6 +312,9 @@ export class ExperimentStore {
       version: state.version,
       manifestHash: state.manifestHash,
       usage: usage(state),
+      ...(state.modelRequestPolicy
+        ? { modelRequestPolicy: state.modelRequestPolicy }
+        : {}),
       budgetOverrun,
       tokenOverrun: tokenOverrun(state),
       outstandingAttempts: state.attempts.filter((attempt) =>

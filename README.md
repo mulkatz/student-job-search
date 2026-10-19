@@ -3,10 +3,11 @@
 Find student-friendly jobs in Berlin and remote jobs that can be performed from
 Germany. Review the evidence, prepare an application, and send it yourself.
 
-**Status:** G2 is complete. G3 has partial live evidence and remains incomplete;
-see [current readiness](docs/G3_SETUP.md). G4 implements a local discovery slice,
+**Status:** G2 is complete. G3 investigation is complete with negative quality and
+coverage findings; see [current results](docs/G3_SETUP.md). G4 implements a local discovery slice,
 with conservative identities, bounded runs and a Firebase-emulator table; see
-[local setup and limitations](docs/G4_LOCAL.md). No application is deployed.
+[local setup and limitations](docs/G4_LOCAL.md). G5 adds local synthetic profiles and
+matching; its human benchmark remains pending. No application is deployed.
 Gmail is exclusively a Firebase Auth login identity; mailbox integration is outside
 the current V1/G3 contract ([ADR 0010](docs/adr/0010-manual-application-packages.md)). No cloud resources have been provisioned.
 
@@ -20,7 +21,7 @@ reviewable email/questionnaire packages with manual copying as well as job disco
 - [Current product concept and acceptance criteria](CONCEPT.md)
 - [Delivery plan and next goal](docs/PLAN.md)
 - [Conception closure and implementation handoff](docs/IMPLEMENTATION_START.md)
-- [Fresh-session G4 continuation](docs/START_PROMPT.md)
+- [Current fresh-session continuation](docs/START_PROMPT.md)
 - [Completed G2 execution contract](docs/archive/G2_START_PROMPT.md)
 - [Bounded feasibility experiment for G3](docs/FEASIBILITY.md)
 - [G3 setup, private access requirements and observation status](docs/G3_SETUP.md)
@@ -65,9 +66,10 @@ V1; it does not need a complex dashboard to include a useful application assista
    experiment, planning cost limits, and required evidence.
 2. Completed: establish the offline TypeScript workspace, one locally verified gate,
    and configured CI with Biome, strict types, tests, build and secret scanning.
-3. In progress: source rights, seven-day discovery coverage, remaining synthetic
-   matching cases and exact-content human package review. Partial extraction/model
-   observations exist and retain their original failures.
+3. Investigation complete with negative source/extraction/model quality decisions.
+   The user removed the long-term duration test; full synthetic matching now has
+   measured failures. Five editorial synthetic packages have delegated semantic
+   review and exact-version operator approval; original model failures remain.
 4. Build discovery, CV/profile matching, and applications as internal slices of V1.
 5. Release V1 after package review/copy, privacy, recovery and operating acceptance pass; scope
    multi-user use and user-managed search orders as V2.
@@ -141,13 +143,48 @@ It is not proof of private or secret-free runtime artifacts. Scan Git history
 separately before publication. Keep private experiments in ignored `.local/`; inspect staged changes before each commit. No real CVs,
 provider captures or credentials belong in fixtures. G4 adds browser and emulator checks; G2's historical evidence does not claim those checks existed earlier.
 
+Local PDF processing requires maintained Poppler `pdfinfo` and `pdftotext` on PATH.
+Install with `brew install poppler` on macOS or `sudo apt-get install poppler-utils`
+on Debian/Ubuntu. The runtime gate checks both commands; CI installs the distribution
+package. Tests use synthetic PDFs and local bounded subprocesses, without a PDF
+provider or real CV input. Node/npm and Java requirements above remain unchanged.
+
+## Local synthetic profiles and matching
+
+Start the local emulators/API/web preview using [the local guide](docs/G4_LOCAL.md).
+Sign in to the demo, attest that the PDF contains synthetic facts and upload a text
+PDF marked `SYNTHETIC` (maximum 2 MiB/10 pages). Poppler extracts actual page text;
+recognized labeled facts retain page/quote evidence. Other facts require explicit
+correction/attestation. Scans need review; there is no OCR or external PDF service.
+Review the draft and approve an immutable version before matching discoveries.
+
+Matching keeps confirmed blockers separate from missing/conflicting evidence,
+including language, location, work format, hours and authorization declarations.
+Fit and evidence confidence are separate; neither is a hiring probability or legal
+determination. Private results bind exact job/profile/evaluator versions and become
+stale when those change. Existing sources missing decisive fields stay under review.
+The default evaluator is deterministic; no paid G5 model dispatch is configured.
+
+The profile panel exports the owner's retained PDF/history/evaluations and requests
+deletion. Raw PDFs/drafts expire after seven days, approved versions after 90 days;
+evaluations expire with the source/profile or seven days, whichever comes first.
+Run the guide's bounded cleanup command to remove expired storage. Deletion blocks
+reads immediately; uncertain in-flight uploads retain minimal cleanup markers and
+cannot be reported physically complete merely because time elapsed.
+The pilot bounds storage to three assets/drafts, five approved versions and 100
+evaluations; capacity conflicts preserve retained history. Fifty synthetic oracle
+cases and real local browser tests exercise the implementation. Human benchmark
+acceptance, live-model quality, production operation and real CV use remain separate.
+
 ## Development status
 
 The proposed stack is TypeScript, React, Google Cloud, and Firebase. The initial
 provider route is GCP-managed Gemini, Brave and HTTP/Cheerio. The offline foundation
 uses private core, experiment, discovery and server workspaces plus a React/Vite
 local web application. Deployment tooling remains outside the current slice. The G3 model/region route
-has actual synthetic EU observations; its full benchmark remains incomplete.
+has actual synthetic EU observations; its full sample failed quality acceptance.
+G3 investigation is complete with explicit negative findings; G5 local profile and
+matching implementation is separate from pending human benchmark acceptance.
 Local G4 discovery is verified; see [delivery evidence](docs/PLAN.md#g4-discovery-slice)
 and [local usage/source proof](docs/G4_LOCAL.md). Provider rights and recurring useful
 coverage remain distinct from this implementation milestone.

@@ -1,6 +1,9 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import type { DiscoveryJob } from "@job-search/discovery";
 import { z } from "zod";
+import { ProfileError } from "./profile-pdf.js";
+import { profilePolicy } from "./profile-schema.js";
+import type { ProfileService } from "./profile-service.js";
 
 export const preferenceSchema = z.strictObject({
   ownerId: z.string().min(1).max(128),
@@ -8,12 +11,52 @@ export const preferenceSchema = z.strictObject({
 });
 export type Preferences = z.infer<typeof preferenceSchema>;
 export interface ApiDependencies {
+  profiles?: ProfileService;
   verifyToken(token: string): Promise<{ uid: string }>;
   listJobs(): Promise<DiscoveryJob[]>;
   getPreferences(ownerId: string): Promise<Preferences | null>;
   createPreferences(ownerId: string): Promise<Preferences>;
 }
 
+async function body(
+  request: IncomingMessage,
+  maximum: number,
+): Promise<Buffer> {
+  const declared = request.headers["content-length"];
+  if (declared && (!/^\d+$/.test(declared) || Number(declared) > maximum))
+    throw new ProfileError(413, "request_too_large");
+  const chunks: Buffer[] = [];
+  let length = 0;
+  const timer = setTimeout(() => request.destroy(), 5000);
+  try {
+    for await (const chunk of request) {
+      if (!Buffer.isBuffer(chunk))
+        throw new ProfileError(400, "request_body_invalid");
+      length += chunk.length;
+      if (length > maximum) throw new ProfileError(413, "request_too_large");
+      chunks.push(chunk);
+    }
+  } finally {
+    clearTimeout(timer);
+  }
+  return Buffer.concat(chunks);
+}
+async function jsonBody(request: IncomingMessage): Promise<unknown> {
+  if (request.headers["content-type"] !== "application/json")
+    throw new ProfileError(415, "json_required");
+  try {
+    return JSON.parse((await body(request, 64 * 1024)).toString("utf8"));
+  } catch (error: unknown) {
+    if (error instanceof ProfileError) throw error;
+    throw new ProfileError(400, "request_json_invalid");
+  }
+}
+
+function requestValue<T>(schema: z.ZodType<T>, input: unknown): T {
+  const result = schema.safeParse(input);
+  if (!result.success) throw new ProfileError(400, "request_schema_invalid");
+  return result.data;
+}
 export function apiHandler(dependencies: ApiDependencies) {
   return async (request: IncomingMessage, response: ServerResponse) => {
     response.setHeader("Content-Type", "application/json");
@@ -45,7 +88,87 @@ export function apiHandler(dependencies: ApiDependencies) {
       return;
     }
     try {
-      if (request.method === "GET" && path === "/api/jobs") {
+      const profiles = dependencies.profiles;
+      if (profiles && request.method === "GET" && path === "/api/profile") {
+        send(200, {
+          profile: await profiles.view(ownerId, await dependencies.listJobs()),
+        });
+      } else if (
+        profiles &&
+        request.method === "POST" &&
+        path === "/api/profile/upload"
+      ) {
+        if (request.headers["content-type"] !== "application/pdf")
+          throw new ProfileError(415, "pdf_required");
+        const operation = requestValue(
+          z.string().uuid(),
+          request.headers["x-operation-id"],
+        );
+        await profiles.upload(
+          ownerId,
+          operation,
+          await body(request, profilePolicy.maximumPdfBytes),
+        );
+        send(200, {
+          profile: await profiles.view(ownerId, await dependencies.listJobs()),
+        });
+      } else if (
+        profiles &&
+        request.method === "PATCH" &&
+        path === "/api/profile/draft"
+      ) {
+        await profiles.edit(ownerId, await jsonBody(request));
+        send(200, {
+          profile: await profiles.view(ownerId, await dependencies.listJobs()),
+        });
+      } else if (
+        profiles &&
+        request.method === "POST" &&
+        path === "/api/profile/approve"
+      ) {
+        await profiles.approve(ownerId, await jsonBody(request));
+        send(200, {
+          profile: await profiles.view(ownerId, await dependencies.listJobs()),
+        });
+      } else if (
+        profiles &&
+        request.method === "POST" &&
+        path === "/api/profile/evaluate"
+      ) {
+        const input = requestValue(
+          z.strictObject({
+            expectedActiveVersionId: z.string().regex(/^[a-f0-9]{64}$/),
+          }),
+          await jsonBody(request),
+        );
+        await profiles.evaluate(
+          ownerId,
+          input.expectedActiveVersionId,
+          await dependencies.listJobs(),
+        );
+        send(200, {
+          profile: await profiles.view(ownerId, await dependencies.listJobs()),
+        });
+      } else if (
+        profiles &&
+        request.method === "GET" &&
+        path === "/api/profile/export"
+      ) {
+        const exported = await profiles.exportOwner(ownerId);
+        response.setHeader(
+          "Content-Disposition",
+          'attachment; filename="synthetic-owner-export.json"',
+        );
+        send(200, exported);
+      } else if (
+        profiles &&
+        request.method === "DELETE" &&
+        path === "/api/profile"
+      ) {
+        const lifecycle = await profiles.deleteOwner(ownerId);
+        send(lifecycle === "deleted" ? 200 : 202, { lifecycle });
+      } else if (request.method === "GET" && path === "/api/jobs") {
+        if (profiles) await profiles.requireActive(ownerId);
         send(200, {
           jobs: await dependencies.listJobs(),
           fitScoreStatus: "unavailable_until_g5",
@@ -71,8 +194,10 @@ export function apiHandler(dependencies: ApiDependencies) {
       } else {
         send(404, { error: "Not found" });
       }
-    } catch {
-      send(503, { error: "Local data unavailable; retry later" });
+    } catch (error: unknown) {
+      if (error instanceof ProfileError)
+        send(error.status, { error: error.code });
+      else send(503, { error: "Local data unavailable; retry later" });
     }
   };
 }

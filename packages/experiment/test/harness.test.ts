@@ -495,3 +495,350 @@ test("Gmail allows one confirmed success and blocks outstanding or ambiguous cre
     }
   }
 });
+
+const snapshotAuthorization = {
+  authorizationRef: "synthetic-user-duration-waiver",
+  decisionRef: "docs/adr/0017-bounded-g3-snapshot-without-duration-gate.md",
+};
+
+test("explicit snapshot authorization preserves all ledger history and removes only the duration gate", () => {
+  const fixture = setup();
+  try {
+    fixture.store.reserve(request("first"), start);
+    fixture.store.beginLiveAttempt("first", { liveOptIn: true }, start);
+    fixture.store.settle(
+      "first",
+      { outcome: "succeeded", actualCostMicroEuro: 1 },
+      start,
+    );
+    fixture.store.reserve(request("preserved_reservation"), start);
+    const original = fixture.store.read();
+    assert.equal(Object.hasOwn(original, "observationPolicy"), false);
+    assert.throws(
+      () => fixture.store.reserve(request("legacy_eighth_day"), at(7)),
+      /window ended/,
+    );
+    const adopted = fixture.store.adoptBoundedSnapshotPolicy(
+      snapshotAuthorization,
+      at(7),
+    );
+    assert.deepEqual(adopted.attempts, original.attempts);
+    assert.deepEqual(adopted.config, original.config);
+    assert.equal(adopted.startedAt, original.startedAt);
+    assert.equal(adopted.createdAt, original.createdAt);
+    assert.equal(adopted.manifestHash, original.manifestHash);
+    const restarted = new ExperimentStore(fixture.root, manifest);
+    assert.deepEqual(restarted.read().observationPolicy, {
+      mode: "bounded_snapshot",
+      ...snapshotAuthorization,
+      authorizedAt: at(7).toISOString(),
+    });
+    restarted.reserve(request("snapshot_later_day"), at(8));
+    restarted.beginLiveAttempt(
+      "snapshot_later_day",
+      { liveOptIn: true },
+      at(8),
+    );
+    assert.throws(
+      () =>
+        restarted.beginLiveAttempt(
+          "preserved_reservation",
+          { liveOptIn: true },
+          at(8),
+        ),
+      /calendar days/,
+    );
+    const status = restarted.status(at(8)).observation;
+    assert.equal(status.mode, "bounded_snapshot");
+    assert.equal(status.startedAt, start.toISOString());
+    assert.equal(status.endBerlinDate, null);
+    assert.equal(status.requiredCalendarDays, 0);
+    assert.equal(status.nextDueBerlinDate, null);
+    assert.deepEqual(status.missedBerlinDates, []);
+    assert.equal(status.window, "bounded-snapshot");
+    assert.equal(status.benchmark, "not-evaluated");
+    assert.equal(status.longitudinalBenchmark, "waived_by_operator");
+    assert.deepEqual(status.discoveryAttemptDays, ["2026-10-19", "2026-10-27"]);
+    assert.equal(restarted.status(at(8)).usage.attempts.search, 3);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test("snapshot policy is strict, one-way and idempotent without replacing its authorization receipt", () => {
+  const fixture = setup();
+  try {
+    for (const input of [
+      {},
+      { ...snapshotAuthorization, mode: "bounded_snapshot" },
+      { ...snapshotAuthorization, capWaiver: true },
+      { ...snapshotAuthorization, decisionRef: "other-decision" },
+    ])
+      assert.throws(() =>
+        fixture.store.adoptBoundedSnapshotPolicy(input, start),
+      );
+    const adopted = fixture.store.adoptBoundedSnapshotPolicy(
+      snapshotAuthorization,
+      start,
+    );
+    fixture.store.adoptBoundedSnapshotPolicy(snapshotAuthorization, at(1));
+    assert.deepEqual(
+      fixture.store.read().observationPolicy,
+      adopted.observationPolicy,
+    );
+    assert.throws(
+      () =>
+        fixture.store.adoptBoundedSnapshotPolicy(
+          {
+            ...snapshotAuthorization,
+            authorizationRef: "different-authorization",
+          },
+          at(1),
+        ),
+      /already recorded/,
+    );
+    assert.throws(
+      () =>
+        fixture.store.adoptBoundedSnapshotPolicy(snapshotAuthorization, start),
+      /backwards/,
+    );
+    assert.equal(fixture.store.status(at(1)).observation.startedAt, null);
+    assert.equal(
+      fixture.store.status(at(1)).observation.benchmark,
+      "not-evaluated",
+    );
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test("snapshot mode retains daily search/model limits, cumulative model caps and free preflight accounting", () => {
+  const fixture = setup();
+  try {
+    fixture.store.adoptBoundedSnapshotPolicy(snapshotAuthorization, start);
+    for (let i = 0; i < 40; i++)
+      fixture.store.reserve(request(`search_${i}`), start);
+    assert.throws(
+      () => fixture.store.reserve(request("search_daily_overflow"), start),
+      /Daily search cap/,
+    );
+    const modelRequest = (id: string): Request => ({
+      id,
+      branch: "model",
+      kind: "llm",
+      upperCostMicroEuro: 0,
+      upperInputTokens: 0,
+      upperOutputTokens: 0,
+      upperRecords: 0,
+    });
+    for (let i = 0; i < 30; i++)
+      fixture.store.reserve(modelRequest(`free_counttokens_${i}`), start);
+    assert.throws(
+      () =>
+        fixture.store.reserve(
+          modelRequest("free_counttokens_daily_overflow"),
+          start,
+        ),
+      /Daily llm cap/,
+    );
+    for (let day = 1; day < 4; day++) {
+      const limit = day === 3 ? 10 : 30;
+      for (let i = 0; i < limit; i++)
+        fixture.store.reserve(modelRequest(`model_${day}_${i}`), at(day));
+    }
+    assert.equal(fixture.store.status(at(3)).usage.attempts.llm, 100);
+    assert.throws(
+      () =>
+        fixture.store.reserve(modelRequest("model_cumulative_overflow"), at(3)),
+      /Whole-experiment llm cap/,
+    );
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test("snapshot policy validation cannot retroactively authorize old out-of-window attempts", () => {
+  const fixture = setup();
+  try {
+    fixture.store.reserve(request("first"), start);
+    fixture.store.beginLiveAttempt("first", { liveOptIn: true }, start);
+    fixture.store.adoptBoundedSnapshotPolicy(snapshotAuthorization, at(8));
+    const state = fixture.store.read();
+    state.attempts.push({
+      request: request("forged_pre_authorization_attempt"),
+      reservedAt: at(7).toISOString(),
+      outcome: "reserved",
+    });
+    writeFileSync(fixture.store.statePath, JSON.stringify(state), {
+      mode: 0o600,
+    });
+    assert.throws(() => fixture.store.read(), /outside the observation window/);
+    state.attempts.pop();
+    assert.ok(state.observationPolicy);
+    state.observationPolicy.authorizedAt = at(9).toISOString();
+    writeFileSync(fixture.store.statePath, JSON.stringify(state), {
+      mode: 0o600,
+    });
+    assert.throws(() => fixture.store.read(), /authorization date/);
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+const modelPolicyAuthorization = {
+  dailyLimit: 70,
+  authorizationRef: "synthetic-user-g3-model-throughput",
+  decisionRef: "docs/adr/0020-g3-model-daily-throughput.md",
+};
+const freePreflight = (id: string): Request => ({
+  id,
+  branch: "model",
+  kind: "llm",
+  upperCostMicroEuro: 0,
+  upperInputTokens: 0,
+  upperOutputTokens: 0,
+  upperRecords: 0,
+});
+
+test("explicit model policy raises only daily G3 requests to seventy and preserves preflights/history/cumulative cap", () => {
+  const fixture = setup();
+  try {
+    for (let i = 0; i < 30; i++)
+      fixture.store.reserve(freePreflight(`free_preflight_${i}`), start);
+    const before = fixture.store.read();
+    assert.equal(Object.hasOwn(before, "modelRequestPolicy"), false);
+    assert.throws(
+      () =>
+        fixture.store.reserve(freePreflight("legacy_daily_overflow"), start),
+      /Daily llm cap/,
+    );
+    const authorizedAt = new Date(start.getTime() + 1000);
+    const adopted = fixture.store.adoptModelRequestPolicy(
+      modelPolicyAuthorization,
+      authorizedAt,
+    );
+    assert.deepEqual(adopted.attempts, before.attempts);
+    assert.deepEqual(adopted.config, before.config);
+    assert.equal(adopted.startedAt, before.startedAt);
+    assert.equal(adopted.manifestHash, before.manifestHash);
+    for (let i = 30; i < 70; i++)
+      fixture.store.reserve(freePreflight(`free_preflight_${i}`), authorizedAt);
+    assert.throws(
+      () =>
+        fixture.store.reserve(
+          freePreflight("authorized_daily_overflow"),
+          authorizedAt,
+        ),
+      /Daily llm cap/,
+    );
+    const restarted = new ExperimentStore(fixture.root, manifest);
+    assert.equal(
+      restarted.status(authorizedAt).modelRequestPolicy?.dailyLimit,
+      70,
+    );
+    assert.equal(restarted.status(authorizedAt).usage.attempts.llm, 70);
+    for (let i = 70; i < 100; i++)
+      restarted.reserve(freePreflight(`free_preflight_${i}`), at(1));
+    assert.throws(
+      () => restarted.reserve(freePreflight("cumulative_overflow"), at(1)),
+      /Whole-experiment llm cap/,
+    );
+    assert.throws(
+      () =>
+        restarted.beginLiveAttempt(
+          "free_preflight_0",
+          { liveOptIn: true },
+          at(1),
+        ),
+      /calendar days/,
+    );
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test("model throughput policy is strict/idempotent and does not waive search/token/cost limits", () => {
+  const fixture = setup();
+  try {
+    for (const input of [
+      { ...modelPolicyAuthorization, dailyLimit: 71 },
+      { ...modelPolicyAuthorization, scope: "all_tasks" },
+      { ...modelPolicyAuthorization, cumulativeLimit: 1000 },
+      { ...modelPolicyAuthorization, decisionRef: "other" },
+    ])
+      assert.throws(() => fixture.store.adoptModelRequestPolicy(input, start));
+    fixture.store.adoptModelRequestPolicy(modelPolicyAuthorization, start);
+    const receipt = fixture.store.read().modelRequestPolicy;
+    fixture.store.adoptModelRequestPolicy(modelPolicyAuthorization, at(1));
+    assert.deepEqual(fixture.store.read().modelRequestPolicy, receipt);
+    assert.throws(
+      () =>
+        fixture.store.adoptModelRequestPolicy(
+          { ...modelPolicyAuthorization, authorizationRef: "conflicting" },
+          at(1),
+        ),
+      /already recorded/,
+    );
+    for (let i = 0; i < 40; i++)
+      fixture.store.reserve(request(`search_${i}`), at(1));
+    assert.throws(
+      () => fixture.store.reserve(request("search_daily_overflow"), at(1)),
+      /Daily search cap/,
+    );
+    assert.throws(
+      () =>
+        fixture.store.reserve(
+          { ...freePreflight("token_overflow"), upperInputTokens: 500001 },
+          at(1),
+        ),
+      /Token/,
+    );
+    assert.throws(
+      () =>
+        fixture.store.reserve(
+          { ...freePreflight("budget_overflow"), upperCostMicroEuro: 1000001 },
+          at(1),
+        ),
+      /Budget/,
+    );
+  } finally {
+    fixture.cleanup();
+  }
+});
+
+test("model throughput authorization cannot retroactively legitimize old thirty-request violations", () => {
+  const fixture = setup();
+  try {
+    for (let i = 0; i < 30; i++)
+      fixture.store.reserve(freePreflight(`pre_authorization_${i}`), start);
+    fixture.store.adoptModelRequestPolicy(
+      modelPolicyAuthorization,
+      new Date(start.getTime() + 1000),
+    );
+    const state = fixture.store.read();
+    state.attempts.push({
+      request: freePreflight("forged_pre_authorization_overflow"),
+      reservedAt: start.toISOString(),
+      outcome: "reserved",
+    });
+    writeFileSync(fixture.store.statePath, JSON.stringify(state), {
+      mode: 0o600,
+    });
+    assert.throws(
+      () => fixture.store.read(),
+      /before model policy authorization/,
+    );
+    state.attempts.pop();
+    assert.ok(state.modelRequestPolicy);
+    state.modelRequestPolicy.authorizedAt = at(1).toISOString();
+    writeFileSync(fixture.store.statePath, JSON.stringify(state), {
+      mode: 0o600,
+    });
+    assert.throws(
+      () => fixture.store.read(),
+      /model request policy authorization date/,
+    );
+  } finally {
+    fixture.cleanup();
+  }
+});

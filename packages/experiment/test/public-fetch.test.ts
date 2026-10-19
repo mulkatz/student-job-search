@@ -382,3 +382,140 @@ test("a cooldown appearing during a durable reservation prevents transport", asy
   assert.equal(sends, 1);
   assert.equal(results[1]?.requests, 0);
 });
+
+test("structured reads require JSON MIME and syntax while retaining public-fetch policy and per-hop accounting", async () => {
+  const checked: string[] = [];
+  const purposes: string[] = [];
+  const run = setup({
+    sourcePolicy: async (url) => {
+      checked.push(url.href);
+      return {
+        status: "permitted",
+        evidenceRef: "synthetic-public-json-policy",
+      };
+    },
+    beforeRequest: async (request) => {
+      purposes.push(request.purpose);
+    },
+    transport: async (input) => {
+      assert.equal(input.purpose, "structured");
+      return input.url.pathname === "/start"
+        ? {
+            status: 302,
+            headers: { location: "https://other.example.org/jobs" },
+            body: Buffer.from(""),
+          }
+        : {
+            status: 200,
+            headers: { "content-type": "application/json; charset=utf-8" },
+            body: Buffer.from(
+              '{"jobs":[{"id":1,"url":"https://employer.example.org/job"}]}',
+            ),
+          };
+    },
+  });
+  const result = await run.fetch("https://example.org/start", "structured");
+  assert.equal(result.kind, "json");
+  assert.equal(result.requests, 2);
+  assert.deepEqual(checked, [
+    "https://example.org/start",
+    "https://other.example.org/jobs",
+  ]);
+  assert.deepEqual(purposes, ["structured", "structured"]);
+  if (result.kind === "json")
+    assert.equal(JSON.parse(result.text).jobs[0].id, 1);
+  for (const response of [
+    html('{"jobs":[]}'),
+    {
+      status: 200,
+      headers: { "content-type": "application/json" },
+      body: Buffer.from("callback({jobs:[]})"),
+    },
+  ]) {
+    const rejected = await setup({ transport: async () => response }).fetch(
+      "https://example.org/jobs",
+      "structured",
+    );
+    assert.equal(rejected.kind, "unavailable");
+  }
+  const page = await setup({
+    transport: async () => ({
+      status: 200,
+      headers: { "content-type": "application/json" },
+      body: Buffer.from('{"jobs":[]}'),
+    }),
+  }).fetch("https://example.org/jobs");
+  assert.equal(page.kind, "unavailable");
+});
+
+test("structured JSON cannot bypass unsafe redirects, policy, limits, access challenges or Retry-After", async () => {
+  for (const overrides of [
+    { sourcePolicy: async () => ({ status: "unresolved" as const }) },
+    { resolve: async () => [{ address: "127.0.0.1", family: 4 as const }] },
+  ]) {
+    let calls = 0;
+    const run = setup({
+      ...overrides,
+      transport: async () => {
+        calls++;
+        return html();
+      },
+    });
+    assert.notEqual(
+      (await run.fetch("https://example.org/jobs", "structured")).kind,
+      "json",
+    );
+    assert.equal(calls, 0);
+  }
+  let requests = 0;
+  const redirect = setup({
+    transport: async () => {
+      requests++;
+      return {
+        status: 302,
+        headers: { location: "http://169.254.169.254/latest" },
+        body: Buffer.from(""),
+      };
+    },
+  });
+  assert.equal(
+    (await redirect.fetch("https://example.org/jobs", "structured")).kind,
+    "unavailable",
+  );
+  assert.equal(requests, 1);
+  for (const response of [
+    {
+      status: 403,
+      headers: { "content-type": "application/json" },
+      body: Buffer.from('{"jobs":[]}'),
+    },
+    {
+      status: 200,
+      headers: { "content-type": "application/json" },
+      body: Buffer.from(" ".repeat(101)),
+    },
+  ])
+    assert.notEqual(
+      (
+        await setup({ maxBytes: 100, transport: async () => response }).fetch(
+          "https://example.org/jobs",
+          "structured",
+        )
+      ).kind,
+      "json",
+    );
+  const throttled = setup({
+    now: () => 0,
+    transport: async () => ({
+      status: 429,
+      headers: { "retry-after": "120" },
+      body: Buffer.from(""),
+    }),
+  });
+  const first = await throttled.fetch("https://example.org/jobs", "structured");
+  assert.equal(first.kind, "blocked");
+  assert.equal(
+    (await throttled.fetch("https://example.org/jobs", "structured")).requests,
+    0,
+  );
+});

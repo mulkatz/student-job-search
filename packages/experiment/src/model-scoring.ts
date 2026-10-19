@@ -10,6 +10,7 @@ import {
   validateModelCorpus,
   validateOperatorApproval,
 } from "./model-corpus.js";
+import { modelRequestPolicySchema } from "./schema.js";
 
 const id = z.string().regex(/^[a-zA-Z0-9_-]{1,80}$/);
 const count = z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER);
@@ -69,6 +70,7 @@ export const modelReportSchema = z.strictObject({
   promptVersion: z.literal(promptVersion),
   evaluatorVersion: z.literal(evaluatorVersion),
   provenance: modelProvenanceSchema,
+  modelRequestPolicy: modelRequestPolicySchema.optional(),
   cvResults: z
     .array(
       z.strictObject({ documentId: id, ...resultFields, output: cvOutput }),
@@ -253,7 +255,20 @@ export function scoreModelReport(
   for (const attempt of report.attempts) {
     const date = berlinDate(attempt.startedAt);
     const total = (dailyCounts.get(date) ?? 0) + 1;
-    if (total > 30) throw new Error("Reported daily LLM limit exceeded.");
+    const policy = report.modelRequestPolicy;
+    const limit = policy && date >= berlinDate(policy.authorizedAt) ? 70 : 30;
+    if (total > limit) throw new Error("Reported daily LLM limit exceeded.");
+    if (
+      policy &&
+      report.attempts.filter(
+        (entry) =>
+          berlinDate(entry.startedAt) === date &&
+          entry.startedAt < policy.authorizedAt,
+      ).length > 30
+    )
+      throw new Error(
+        "Reported daily LLM limit exceeded before authorization.",
+      );
     dailyCounts.set(date, total);
   }
 
@@ -436,6 +451,9 @@ export function scoreModelReport(
     promptVersion,
     evaluatorVersion,
     provenance: report.provenance,
+    ...(report.modelRequestPolicy
+      ? { modelRequestPolicy: report.modelRequestPolicy }
+      : {}),
     provenanceMatched: expectedProvenance !== undefined,
     status: failed
       ? "failed"

@@ -7,7 +7,7 @@ import { load } from "cheerio";
 import ipaddr from "ipaddr.js";
 
 export type PublicAddress = { address: string; family: 4 | 6 };
-export type FetchPurpose = "page" | "robots";
+export type FetchPurpose = "page" | "robots" | "structured";
 export type SourcePermission =
   | { status: "permitted"; evidenceRef: string }
   | { status: "unresolved" | "restricted" };
@@ -20,9 +20,15 @@ export type TransportInput = PublicAddress & {
   url: URL;
   signal: AbortSignal;
   maxBytes: number;
+  purpose?: FetchPurpose;
 };
 export type FetchOutcome =
-  | { kind: "html" | "robots"; url: string; text: string; requests: number }
+  | {
+      kind: "html" | "robots" | "json";
+      url: string;
+      text: string;
+      requests: number;
+    }
   | {
       kind: "blocked" | "unavailable" | "policy_unresolved";
       reason: string;
@@ -112,7 +118,10 @@ async function transport(input: TransportInput): Promise<FetchResponse> {
         maxHeaderSize: 16_384,
         headers: {
           "user-agent": "JobSearchFeasibility/0.1",
-          accept: "text/html,application/xhtml+xml,text/plain;q=0.5",
+          accept:
+            input.purpose === "structured"
+              ? "application/json"
+              : "text/html,application/xhtml+xml,text/plain;q=0.5",
           "accept-encoding": "identity",
         },
       },
@@ -308,6 +317,7 @@ export function createPublicFetcher(options: PublicFetcherOptions) {
             url: new URL(url),
             maxBytes,
             signal,
+            purpose,
           }),
           signal,
         );
@@ -370,7 +380,9 @@ export function createPublicFetcher(options: PublicFetcherOptions) {
         if (
           !(purpose === "robots"
             ? type === "text/plain"
-            : type === "text/html" || type === "application/xhtml+xml")
+            : purpose === "structured"
+              ? type === "application/json"
+              : type === "text/html" || type === "application/xhtml+xml")
         ) {
           return {
             kind: "unavailable",
@@ -379,6 +391,17 @@ export function createPublicFetcher(options: PublicFetcherOptions) {
           };
         }
         const text = response.body.toString("utf8");
+        if (purpose === "structured") {
+          try {
+            JSON.parse(text);
+          } catch {
+            return {
+              kind: "unavailable",
+              reason: "invalid_structured_json",
+              requests,
+            };
+          }
+        }
         // Marker evidence remains conservative, not proof of an auth wall.
         if (purpose === "page" && hasAccessChallenge(text)) {
           return {
@@ -388,7 +411,12 @@ export function createPublicFetcher(options: PublicFetcherOptions) {
           };
         }
         return {
-          kind: purpose === "page" ? "html" : "robots",
+          kind:
+            purpose === "page"
+              ? "html"
+              : purpose === "structured"
+                ? "json"
+                : "robots",
           url: url.href,
           text,
           requests,

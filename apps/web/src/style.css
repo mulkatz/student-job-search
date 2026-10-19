@@ -227,6 +227,62 @@ footer {
   padding: 15px;
   border-radius: 7px;
 }
+.profile-panel {
+  background: white;
+  border: 1px solid #dde3d9;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+.profile-panel p {
+  line-height: 1.6;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.profile-panel label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  margin: 16px 0;
+}
+.profile-panel .check {
+  flex-direction: row;
+  align-items: flex-start;
+}
+.profile-panel input,
+.profile-panel select,
+.profile-panel textarea {
+  font: inherit;
+  max-width: 100%;
+  padding: 9px;
+  border: 1px solid #b6c9b7;
+  border-radius: 4px;
+  background: white;
+}
+.profile-panel .check input {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.profile-panel pre {
+  font-size: 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.profile-fact {
+  padding: 16px 0;
+  border-bottom: 1px solid #e5e9e1;
+}
+.profile-approved,
+.profile-controls {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e9e1;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
 @media (max-width: 700px) {
   main {
     padding: 25px 18px;

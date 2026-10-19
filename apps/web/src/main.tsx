@@ -16,7 +16,9 @@ import {
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
+import type { ProfileView } from "../../../packages/server/dist/profile-schema.js";
 import { safeLink } from "./links.mjs";
+import { ProfilePanel } from "./profile.js";
 import "./style.css";
 
 if (!["127.0.0.1", "localhost"].includes(window.location.hostname)) {
@@ -72,17 +74,89 @@ function Field({
     </div>
   );
 }
-function JobDetails({ job }: { job: DiscoveryJob }) {
+function JobDetails({
+  job,
+  evaluation,
+}: {
+  job: DiscoveryJob;
+  evaluation: ProfileView["evaluations"][number] | undefined;
+}) {
   const observation = job.observation;
   const provenance = observation.discoveryProvenance;
   return (
     <details>
       <summary>Evidence & details</summary>
       <div className="details-grid">
+        {evaluation && (
+          <div className="evidence">
+            <strong>Private assessment</strong>
+            <span>
+              {evaluation.stale
+                ? "Stale · profile or job version changed"
+                : evaluation.eligibility.replaceAll("_", " ")}
+            </span>
+            <span>
+              Evidence confidence:{" "}
+              {Math.round(evaluation.evidenceConfidence * 100)}%
+            </span>
+            <small>Profile version: {evaluation.profileVersionId}</small>
+            <small>Evaluator: {evaluation.evaluatorVersion}</small>
+            {evaluation.reasons.map((reason) => (
+              <div key={`${reason.code}-${reason.jobField}`}>
+                <span>
+                  {reason.code.replaceAll("_", " ")} · {reason.outcome}
+                </span>
+                {reason.quote && <blockquote>{reason.quote}</blockquote>}
+              </div>
+            ))}
+          </div>
+        )}
         <Field label="Title" field={observation.title} />
         <Field label="Employer" field={observation.employer} />
         <Field label="Location" field={observation.location} />
         <Field label="Employment type" field={observation.employmentType} />
+        <div className="evidence">
+          <strong>Weekly hours</strong>
+          {observation.weeklyHours?.status === "confirmed" ? (
+            <>
+              <span>
+                {observation.weeklyHours.minimum}–
+                {observation.weeklyHours.maximum} hours
+              </span>
+              <blockquote>{observation.weeklyHours.evidence.quote}</blockquote>
+              <SourceLink url={observation.weeklyHours.evidence.url}>
+                Source evidence
+              </SourceLink>
+            </>
+          ) : (
+            <span className="unknown">Unknown · no evidence</span>
+          )}
+        </div>
+        <div className="evidence">
+          <strong>Work authorization condition</strong>
+          {observation.workAuthorization?.status === "confirmed" ? (
+            <>
+              <span>
+                {observation.workAuthorization.requirement ===
+                "employee_work_in_germany"
+                  ? "Existing employee-work permission in Germany required"
+                  : "Additional restrictions require review"}
+              </span>
+              <blockquote>
+                {observation.workAuthorization.evidence.quote}
+              </blockquote>
+              <SourceLink url={observation.workAuthorization.evidence.url}>
+                Source evidence
+              </SourceLink>
+              <small>
+                Source requirement only; candidate permission needs explicit
+                declaration and is not legally verified.
+              </small>
+            </>
+          ) : (
+            <span className="unknown">Unknown · no evidence</span>
+          )}
+        </div>
         {(["englishAccepted", "remoteFromGermany"] as const).map((key) => (
           <div className="evidence" key={key}>
             <strong>
@@ -184,6 +258,7 @@ function App() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [profile, setProfile] = useState<ProfileView | null>(null);
   useEffect(
     () =>
       onAuthStateChanged(auth, (next) => {
@@ -191,6 +266,7 @@ function App() {
         setJobs([]);
         setLoaded(false);
         setError("");
+        setProfile(null);
       }),
     [],
   );
@@ -241,6 +317,38 @@ function App() {
       );
     }
   };
+  const staleEvaluation = (
+    evaluation: ProfileView["evaluations"][number],
+    job: DiscoveryJob,
+  ) =>
+    evaluation.stale ||
+    evaluation.jobRevisionId !== job.currentRevisionId ||
+    evaluation.profileVersionId !== profile?.activeVersionId ||
+    Date.parse(evaluation.expiresAt) <= Date.now() ||
+    !profile.versions.some(
+      (version) =>
+        version.id === evaluation.profileVersionId &&
+        Date.parse(version.expiresAt) > Date.now(),
+    );
+  const currentEvaluation = (job: DiscoveryJob) =>
+    profile?.evaluations.find(
+      (evaluation) =>
+        evaluation.jobId === job.jobId && !staleEvaluation(evaluation, job),
+    );
+  const displayedEvaluation = (job: DiscoveryJob) => {
+    const evaluation =
+      currentEvaluation(job) ??
+      profile?.evaluations.find((evaluation) => evaluation.jobId === job.jobId);
+    return evaluation
+      ? { ...evaluation, stale: staleEvaluation(evaluation, job) }
+      : undefined;
+  };
+  const orderedJobs = [...jobs].sort(
+    (a, b) =>
+      (currentEvaluation(b)?.fitScore ?? -1) -
+        (currentEvaluation(a)?.fitScore ?? -1) ||
+      b.lastCheckedAt.localeCompare(a.lastCheckedAt),
+  );
   return (
     <main>
       <header>
@@ -287,12 +395,25 @@ function App() {
         </section>
       ) : (
         <>
+          <ProfilePanel
+            key={user.uid}
+            user={user}
+            onChange={(next) => {
+              setProfile(next);
+              if (next.lifecycle === "deleted" || next.lifecycle === "deleting")
+                setJobs([]);
+            }}
+          />
           <div className="section-title">
             <div>
               <h2>
                 Discoveries <span className="count">{jobs.length}</span>
               </h2>
-              <p>Latest check first · fit scores are not available yet</p>
+              <p>
+                {profile?.activeVersionId
+                  ? "Private fit scores first · evidence confidence stays separate"
+                  : "Latest check first · approve a profile before matching"}
+              </p>
             </div>
             <span className="session">Authenticated local session</span>
           </div>
@@ -315,7 +436,7 @@ function App() {
                   </tr>
                 </thead>
                 <tbody>
-                  {jobs.map((job) => (
+                  {orderedJobs.map((job) => (
                     <tr key={job.jobId}>
                       <td colSpan={4}>
                         <div className="job-row">
@@ -341,8 +462,33 @@ function App() {
                             </small>
                           </div>
                           <div className="muted">
-                            <span>Unavailable</span>
-                            <small>Matching is not available yet</small>
+                            {currentEvaluation(job) ? (
+                              <>
+                                <span>
+                                  {currentEvaluation(job)?.fitScore === null
+                                    ? "Unavailable"
+                                    : `${currentEvaluation(job)?.fitScore}/100`}
+                                </span>
+                                <small>
+                                  {currentEvaluation(
+                                    job,
+                                  )?.eligibility.replaceAll("_", " ")}
+                                </small>
+                                <small>
+                                  Evidence confidence:{" "}
+                                  {Math.round(
+                                    (currentEvaluation(job)
+                                      ?.evidenceConfidence ?? 0) * 100,
+                                  )}
+                                  %
+                                </small>
+                              </>
+                            ) : (
+                              <>
+                                <span>Unavailable</span>
+                                <small>Matching is not available yet</small>
+                              </>
+                            )}
                           </div>
                           <div>
                             <SourceLink url={job.observation.originalUrl}>
@@ -362,7 +508,10 @@ function App() {
                             )}
                           </div>
                         </div>
-                        <JobDetails job={job} />
+                        <JobDetails
+                          job={job}
+                          evaluation={displayedEvaluation(job)}
+                        />
                       </td>
                     </tr>
                   ))}

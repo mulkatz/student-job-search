@@ -30,7 +30,9 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+      - name: Install maintained local PDF utilities
+        run: sudo apt-get update && sudo apt-get install --yes poppler-utils
       - name: Install Chromium and system dependencies
         run: npx playwright install --with-deps chromium
-      - name: Verify local discovery and ownership
+      - name: Verify local discovery, profiles and ownership
         run: npm run verify

@@ -6,8 +6,10 @@ service cloud.firestore {
       allow read: if false;
       allow write: if false;
     }
-    match /users/{ownerId}/{document=**} {
-      allow read: if request.auth != null && request.auth.uid == ownerId;
+    match /users/{ownerId}/preferences/discovery {
+      allow read: if request.auth != null && request.auth.uid == ownerId
+        && (!exists(/databases/$(database)/documents/users/$(ownerId)/profileState/current)
+          || get(/databases/$(database)/documents/users/$(ownerId)/profileState/current).data.lifecycle == 'active');
       allow write: if false;
     }
     match /{document=**} {

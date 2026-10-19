@@ -47,6 +47,34 @@ export const observationSchema = z
     employmentType: evidenceValueSchema.nullable(),
     englishAccepted: decisiveEvidenceSchema,
     remoteFromGermany: decisiveEvidenceSchema,
+    weeklyHours: z
+      .discriminatedUnion("status", [
+        z.strictObject({ status: z.literal("unknown") }),
+        z.strictObject({
+          status: z.literal("confirmed"),
+          minimum: z.number().positive().max(168),
+          maximum: z.number().positive().max(168),
+          evidence: evidenceSchema,
+        }),
+      ])
+      .refine(
+        (value) => value.status === "unknown" || value.minimum <= value.maximum,
+        "Weekly hours range must be ordered",
+      )
+      .optional(),
+    workAuthorization: z
+      .discriminatedUnion("status", [
+        z.strictObject({ status: z.literal("unknown") }),
+        z.strictObject({
+          status: z.literal("confirmed"),
+          requirement: z.enum([
+            "employee_work_in_germany",
+            "additional_restrictions",
+          ]),
+          evidence: evidenceSchema,
+        }),
+      ])
+      .optional(),
     applicationLinks: z
       .array(z.strictObject({ url: applicationUrl, evidence: evidenceSchema }))
       .max(100),

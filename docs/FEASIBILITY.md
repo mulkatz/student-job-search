@@ -1,6 +1,7 @@
 # G3: bounded feasibility experiment
 
-- Status: G3 in progress; partial live B pilot recorded, A window not started
+- Status: investigation complete with negative A/B/C findings; corrected D approved
+- Results: [executed bounded measurements and decisions](G3_SETUP.md#current-findings-and-decisions)
 - Defined: 2026-10-19
 - Prerequisite: G2's reproducible tooling and applicable live-access checks below
 - Initial route: GCP-managed Gemini, Brave, controlled HTTP retrieval with Cheerio
@@ -51,12 +52,13 @@ Prices and provider features researched earlier remain dated inputs in
 
 ## Work and cost limits
 
-The experiment lasts seven consecutive calendar days in Europe/Berlin, beginning
-with the first live discovery run. A setup-only day is not a coverage observation.
-If access interrupts observations, report the actual interval and gaps; an incomplete
-window cannot be reported as a passed seven-day benchmark.
-Collect observations with a bounded runner across sessions if needed; record the
-next due observation. Do not keep an agent spinning while waiting for calendar time.
+The user removed the long-term test on 2026-10-19.
+[ADR 0017](adr/0017-bounded-g3-snapshot-without-duration-gate.md) replaces the mandatory
+seven-day duration with an explicitly recorded bounded snapshot in the existing
+ledger. Preserve its actual first dispatch and observed dates; report the longitudinal
+test as waived, not passed. No calendar waiting or next-due observation is required.
+Coverage/extraction/model quality and review still need actual evidence. Source and
+artifact retention remains at most seven days; this is a separate unchanged limit.
 
 Planned incremental paid-usage ceiling: **EUR 5**, inside the **EUR 50/month** total.
 Forecast current provider prices, currency/tax effects, and cloud overhead before
@@ -73,7 +75,7 @@ usage limits and provider controls are both required. No automatic top-ups.
 | Structured-source API requests | 100 attempts | Up to 5 initial employer boards; provider quotas also apply |
 | Direct-page HTTP traffic | 200 requests | No daily cap; robots, redirects, retries and browser subrequests count |
 | Raw job/lead records examined | 400 | Stop backfill expansion at this bound |
-| LLM requests across all tasks/providers | 100 attempts | Max 30/day, 500k input and 100k billed output tokens total |
+| LLM requests across all tasks/providers | 100 attempts | Legacy 30/day; operator-authorized 70/day for remaining G3 after ADR 0020 receipt; 500k input/100k billed output tokens total |
 | Optional fallback sample | 10 unresolved URLs per candidate | At most one browser and one hosted comparison; shared global caps apply |
 | Manual package review | Same 5 packages as C | 2 email + 3 questionnaire; exact full-content review, no external writes |
 
@@ -93,13 +95,14 @@ Do not include candidate names or contact information. Save the non-personal que
 definition and observation dates where provider terms permit; do not tune a failing
 query set mid-window and describe the changed test as the original benchmark.
 
-On day one, run Brave on the frozen queries. Compare one available alternative on
-the same queries/top 10 results if account/terms/cost gates permit. Lack of another
-account does not block baseline discovery; mark the comparison unexecuted. On days
-two through seven, use up to 8 follow-up search requests/day split across both
-streams. All paths share the 100-attempt cap, leaving room for bounded retries.
+The initial twenty frozen Brave queries are already observed. Compare one available
+alternative on the same queries/top 10 results only if account/terms/cost gates permit;
+a missing optional comparison does not block baseline discovery. Reuse retained leads
+where permitted. Any additional finite follow-up batch uses up to 8 queries split across
+both streams, still within 40/day and 100 cumulative search attempts. Do not recreate a
+long-term sampling requirement or tune frozen queries to disguise a failed sample.
 
-Sample at least one structured source over the same window and compare after
+Sample at least one structured source in the bounded snapshot and compare after
 cross-source deduplication. Record direct employer/local/university discoveries
 separately from aggregator duplicates and generic career-page leads. Recheck a
 vacancy before counting it as current; absence of a date is not proof of freshness.
@@ -194,13 +197,14 @@ answer; the fixture's unknown start date must remain unanswered. Consents,
 signatures and declarations use `applicant_action_required`, never an answer
 claiming the applicant already performed that action.
 
-**Manual-review pass:** all five complete packages have explicit human review of
-the exact generated content, bound to its full-content hash and profile/package
-versions. All candidate claims are supported, all internal field IDs map to
+**Manual-review pass:** all five complete packages have independent delegated
+semantic review and the user's exact-version conditional approval under
+[ADR 0021](adr/0021-delegated-synthetic-package-review.md), bound to full-content hashes
+and profile/package versions. Do not claim direct human line-by-line review. All candidate claims are supported, all internal field IDs map to
 source-evidenced questions, zero recipients/facts/answers are invented, and missing/action
 states are correct. Corrections create a new package version requiring a fresh
 review/hash. Schema/scorer success alone is not human content approval. Pending
-profile approval, absent generated content or unreviewed packages keeps D incomplete.
+profile approval, absent content or unresolved delegated-review findings keeps D incomplete.
 
 The product's “View application draft” shared dialog, email subject/body copying,
 per-answer questionnaire copying and actual browser/clipboard exercise are G6
@@ -223,6 +227,6 @@ define a new bounded measurement. Incomplete model/manual-package evidence keeps
 the corresponding V1 acceptance incomplete while independent discovery can continue.
 Do not label an adjusted or incomplete test as passed.
 G3's investigation can finish with a supported negative result and explicit
-follow-up decision; an unexecuted required branch or incomplete observation window
-keeps it incomplete. Optional comparisons can remain unexecuted without waiving
+follow-up decision; an unexecuted required branch or unresolved non-duration evidence gap
+keeps it incomplete. The seven-day duration is explicitly waived under ADR 0017. Optional comparisons can remain unexecuted without waiving
 required branch criteria or V1 acceptance.

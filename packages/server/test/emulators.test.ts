@@ -169,7 +169,7 @@ test("real Auth token/API and Firestore/private Storage isolate two synthetic ow
       .save("Synthetic storage isolation fixture", {
         contentType: "text/plain",
       });
-    await assertSucceeds(
+    await assertFails(
       getBytes(ref(own.storage(`gs://${projectId}.appspot.com`), objectPath)),
     );
     await assertFails(

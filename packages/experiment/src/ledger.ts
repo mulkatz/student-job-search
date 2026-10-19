@@ -23,7 +23,8 @@ function addDays(date: string, days: number): string {
     .slice(0, 10);
 }
 export function windowEnd(state: State): string | null {
-  return state.startedAt === null
+  return state.observationPolicy?.mode === "bounded_snapshot" ||
+    state.startedAt === null
     ? null
     : addDays(berlinDate(state.startedAt), 6);
 }
@@ -113,7 +114,11 @@ export function assertResourceCaps(
   )) {
     for (const [kind, cap] of Object.entries({
       search: 40,
-      llm: 30,
+      llm:
+        state.modelRequestPolicy &&
+        date >= berlinDate(state.modelRequestPolicy.authorizedAt)
+          ? 70
+          : 30,
     })) {
       if (
         state.attempts.filter(
@@ -125,6 +130,23 @@ export function assertResourceCaps(
         throw new Error(`Daily ${kind} cap reached.`);
       }
     }
+  }
+  if (state.modelRequestPolicy) {
+    const authorization = state.modelRequestPolicy.authorizedAt;
+    for (const date of new Set(
+      state.attempts.map((attempt) => berlinDate(attempt.reservedAt)),
+    ))
+      if (
+        state.attempts.filter(
+          (attempt) =>
+            attempt.request.kind === "llm" &&
+            attempt.reservedAt < authorization &&
+            berlinDate(attempt.reservedAt) === date,
+        ).length > 30
+      )
+        throw new Error(
+          "Daily llm cap exceeded before model policy authorization.",
+        );
   }
   // Validate admission bounds without discarding an unexpected observed overrun.
   // Reserve/dispatch use actual effective totals and separately block any overrun.
@@ -182,6 +204,18 @@ export function validateState(input: unknown, manifest: Manifest): State {
   ) {
     throw new Error("Invalid ledger identity or timestamps.");
   }
+  if (
+    state.observationPolicy &&
+    (state.observationPolicy.authorizedAt < state.createdAt ||
+      state.observationPolicy.authorizedAt > state.updatedAt)
+  )
+    throw new Error("Invalid observation policy authorization date.");
+  if (
+    state.modelRequestPolicy &&
+    (state.modelRequestPolicy.authorizedAt < state.createdAt ||
+      state.modelRequestPolicy.authorizedAt > state.updatedAt)
+  )
+    throw new Error("Invalid model request policy authorization date.");
   const discoveryDispatches = state.attempts
     .filter(
       (attempt) =>
@@ -218,8 +252,14 @@ export function validateState(input: unknown, manifest: Manifest): State {
         );
       gmailBlocked = attempt.outcome !== "failed";
     }
-    const end = windowEnd(state);
-    if (end !== null && berlinDate(attempt.reservedAt) > end)
+    const historicalEnd =
+      state.startedAt === null ? null : addDays(berlinDate(state.startedAt), 6);
+    if (
+      historicalEnd !== null &&
+      berlinDate(attempt.reservedAt) > historicalEnd &&
+      (!state.observationPolicy ||
+        attempt.reservedAt < state.observationPolicy.authorizedAt)
+    )
       throw new Error("Attempt outside the observation window.");
   }
   assertResourceCaps(state, true);
@@ -239,6 +279,20 @@ export function observationStatus(state: State, now: string) {
         ),
     ),
   ].sort();
+  if (state.observationPolicy?.mode === "bounded_snapshot")
+    return {
+      mode: "bounded_snapshot",
+      policy: state.observationPolicy,
+      startedAt: state.startedAt,
+      endBerlinDate: null,
+      discoveryAttemptDays: days,
+      requiredCalendarDays: 0,
+      missedBerlinDates: [],
+      nextDueBerlinDate: null,
+      window: "bounded-snapshot",
+      benchmark: "not-evaluated",
+      longitudinalBenchmark: "waived_by_operator",
+    };
   const end = windowEnd(state);
   const today = berlinDate(now);
   const next =

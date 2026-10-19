@@ -3,8 +3,9 @@
 This preview uses a demo Firebase project and loopback Auth, Firestore and Storage
 emulators. It cannot deploy or fall through to Application Default Credentials.
 The browser uses temporary anonymous synthetic identities, not a production Google
-login. No Gmail scope, mailbox, application draft, upload or send action exists.
-Real profile processing and upload lifecycle remain G5 work; package copying is G6.
+login. Gmail/mailbox and application sending remain outside this preview. G5 adds
+local synthetic PDF upload, approved profiles, matching and private lifecycle;
+real CV use is not authorized. Application package copying remains G6.
 
 ## Run the synthetic journey
 
@@ -40,7 +41,9 @@ an operator independently exports it; no export is configured here.
 `GET /api/jobs` requires a Firebase ID token verified by the Admin SDK with revoked/
 disabled-user checking. It returns at most 100 schema-validated shared projections,
 excluding observations at or after `retentionUntil` before the bounded query limit. Newest `lastCheckedAt` comes
-first; scores stay null/unavailable until G5. The original source remains visible;
+first. Without a current approved profile evaluation, scores stay unavailable.
+G5 adds private profile-bound evaluations without changing shared records.
+The original source remains visible;
 source-listed application links are unverified and show their evidence. Email
 addresses appear as text for manual use; no compose/form action is triggered.
 
@@ -57,20 +60,23 @@ Expired projections are hidden. With the same explicit emulator environment,
 read projections per invocation. Repeat if it reports a full batch. Deletions carry
 update-time preconditions so concurrent refreshes cannot silently be removed. No
 background cleanup is installed. Raw captures and discovery repository history have
-separate operator cleanup requirements; this command covers only the read projection.
+separate operator cleanup requirements. G5 additionally processes at most 25 due
+private profile records per invocation; repeat a full batch. Ambiguous upload markers
+remain blocked until terminal-write evidence permits physical reconciliation.
 
 Owner-private documents use `users/{verifiedUid}/preferences/discovery`.
 `POST /api/demo/preferences` creates only the synthetic marker and accepts no body;
 `GET /api/preferences` reads only the verified token owner's document. Stored owner
 IDs must match that derived owner. No client-supplied owner routes are supported.
-Firestore rules independently allow owner-only private reads and reject all client
-writes. Storage paths `users/{verifiedUid}/**` allow owner-only reads and reject all
-client writes. There is no Storage download or upload API in G4. Synthetic rule
-fixtures do not establish a production CV lifecycle or authorize real data.
+Firestore rules independently allow owner-only preference reads and reject all
+client writes. G5 profile state and its Storage prefix deny direct SDK access;
+authenticated API boundaries enforce owner, lifecycle and expiry. G4 itself had no
+Storage upload API; G5 adds synthetic PDF upload/export through the local API.
+Synthetic rule fixtures do not establish a production CV lifecycle or authorize real data.
 
 Retention enforcement here is read expiry plus explicitly invoked physical deletion
-of the shared projection. Owner export/deletion and production retention operations
-are still required before
+of the shared projection. G5 adds local owner export/deletion and bounded private
+retention; production operations and real-data authorization remain separate before
 real candidate data and V1 release. Shared job records contain no owner preferences,
 credentials, candidate facts or application annotations.
 
@@ -167,6 +173,8 @@ only with the atomic observation/cursor commit. A timeout, uncertain response or
 cross-store interruption requires exact-token reconciliation after stopping the old
 worker. Never delete markers, locks, reservations or old results to repeat a charge.
 The existing G3 ledger remains authoritative for cumulative caps and costs; its first
-actual discovery dispatch starts the seven-day G3/A clock. One observed live date,
-repeat processing and offline calendar tests do not establish recurring market yield
-or complete G3, V1, production authentication or cloud scheduling.
+actual discovery dispatch remains preserved. ADR 0017 subsequently replaced the
+mandatory seven-day G3/A duration with a bounded snapshot. G3 investigation closes
+with negative findings; one observed live date, repeat processing and offline calendar
+tests do not establish recurring market yield or V1 acceptance, production
+authentication or cloud scheduling.

@@ -19,7 +19,9 @@ const emulatorEnvironment = {
 };
 export default defineConfig({
   testDir: "./test",
-  testMatch: fixturePath ? "source-journey.spec.ts" : "journey.spec.ts",
+  testMatch: fixturePath
+    ? "source-journey.spec.ts"
+    : ["journey.spec.ts", "profile-journey.spec.ts"],
   fullyParallel: false,
   workers: 1,
   use: { baseURL: "http://127.0.0.1:5173", headless: true },

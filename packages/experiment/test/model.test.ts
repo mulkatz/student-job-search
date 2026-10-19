@@ -778,3 +778,35 @@ test("manual review binds the complete proposal including email subject and ques
     /stale/,
   );
 });
+
+test("model reports require the explicit seventy-request policy and preserve historical preauthorization limits", () => {
+  const report = simulatedReport();
+  for (const result of report.jobResults.slice(0, 3)) {
+    const original = report.attempts.find(
+      (attempt) => attempt.id === first(result.attemptIds),
+    );
+    assert.ok(original);
+    const id = `authorized_repair_${result.jobId}`;
+    result.repairs = 1;
+    result.attemptIds.push(id);
+    report.attempts.push({ ...original, id });
+  }
+  assert.throws(() => scoreModelReport(corpus, report), /daily/);
+  report.modelRequestPolicy = {
+    scope: "remaining_g3",
+    dailyLimit: 70,
+    authorizationRef: "synthetic-throughput-authorization",
+    decisionRef: "docs/adr/0020-g3-model-daily-throughput.md",
+    authorizedAt: "2026-10-19T09:00:00.000Z",
+  };
+  assert.equal(scoreModelReport(corpus, report).usage.attempts, 31);
+  report.modelRequestPolicy.authorizedAt = "2026-10-19T11:00:00.000Z";
+  assert.throws(() => scoreModelReport(corpus, report), /before authorization/);
+  assert.equal(
+    modelReportSchema.safeParse({
+      ...report,
+      modelRequestPolicy: { ...report.modelRequestPolicy, dailyLimit: 71 },
+    }).success,
+    false,
+  );
+});

@@ -1,6 +1,6 @@
 # Job Search: current MVP concept
 
-- Status: agreed product baseline; local G4 verified, full G3/V1 validation incomplete
+- Status: agreed baseline; G3 investigation closed with negative findings, V1 acceptance incomplete
 - Updated: 2026-10-19
 - Pilot: one student based in Berlin; English as working language
 - V1: one-person discovery and application assistant, including CV and manual-copy packages
@@ -248,13 +248,16 @@ G1 is complete as a concept and [bounded feasibility brief](docs/FEASIBILITY.md)
 G2's offline TypeScript foundation is complete with clean-checkout verification,
 synthetic boundary tests, Biome, build, secret scanning and configured CI; see
 [the delivery evidence](docs/PLAN.md#g2-development-foundation--complete).
-G3 has a measured partial extraction pilot; the full benchmark and seven-day
-discovery window remain incomplete. [Current readiness](docs/G3_SETUP.md) separates
-local checks, live observations and the remaining acceptance samples. Offline C
-validation is verified and synthetic Alpha facts are approved privately. Actual
-model outputs exist; the full C sample and human package review remain incomplete.
-Brave storage/use rights remain unresolved; bounded private execution is explicitly
-authorized by the operator under ADR 0016. Local G4 is complete with one observed
-live discovery date, targeted actual-source normalization and browser evidence; G3
-remains incomplete. The next implementation milestone is G5 profile/matching design.
+G3's bounded investigation is complete with negative coverage/extraction/model
+quality findings; [current results](docs/G3_SETUP.md#current-findings-and-decisions)
+record the actual samples, costs and follow-up decisions. The user removed the
+seven-day duration under ADR 0017; longitudinal yield is waived, not passed, and
+source retention remains unchanged. Model daily throughput 70 has an explicit
+remaining-G3 receipt under ADR 0020, with unchanged total/cost/token caps. The five
+corrected synthetic packages passed independent delegated semantic review and
+conditional operator approval under ADR 0021; original model failures remain.
+Brave's vendor grant remains unverified under the bounded private exception in
+ADR 0016. Local G4 is complete; G5 profile/matching/lifecycle implementation proceeds
+synthetic-first under ADRs 0018/0019, with human benchmark acceptance still pending.
+V1 coverage/quality acceptance remains incomplete.
 G2 authorizes no subscriptions, deployment or real CV use.

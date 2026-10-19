@@ -1,22 +1,28 @@
 # G3 setup and resumable experiment
 
-Status: G3 incomplete, updated 2026-10-19 after local G4. One actual discovery
-date is observed; the seven-day window started at `2026-10-19T19:18:01.181Z` and
-ends on the Berlin date 2026-10-25. Next observation is due 2026-10-20. Partial
-extraction and synthetic model evidence do not pass the full branches. Gmail is
-Firebase Auth identity only (ADR 0010), with no mailbox API/OAuth integration.
-[FEASIBILITY.md](FEASIBILITY.md) remains the experiment contract. Later sections
-preserve chronological checkpoints; the [latest G4 observations](#g4-bounded-search-and-targeted-source-observations)
-supersede their old cumulative counts and unstarted-clock statements.
+Status: G3 investigation complete with negative feasibility findings, updated 2026-10-19.
+The user removed the long-term test (ADR 0017); longitudinal yield is waived, not
+passed. All required source, extraction, model and package-review branches now have
+executed findings. Coverage/model/extraction quality acceptance remains unmet.
+Source retention still expires independently within at most seven days. Model daily
+throughput 70 was explicitly authorized (ADR 0020); 100 total/EUR 5/token caps remain.
+Historical checkpoints below preserve their earlier counts and policies.
 
-## Current readiness
+## Current findings and decisions
 
-| Branch | Evidence available | Remaining prerequisites or measurements |
+| Branch | Actual finding | Decision |
 | --- | --- | --- |
-| A: discovery | Twenty frozen queries executed once; 200 URL leads; separately targeted source-advertised hostel role with unknown freshness/compatibility | Remaining six observation dates; useful/compatible incremental coverage and structured-source comparison; provider grant still unverified under the private operator exception |
-| B: extraction | Ten-target live pilot and frozen, independently reviewed labels; measured JSON-LD-only baseline; corrected access-marker heuristic | Complete 30-URL stratification, at least 30 present decisive values, sufficient retrieved details and a separately versioned next measurement |
-| C: model | Three textual CVs, five packages, six single repairs and one matching case observed in EU; final CV facts correct; two package content findings | Nineteen matching cases, explicit failed-package scoring and complete C report; daily model cap reached on 2026-10-19 |
-| D: manual packages | Five complete proposals available, including two independently reviewed editorial correction versions | Explicit human review of exact full-content hashes; no UI/clipboard acceptance yet |
+| A: discovery | 20 frozen queries, 200 URL-only leads; separate actual three-employer structured GET sample; 0 confirmed compatible vacancies and no demonstrated 3 incremental compatible web vacancies | Reject the coverage acceptance claim; public source access works, useful compatible yield remains unproven |
+| B: extraction | 30 source captures, 12 independently labeled details, 45 present decisive fields; generic baseline finds 7 correct details and recovers 16 labeled fields | Reject generic extractor quality; retain conservative source-specific handling and improve extraction before broad operational use |
+| C: model | Full 5-CV/20-matching/5-package sample; matching 9/10 eligible, 5/5 blocked, 2/5 review; four original package semantic failures | Reject model quality acceptance; deterministic unknown/blocker guards precede optional scores, with no automatic additional repair |
+| D: packages | All five exact corrected editorial versions passed independent semantic review and the user's conditional approval | Complete under ADR 0021; no direct human line-by-line review or original-model-success claim |
+
+G5 implementation proceeds locally with synthetic data and separate human benchmark
+acceptance. Optional browser/hosted extraction comparison is unsupported/unexecuted;
+no proven JavaScript-dependence or rendering benefit is claimed. B's exact-string
+oracle omits genuine plaintext/form application routes and can penalize equivalent
+encodings, so its precision/recall is a method-bound diagnostic, not exhaustive
+semantic/channel accuracy. See the final bounded measurement below.
 
 The intended GCP/Firebase project is designated privately, with an EU preference.
 After the earlier permission failure, current CLI and ADC project reads succeeded,
@@ -542,3 +548,96 @@ dispatch started A at `2026-10-19T19:18:01.181Z`; the seven Berlin calendar date
 is observed. The extraction cohort, nineteen matching cases, human exact-content
 package review and the full A/B/C/D outcomes remain incomplete. G4 completion does
 not waive these requirements or authorize new subscriptions/deployment/real CV use.
+
+
+## Bounded-snapshot and delegated-review continuation
+
+The user removed duration only. `ExperimentStore.adoptBoundedSnapshotPolicy` records
+ADR 0017 authorization in existing state; original start/manifest/config/attempts stay
+unchanged and status reports `bounded-snapshot`/`waived_by_operator`, never a passed
+seven-day test. The separate `adoptModelRequestPolicy` records ADR 0020's explicit 70/day
+remaining-G3 authorization; free CountTokens still counts. No total/cost/token cap
+or source-retention waiver occurred. Private policy receipts are separately preserved.
+
+The new `.local/g3/matching-snapshot-v1/` exact-module/hash-guarded operator executed
+job02–20 sequentially, with 19 CountTokens and 19 inferences, no retries. All 19 returned
+schema-valid STOP outputs. `.local/g3/model-snapshot-report-v1/` combines these with
+original CV/package/job01 evidence and copies the actual policy receipt. Independent
+reparse/receipt/scorer review agrees: all 5 CV outcomes pass; matching is 9/10 eligible,
+5/5 blocked and 2/5 needs_review. Two unknown cases became eligible, one unknown became
+blocked, and one supported eligible case became review. Original package 02/03/04/05
+semantic failures are preserved. C is a measured **failed** outcome, not incomplete
+sampling or a claimed clean pass. G5 must enforce decisive unknown/blocker constraints
+before any optional model scores; this result does not establish live-model readiness.
+
+A fresh separate agent review of the five editorial packages found unsupported
+six-month-duration wording in package 04/05. New `.local/g3/model-review-v3/` corrects
+only that wording, preserves all source/fact mappings and old versions, and passes
+independent exact-content re-review. `operator-approval.json` binds exact versions,
+outputs, review HTML and manifest under the user's conditional delegated approval.
+D is complete under ADR 0021; direct human line-by-line review is not claimed.
+
+At this checkpoint the preserved ledger has 68 model requests (34 CountTokens plus
+34 generations), 42 HTTP and 20 search, all settled without pending locks/reconciliation
+or overrun. Conservative model accounting is EUR 0.061393 and search EUR 0.20, total
+EUR 0.261393, not a provider invoice. A/B continuation retains these cumulative caps
+and prepares separately versioned capture/independent-label/extraction phases.
+
+
+## Final bounded source measurement and investigation decision
+
+The reviewed `.local/g3/snapshot-extraction-v1/` capture-only method made 59 HTTP
+attempts for 30 primary URLs and robots metadata, plus one structured accounting
+attempt for a documented API example that returned 404. Primary outcomes were
+23 HTML, six access/challenge stops and one 404. Independent agent inspection,
+completed before extraction, labeled 12 specific adverts, eight career leads,
+three negative pages and seven unavailable pages. Planned strata are selection
+categories; they do not establish observed JavaScript dependence or currentness.
+
+The label freeze bound actual body hashes and preceded the first scorer execution.
+The existing static baseline's complete sample has 30 rows, ten small/local sources,
+12 detail labels and 45 present decisive fields across the required families.
+It identifies seven details and recovers 16/45 fields (35.6%). Exact-string diagnostic
+precision is 16/18 (88.9%), with two mismatches and zero false confirmations.
+The oracle cannot express every genuine plaintext/form application route and may
+penalize equivalent metadata/visible encodings. Do not call these exhaustive semantic
+or channel metrics. Even crediting both mismatches gives only 18/45 recovery (40%),
+below the 80% target; seven details also misses the ten-correct-detail minimum.
+The negative quality decision therefore does not depend on those two mismatches.
+Original captures, independent notes, frozen labels and failed report are preserved.
+No default generic extractor improvement or rendered-fallback success is claimed.
+
+A separate `.local/g3/structured-snapshot-v1/` method then fetched three individually
+addressed real public employer job records from Greenhouse, with three HTTP and
+three structured accounting attempts. No unbounded listing or application endpoint
+was called. All returned valid JSON with matching job identities. Independent
+inspection confirms specific Berlin student-work adverts, including additional
+German or Russian requirements and explicit hours; none establishes candidate
+compatibility. No exact job identity overlaps the retained Brave/B sample, but
+unobserved listing contents can hide overlap. These independently selected records
+receive no frozen-Brave incremental-discovery credit. Public GET and update dates
+alone do not establish deadlines, legal eligibility or compatible yield.
+[Official GET documentation](https://docs.greenhouse.io/job-board), reviewed 2026-10-19.
+
+The final cumulative ledger is **104 HTTP, 20 search, four structured and 68 model
+attempts**, with 266 conservatively reserved observations. All attempts are settled;
+no outstanding reservation, writer/source/model lock, overrun or reconciliation
+requirement remains. Model attempts comprise 34 free CountTokens calls and
+34 generations. Conservative accounted cost is **EUR 0.261393** (search EUR 0.20,
+model EUR 0.061393), not a provider invoice. No new paid source or fallback was used.
+
+Decision: close G3 as an executed investigation with negative A/B/C findings and
+approved corrected D artifacts. This does not pass the unmet V1 quality/coverage
+criteria or G5's human benchmark. Continue synthetic G5 guards and improve source
+extraction/compatible coverage before broad operational use; do not adopt an
+unmeasured fallback or trust model eligibility. No further G3 dispatch is scheduled.
+The duration waiver removes calendar waiting only. Latest future origin state is
+`.local/g3/structured-snapshot-v1/ownership.json` plus shared persisted cooldowns;
+future operators reread cooldowns inside the shared lock. Do not reuse a fresh source
+ID or stale ownership snapshot to bypass pacing. The older 30-URL method remains
+immutable; its pre-lock cooldown read was safe only in the coordinated exclusive run.
+
+Both packets, all labels/notes, archived inputs, logs and derived copies inherit
+their actual recorded expiry, which can be earlier than seven days. The private
+retention inventory records those deadlines; replay never renews them. Retain only
+minimal technical ownership/cooldown/cumulative-cap state needed after cleanup.

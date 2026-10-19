@@ -1,10 +1,7 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    match /users/{ownerId}/{object=**} {
-      allow read: if request.auth != null && request.auth.uid == ownerId;
-      allow write: if false;
-    }
+    // All private files use the authenticated API, including lifecycle checks.
     match /{object=**} {
       allow read, write: if false;
     }

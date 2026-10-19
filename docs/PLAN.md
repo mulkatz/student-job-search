@@ -7,9 +7,9 @@ Updated: 2026-10-19. Status describes evidence, not estimated progress.
 | G0: repository foundation | Complete | Local Git repository, concept, shared agent rules, ADRs, and plan. |
 | G1: feasibility brief | Complete | Accepted baseline, public-fetch policy, bounded experiment and fresh-session handoff. |
 | G2: development foundation | Complete | Reproducible offline TypeScript workspace, synthetic fixtures, verification gate, and configured CI. |
-| G3: feasibility experiment | In progress | Source, web search/page extraction, synthetic model and manual-package evidence; explicit blockers. |
+| G3: feasibility experiment | Investigation complete; quality failed | Actual A/B/C findings reject coverage/extraction/model acceptance; corrected D packages approved under delegated review. |
 | G4: discovery slice | Complete locally | Traceable discovery, conservative identities, authenticated table and verified bounded daily-run behavior; market yield remains unproven. |
-| G5: profile and matching | Planned | Approved profiles and evidence-based matching meet the fixture targets. |
+| G5: profile and matching | Implemented locally; acceptance pending | Synthetic profile/matching/lifecycle journeys pass; human 50-case benchmark and live-model quality remain unproven. |
 | G6: application assistant | Planned | Fact-grounded email/questionnaire packages in a shared review/copy dialog. |
 | G7: V1 release and handover | Planned | CV, manual-copy application packages and bounded daily discovery meet V1 acceptance. |
 | V2: broader use and search orders | Deferred | Multi-user onboarding and individually managed search orders/schedules. |
@@ -41,8 +41,9 @@ The user requested integration on `main` and then authorized pushing after G4 is
 complete and verified. Finished task-owned changes are committed there; preserve
 unrelated work and inspect outgoing secrets before the authorized push. The current
 [handoff](START_PROMPT.md) preserves unfinished G3 evidence and G4's explicit local
-limits, with G5 as the next implementation milestone. Human package-content approval
-remains pending; repository publication does not authorize runtime deployment.
+limits, with G5 implementation in progress. The five synthetic packages now have
+delegated semantic review and exact-version
+operator approval; repository publication does not authorize runtime deployment.
 
 ## G0: repository foundation
 
@@ -133,9 +134,23 @@ remain for G4–G6. G2 does not authorize live execution, spending or deployment
 Dependencies: the completed G1 brief, G2 tooling and the applicable live-access checks in
 [FEASIBILITY.md](FEASIBILITY.md). Each branch needs actual access and live opt-in.
 
-Started 2026-10-19 at the user's request. No live discovery observation has begun;
-the seven-day window starts with the first live discovery attempt, not setup.
-Outcome and branch acceptance remain [FEASIBILITY.md](FEASIBILITY.md).
+Started 2026-10-19. The initial actual discovery date is preserved; the user
+subsequently removed the long-term test. ADR 0017 records a bounded-snapshot policy
+in the existing ledger, with historical dates and all usage intact. This removes
+only calendar-duration acceptance, not source quality or retention. Outcome and
+remaining branch criteria are in [FEASIBILITY.md](FEASIBILITY.md).
+
+Final decision: the required branches have executed evidence and G3 closes as an
+investigation with negative A/B/C quality/coverage findings, not a feasibility pass.
+The bounded 30-URL baseline recovers 16/45 labeled fields and seven of twelve detail
+adverts; its exact-string oracle has documented route/encoding limitations. Three
+actual structured employer GET records establish access, with zero confirmed
+compatible coverage. Full synthetic matching/package failures remain recorded;
+all five corrected editorial packages passed delegated review and exact-version
+conditional approval. [Current findings](G3_SETUP.md#current-findings-and-decisions)
+record costs, counts, limitations and follow-up decisions. No further calendar wait
+or default dispatch is needed. G5 remains synthetic-first with separate human quality
+acceptance; no source, model, privacy or V1 quality requirement is waived.
 
 Bounded tasks: the coordinator establishes private operator/provider access and
 current rights/rates, freezes twenty non-personal queries, and owns live evidence
@@ -264,29 +279,30 @@ The user requested session closure on 2026-10-19: pause G3 with the current ledg
 unchanged at 22 HTTP and 30 model attempts, no outstanding work and no A clock.
 The next fresh-session G4 prompt retains its viable-source prerequisite and G3 gaps.
 
-- [ ] Verify current provider/model/region, source rights/plan and operator access;
+- [x] Verify current provider/model/region, source rights/plan and operator access;
       reserve within the experiment caps before live execution.
-- [ ] Review source terms, attribution, storage/retention, quotas, endpoints and
+- [x] Review source terms, attribution, storage/retention, quotas, endpoints and
       redirects. Record source-policy evidence and enable only permitted sources.
-- [ ] Fetch bounded samples; curate up to five employer boards and measure real
+- [x] Fetch bounded samples; curate up to five employer boards and measure real
       coverage against G1's threshold, not just HTTP success.
-- [ ] Test search-query → employer career page → vacancy extraction on smaller local
+- [x] Test search-query → employer career page → vacancy extraction on smaller local
       employers; measure additional unique vacancies beyond structured samples.
 - [x] Implement offline C corpus, schemas, prompts and scorer; run the integrated gate.
 - [x] Record explicit approval of the synthetic facts used for matching/generation.
 - [x] Resolve conservative combined-token reservations and complete-usage settlement.
-- [ ] Complete the synthetic CV, twenty-case matching and five-package sample within
+- [x] Complete the synthetic CV, twenty-case matching and five-package sample within
       caps, preserving all first-pass failures and at most one repair per case.
-- [ ] Manually review those same five full packages: two email and three questionnaire
+- [x] Independently review those same five full packages under delegated-review
+      ADR 0021 and conditional operator approval: two email and three questionnaire
       packages, internal field IDs mapped to source-evidenced question text, correct missing/action states,
       no unsupported claims, and exact reviewed full-content hashes (ADR 0010).
-- [ ] Report A/B/C and manual-review D with counts, evidence, costs and decisions;
+- [x] Report A/B/C and manual-review D with counts, evidence, costs and decisions;
       distinguish optional comparisons from required missing observations.
 
-Exit: required seven-day observations and source/extraction/model/manual-package
+Exit: required bounded-snapshot source/extraction/model/package-review
 branches have executed findings and explicit decisions. A supported negative result
 can complete investigation but is not a passing criterion. A required branch blocked
-before observation, pending profile approval or unreviewed generated package content
+before observation, pending profile approval or unresolved package-review findings
 keeps G3 incomplete. Independent source success cannot establish model/package or
 V1 release readiness. The shared dialog and browser/clipboard checks belong to G6.
 
@@ -423,10 +439,52 @@ new account/subscription, billing/IAM change or real-CV processing is included.
 
 Dependencies: G4; ownership/data-lifecycle decisions resolved before real CV use.
 
-- [ ] Define profile/evaluation version contracts (Q5); add private PDF upload,
+Started 2026-10-19 under the user's instruction to implement remaining work in parallel.
+Planning is complete. Outcome: actual bounded PDF upload/extraction, traceable editable
+facts, immutable approval versions, owner-private evaluations, conservative matching,
+retention/export/deletion and the authenticated synthetic browser journey. ADR 0018
+records identity/evaluation contracts; ADR 0019 records lifecycle. The separate G5
+implementer owns server/web/rules and synthetic fixtures; coordinator owns ADRs,
+root/CI integration and docs; independent reviewer owns inspection, not implementation.
+
+Acceptance includes owner isolation, expired/deleted data denial, stale-draft and
+upload/delete races, preserved versions, unknown/blocker separation, private score
+projections and actual local PDF/browser checks. Use installed maintained Poppler,
+no shell or external PDF service, with finite input/page/text/time limits. Raw/draft
+retention 7 days, approved versions 90 days, evaluations capped by source/profile/7 days.
+No real CV processing or paid G5 provider call is enabled by default.
+
+Prepare 50 varied synthetic oracle cases, rubric and hash-bound human-label review
+support. Agent-authored oracle labels do not satisfy the human-reviewed benchmark;
+that evidence stays pending. Keep deterministic/local checks, live model observations
+and human quality acceptance distinct, and do not mark full G5 complete prematurely.
+
+- [x] Define profile/evaluation version contracts (Q5); add private PDF upload,
       extraction, correction, approval, and profile versions.
-- [ ] Implement conservative filters, schema-validated evaluation, and evidence UI.
+- [x] Implement conservative filters, schema-validated evaluation, and evidence UI.
 - [ ] Evaluate at least 50 human-labeled varied postings against `CONCEPT.md` targets.
+
+Executed verification (2026-10-19): the final isolated checkout removed all workspace
+build/test outputs and passed `npm run verify` with pinned Node/npm and Java 26:
+166 offline tests (5 core, 77 experiment, 61 discovery, 19 server, one web-link and
+three scanner regressions), all builds, strict types, Biome, Secretlint, two actual
+emulator integrations and two Chromium journeys. The G5 browser journey verifies
+actual synthetic PDF upload/correction/approval, a positive score and separate
+confidence/ranking, unknown evidence, immutable/stale versions, exact PDF/history
+export and deletion. The independent reviewer reran server/discovery tests and
+inspected actual code, evidence and rendered UI; material findings were fixed and
+re-reviewed. No runtime code changed after the final gate input snapshot. A separate final
+actual-source Chromium regression also passed against the retained private source
+projection, with no new external requests.
+
+Fifty frozen synthetic oracle cases match their implementation targets, but no
+human labels are recorded. The private review artifact is
+`.local/g5/human-benchmark-v1/review.html`; changing the G3 five-package review method
+does not approve this different benchmark. G5 remains incomplete at this acceptance
+boundary. Default matching is deterministic; optional validated assessment hooks are
+version-bound and cannot upgrade unknown/blocked gates. No paid/live G5 model call
+or real CV was used. Ambiguous uploads retain minimal unresolved cleanup markers;
+time alone cannot establish physical deletion. Production and G6 remain separate.
 
 Exit: documented benchmark results meet targets and candidate facts remain traceable;
 uncertain eligibility does not become confirmed through scoring.

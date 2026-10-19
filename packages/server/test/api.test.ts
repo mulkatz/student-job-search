@@ -95,4 +95,14 @@ test("server cannot fall through to live Firebase or ambient credentials", () =>
     FIRESTORE_EMULATOR_HOST: "127.0.0.1:8080",
     FIREBASE_STORAGE_EMULATOR_HOST: "127.0.0.1:9199",
   });
+  assert.throws(
+    () =>
+      requireEmulators({
+        FIREBASE_AUTH_EMULATOR_HOST: "127.0.0.1:9099",
+        FIRESTORE_EMULATOR_HOST: "127.0.0.1:8080",
+        FIREBASE_STORAGE_EMULATOR_HOST: "127.0.0.1:9199",
+        STORAGE_EMULATOR_HOST: "https://outside.example",
+      }),
+    /emulator-only/,
+  );
 });

@@ -156,6 +156,25 @@ export const attemptSchema = z
     }
   });
 
+export const observationPolicySchema = z.strictObject({
+  mode: z.literal("bounded_snapshot"),
+  authorizationRef: z.string().regex(/^[a-zA-Z0-9_-]{1,160}$/),
+  decisionRef: z.literal(
+    "docs/adr/0017-bounded-g3-snapshot-without-duration-gate.md",
+  ),
+  authorizedAt: timestamp,
+});
+export type ObservationPolicy = z.infer<typeof observationPolicySchema>;
+
+export const modelRequestPolicySchema = z.strictObject({
+  scope: z.literal("remaining_g3"),
+  dailyLimit: z.literal(70),
+  authorizationRef: z.string().regex(/^[a-zA-Z0-9_-]{1,160}$/),
+  decisionRef: z.literal("docs/adr/0020-g3-model-daily-throughput.md"),
+  authorizedAt: timestamp,
+});
+export type ModelRequestPolicy = z.infer<typeof modelRequestPolicySchema>;
+
 export const stateSchema = z.strictObject({
   version: z.literal(1),
   manifestHash: z.string().regex(/^[a-f0-9]{64}$/),
@@ -163,6 +182,8 @@ export const stateSchema = z.strictObject({
   createdAt: timestamp,
   updatedAt: timestamp,
   startedAt: timestamp.nullable(),
+  observationPolicy: observationPolicySchema.optional(),
+  modelRequestPolicy: modelRequestPolicySchema.optional(),
   attempts: z.array(attemptSchema),
 });
 export type Manifest = z.infer<typeof manifestSchema>;

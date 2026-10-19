@@ -9,8 +9,16 @@ export type {
   Attempt,
   ExperimentConfig,
   Manifest,
+  ModelRequestPolicy,
+  ObservationPolicy,
   Request,
   State,
 } from "./schema.js";
-export { configSchema, manifestSchema, requestSchema } from "./schema.js";
+export {
+  configSchema,
+  manifestSchema,
+  modelRequestPolicySchema,
+  observationPolicySchema,
+  requestSchema,
+} from "./schema.js";
 export { ExperimentStore } from "./store.js";
