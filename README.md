@@ -15,6 +15,8 @@ application text, and unsent Gmail drafts as well as job discovery.
 
 - [Current product concept and acceptance criteria](CONCEPT.md)
 - [Delivery plan and next goal](docs/PLAN.md)
+- [Conception closure and implementation handoff](docs/IMPLEMENTATION_START.md)
+- [Fresh-session start prompt for G2](docs/START_PROMPT.md)
 - [Open decisions and validation needs](docs/OPEN_QUESTIONS.md)
 - [Agent working rules](AGENTS.md); `CLAUDE.md` links to the same file
 - [Development workflow decision](docs/adr/0001-development-workflow.md)

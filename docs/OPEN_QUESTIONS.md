@@ -35,7 +35,11 @@ and decisive missing evidence prevents automatic drafting. The original proposal
 
 **Needed before:** paid resources, live providers, or real candidate data processing.
 
-Confirm the operator, cloud/billing project, monthly budget and per-test ceiling,
+**Confirmed:** the user set a total monthly operating ceiling of EUR 50 for cloud,
+search, and LLM on 2026-10-19. This is a budget constraint; no subscription or
+resource provisioning is requested by the conception/setup task.
+
+Confirm the operator, cloud/billing project, per-test ceiling,
 available source credentials, consenting Gmail test account, and who may access
 candidate data. Decide LLM provider/data handling and retention before sending real
 CV-derived facts. Include search-provider queries and page-fetch limits in the cost

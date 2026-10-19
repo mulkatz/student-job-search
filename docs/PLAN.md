@@ -20,6 +20,11 @@ continued discovery development but prevents claiming V1 complete.
 
 ## Working method
 
+The [conception closure and implementation handoff](IMPLEMENTATION_START.md) defines
+what needs resolving before live experiments and the exact first G2 outcome. The
+[fresh-session start prompt](START_PROMPT.md) initiates that bounded goal; it does
+not request the whole V1 in one run. G1 remains open pending its remaining decisions.
+
 For each goal, define the outcome, dependencies, acceptance criteria, and smallest
 reviewable tasks. Planning precedes substantive implementation; a separate reviewer
 checks actual changes and evidence before completion. Roles and Git rules are in
@@ -47,7 +52,8 @@ initial commit is now on `origin/main`.
 
 Dependencies: G0. No external account access is needed for the brief itself.
 
-- [ ] G1.1: Confirm operating budget ceiling, account/project ownership, and permitted
+- [x] G1.1a: Record the user-confirmed EUR 50 total monthly ceiling for cloud/search/LLM.
+- [ ] G1.1b: Confirm account/project ownership, per-experiment cost ceiling, and
       live-test access (Q2). Missing credentials need not block synthetic tooling.
 - [ ] G1.2: Define source-coverage measures and a go/no-go threshold (Q3): inspect
       both Berlin on-site and Germany-remote streams; report unique, fresh,
