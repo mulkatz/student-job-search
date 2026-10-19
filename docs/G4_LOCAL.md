@@ -113,3 +113,60 @@ its older affected resolution; the actual SDK/emulator tests exercise this versi
 The pinned npm `ls` command still labels Firestore's original `~1.9.0` edge invalid
 against that deliberate override; clean `npm ci` succeeds. Neither `npm audit` nor
 `npm ls` is claimed to pass. The integrated behavior gate remains separate.
+
+## Explicit private source projection and browser proof
+
+After building, a separate opt-in path imports a minimized private JSON array of
+1–100 current `DiscoveryJob` projections into the same local emulators:
+
+```sh
+npm run seed --workspace=@job-search/server -- --file .local/g4/private-proof/jobs.json
+```
+
+Use the three emulator environment variables above. The importer requires a
+regular, single-link file with mode `0600`, private `0700` directories under the
+repository's `.local/`, at most 4 MiB, strict schemas, matching job/revision IDs,
+valid observation chronology and unexpired retention. It rejects symlink paths,
+private candidate annotations and malformed records without echoing their content.
+These checks validate the import boundary; they do not prove source authenticity.
+
+To exercise an explicitly supplied actual-source projection in Chromium:
+
+```sh
+G4_SOURCE_FIXTURE_PATH=.local/g4/private-proof/jobs.json npm run test:browser
+```
+
+The optional journey requires an evidenced, non-synthetic vacancy detail, signs in
+through the local demo button, checks exact source content, lineage, unknowns and
+null fit, then signs out. External browser requests are blocked; no source link or
+application form is opened. Bind the private fixture to the independently reviewed
+source/operator hashes before claiming actual-source evidence. Without the variable,
+the default integrated gate continues to use only synthetic data and no provider API.
+
+## Bounded search and traversal
+
+[ADR 0015](adr/0015-expiring-discovery-frontiers.md) defines expiring discovery
+frontiers and [ADR 0016](adr/0016-private-brave-operator-authorization.md) records the
+user's explicit bounded private Brave exception despite an unverified provider
+grant. These are separate authorization facts. The fixed-endpoint adapter requires
+explicit live opt-in, a frozen query manifest, private credentials, independent
+accounting hooks and finite run bounds. It retains URL/provenance only; snippets,
+provider titles and raw responses are discarded. Search leads are not fetched jobs.
+
+Pass search and lazy career traversal adapters together in their frozen daily order.
+The traversal frontier initializes once after earlier observations commit and before
+its first HTTP request. A checkpoint's URLs/provenance expire within parent/source
+retention; cursors contain opaque tokens. Per-hop source policy, public DNS/address
+validation, redirect controls, origin ownership and persisted pacing remain active.
+Known restrictions and actual access challenges stop the affected fetch. Bounds,
+truncation, unavailable pages and unfinished checkpoints remain visible in run state.
+See the [package API and recovery instructions](../packages/discovery/README.md).
+
+A paid attempt marker is written before the external ledger/dispatch hook and cleared
+only with the atomic observation/cursor commit. A timeout, uncertain response or
+cross-store interruption requires exact-token reconciliation after stopping the old
+worker. Never delete markers, locks, reservations or old results to repeat a charge.
+The existing G3 ledger remains authoritative for cumulative caps and costs; its first
+actual discovery dispatch starts the seven-day G3/A clock. One observed live date,
+repeat processing and offline calendar tests do not establish recurring market yield
+or complete G3, V1, production authentication or cloud scheduling.

@@ -2,30 +2,11 @@ import { z } from "zod";
 
 const identifier = z.string().regex(/^[a-zA-Z0-9_-]{1,160}$/);
 const timestamp = z.iso.datetime({ offset: true });
-// Display links are checked independently from the DNS/policy fetch boundary.
-export const publicLinkSchema = z
-  .url()
-  .max(8192)
-  .refine((value) => {
-    const url = new URL(value);
-    const hostname = url.hostname.toLowerCase();
-    return (
-      ["https:", "http:"].includes(url.protocol) &&
-      !url.username &&
-      !url.password &&
-      !url.port &&
-      hostname.includes(".") &&
-      !hostname.endsWith(".") &&
-      !/^[\d.]+$/.test(hostname) &&
-      !hostname.includes(":") &&
-      !/\.(?:localhost|local|internal|home\.arpa)$/.test(hostname)
-    );
-  }, "Expected an unauthenticated public HTTP link");
-export const evidenceSchema = z.strictObject({
-  url: publicLinkSchema,
-  quote: z.string().trim().min(1).max(4000),
-  selector: z.string().trim().min(1).max(1000),
-});
+
+export { evidenceSchema, publicLinkSchema } from "./schema-links.js";
+
+import { discoveryProvenanceSchema } from "./provenance.js";
+import { evidenceSchema, publicLinkSchema } from "./schema-links.js";
 export const evidenceValueSchema = z.strictObject({
   value: z.string().trim().min(1).max(2000),
   evidence: evidenceSchema,
@@ -50,6 +31,7 @@ export const observationSchema = z
     sourceId: identifier,
     sourceRecordId: z.string().trim().min(1).max(8192),
     sourcePolicyRef: z.string().trim().min(1).max(1000),
+    discoveryProvenance: discoveryProvenanceSchema.optional(),
     observedAt: timestamp,
     kind: z.enum([
       "search_lead",
@@ -82,6 +64,31 @@ export const observationSchema = z
         code: "custom",
         path: ["retentionUntil"],
         message: "Retention must end within seven days after observation",
+      });
+    if (value.discoveryProvenance) {
+      const start =
+        value.discoveryProvenance.kind === "search_result" ||
+        value.discoveryProvenance.kind === "brave_search_result"
+          ? value.discoveryProvenance.capturedAt
+          : value.discoveryProvenance.kind === "operator_seed"
+            ? value.discoveryProvenance.observedAt
+            : value.discoveryProvenance.parentObservedAt;
+      if (Date.parse(value.observedAt) < Date.parse(start))
+        context.addIssue({
+          code: "custom",
+          path: ["discoveryProvenance"],
+          message: "Discovery evidence cannot come from the future",
+        });
+    }
+    if (
+      value.discoveryProvenance &&
+      Date.parse(value.retentionUntil) >
+        Date.parse(value.discoveryProvenance.retentionUntil)
+    )
+      context.addIssue({
+        code: "custom",
+        path: ["retentionUntil"],
+        message: "Observation cannot outlive discovery evidence",
       });
     if (value.kind === "vacancy_detail" && (!value.title || !value.employer))
       context.addIssue({

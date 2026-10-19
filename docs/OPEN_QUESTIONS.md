@@ -50,7 +50,9 @@ Conservative combined-output reservations and settled usage accounting are
 implemented; EU synthetic inference and usage are observed, with failed first-pass
 content cases and the full C/D sample still incomplete. The local Brave credential
 and Search/Postpaid tariff are confirmed; no applicable storage/use grant is
-established. Account/project identifiers and credential values stay private.
+established. The current user instruction authorizes bounded private execution
+despite this condition, recorded separately in [ADR 0016](adr/0016-private-brave-operator-authorization.md).
+This does not establish a provider grant. Account/project identifiers and keys stay private.
 
 Verify operator/project access, authentication setup, actual source
 plan/credentials configuration, and who may access candidate data. Decide LLM
@@ -59,7 +61,8 @@ Include search-provider queries and page-fetch limits in the cost
 ceiling. Candidate consent is separate from the developer requesting work.
 
 **Current handling:** partial direct-page and synthetic model pilots are measured;
-no Brave benchmark has run. Alpha's synthetic facts are explicitly approved
+Brave day one is observed with URL-only leads; the seven-day benchmark remains
+incomplete. Alpha's synthetic facts are explicitly approved
 privately; this does not approve real candidate facts or generated packages. No
 unreported provider account, spend or personal-data access is assumed.
 The original 400 listings / 40 evaluations / 5 drafts caps are proposals, not spending
@@ -74,10 +77,13 @@ coverage, and a curated employer-board list are unverified. Greenhouse/Lever boa
 availability alone does not establish useful student/Minijob coverage. G1 defined
 the initial benchmark in [FEASIBILITY.md](FEASIBILITY.md): 10 compatible unique
 vacancies over seven days, including 3 additional web discoveries, with separate
-stream results. Actual yield is unmeasured. Distinguish generic career leads from
+stream results. Day one has 200 search leads, no details from initial generic traversal and one
+separately observed targeted hostel advert with unknown freshness/compatibility.
+The seven-day compatible/incremental yield remains unmeasured. Distinguish leads from
 vacancies and cross-source duplicates from additional coverage.
 
-Brave access is available, but remains an unverified integration and plan. Consider
+Brave access is available. Bounded private execution is operator-authorized despite
+the unresolved storage/use grant (ADR 0016); wider use remains unverified. Consider
 Serper, Tavily, and Exa alongside it using the comparison in
 [PROVIDERS_AND_COSTS.md](PROVIDERS_AND_COSTS.md). Search-result storage rights must fit
 the chosen plan, and search API access does not grant rights to third-party pages.

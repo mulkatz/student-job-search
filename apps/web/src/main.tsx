@@ -74,6 +74,7 @@ function Field({
 }
 function JobDetails({ job }: { job: DiscoveryJob }) {
   const observation = job.observation;
+  const provenance = observation.discoveryProvenance;
   return (
     <details>
       <summary>Evidence & details</summary>
@@ -117,7 +118,8 @@ function JobDetails({ job }: { job: DiscoveryJob }) {
           <small>
             Seen = present in a successful observation. Checked = latest
             processed observation; it does not prove the vacancy is still open.
-            Failed fetches appear in run diagnostics.
+            Unavailable outcomes do not prove closure; stream failures appear in
+            run diagnostics.
           </small>
           <span>Published: {observation.publishedAt ?? "Unknown"}</span>
           <span>Expires: {observation.expiresAt ?? "Unknown"}</span>
@@ -128,6 +130,41 @@ function JobDetails({ job }: { job: DiscoveryJob }) {
           </span>
           <SourceLink url={observation.originalUrl}>Original source</SourceLink>
         </div>
+        {provenance && (
+          <div className="evidence">
+            <strong>Discovery path · unverified lead</strong>
+            {provenance.kind === "search_result" ||
+            provenance.kind === "brave_search_result" ? (
+              <>
+                <span>Search query reference: {provenance.queryRef}</span>
+                <span>Search result reference: {provenance.resultRef}</span>
+                {provenance.kind === "search_result" ? (
+                  <span>Snapshot reference: {provenance.snapshotId}</span>
+                ) : (
+                  <>
+                    <span>
+                      Operator authorization:{" "}
+                      {provenance.operatorAuthorizationRef}
+                    </span>
+                    <span>Provider storage/use grant: unverified</span>
+                  </>
+                )}
+                <small>Search discovery does not verify employer facts.</small>
+              </>
+            ) : provenance.kind === "parent_anchor" ? (
+              <>
+                <span>Parent record: {provenance.parentSourceRecordId}</span>
+                <blockquote>{provenance.evidence.quote}</blockquote>
+                <SourceLink url={provenance.evidence.url}>
+                  Parent page evidence
+                </SourceLink>
+                <small>Locator: {provenance.evidence.selector}</small>
+              </>
+            ) : (
+              <span>Reviewed operator seed: {provenance.seedRef}</span>
+            )}
+          </div>
+        )}
         {observation.applicationLinks.map((link) => (
           <div className="evidence" key={link.url}>
             <strong>Source-listed application link · unverified</strong>
@@ -253,7 +290,7 @@ function App() {
           <div className="section-title">
             <div>
               <h2>
-                Discovered roles <span className="count">{jobs.length}</span>
+                Discoveries <span className="count">{jobs.length}</span>
               </h2>
               <p>Latest check first · fit scores are not available yet</p>
             </div>

@@ -24,6 +24,15 @@ test("synthetic local sign-in, evidence, original link, unknowns and sign-out", 
   ).toBeVisible();
   await expect(page.getByText("Source evidence").first()).toBeVisible();
   await expect(page.getByText(/Last checked:/)).toBeVisible();
+  const parentEvidence = page.getByRole("link", {
+    name: "Parent page evidence",
+  });
+  await expect(parentEvidence).toHaveAttribute(
+    "href",
+    "https://careers.synthetic.example/careers",
+  );
+  await expect(parentEvidence).toHaveAttribute("rel", "noopener noreferrer");
+  await expect(page.getByText("Student analytics vacancy")).toBeVisible();
   await expect(
     page.getByText(/does not prove the vacancy is still open/),
   ).toBeVisible();

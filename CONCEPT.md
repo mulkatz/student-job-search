@@ -1,6 +1,6 @@
 # Job Search: current MVP concept
 
-- Status: agreed product baseline; technical feasibility not yet validated
+- Status: agreed product baseline; local G4 verified, full G3/V1 validation incomplete
 - Updated: 2026-10-19
 - Pilot: one student based in Berlin; English as working language
 - V1: one-person discovery and application assistant, including CV and manual-copy packages
@@ -126,10 +126,15 @@ mailbox draft creation or automatic copying/submission is part of the workflow.
 
 The proposed stack is TypeScript, React, Cloud Run Job/API, Firebase Auth/Hosting,
 Firestore, private Cloud Storage, Secret Manager, and a replaceable LLM adapter.
-G4 now implements a local React/API discovery slice with Firebase Auth, Firestore
-and Storage emulators, conservative source identities and bounded Berlin runs.
+G4 now implements a verified local React/API discovery slice with Firebase Auth,
+Firestore and Storage emulators, conservative source identities, bounded Berlin runs,
+URL-only web search and expiring career-link traversal. Actual targeted source
+normalization and authenticated Chromium are observed; generic traversal yield remains unproven.
 Local synthetic authentication is not a deployed Google login or V1 readiness;
-web-search rights, useful coverage and later profile/package work remain open.
+provider rights, useful coverage and later profile/package work remain open.
+The user authorized bounded private Brave execution despite the unverified grant;
+[ADR 0016](docs/adr/0016-private-brave-operator-authorization.md) records this exception
+without describing it as provider permission.
 A GCP/Firebase project is designated privately with an EU preference. CLI/ADC
 project reads, enabled billing and Vertex API setup have been verified. Conservative
 model reservations and settled usage accounting are implemented, and EU synthetic
@@ -160,8 +165,9 @@ separate search/fetch/extraction stages, and the source-policy questions.
 The accepted initial extraction approach is controlled HTTP retrieval plus Cheerio. Compare
 Playwright rendering with Firecrawl only where static extraction misses useful
 vacancies, and choose at most one additional fallback based on measured benefit.
-Cheerio has an offline-tested bounded implementation; two documentation-only HTTP
-diagnostics do not establish vacancy extraction accuracy.
+Cheerio has a bounded implementation with actual source observations, including a
+source-specific selector success after broad search. Generic extraction/traversal
+yield and the full benchmark remain unproven.
 See the delegated
 [extraction market research](docs/EXTRACTION_OPTIONS.md).
 
@@ -247,6 +253,8 @@ discovery window remain incomplete. [Current readiness](docs/G3_SETUP.md) separa
 local checks, live observations and the remaining acceptance samples. Offline C
 validation is verified and synthetic Alpha facts are approved privately. Actual
 model outputs exist; the full C sample and human package review remain incomplete.
-Brave storage/use rights remain unresolved. The G4 continuation checks its viable
-source prerequisite without labeling unfinished G3 evidence complete.
+Brave storage/use rights remain unresolved; bounded private execution is explicitly
+authorized by the operator under ADR 0016. Local G4 is complete with one observed
+live discovery date, targeted actual-source normalization and browser evidence; G3
+remains incomplete. The next implementation milestone is G5 profile/matching design.
 G2 authorizes no subscriptions, deployment or real CV use.

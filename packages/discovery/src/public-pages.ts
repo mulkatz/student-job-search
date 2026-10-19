@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { setTimeout as delay } from "node:timers/promises";
 import {
   createPublicFetcher,
   extractPublicPage,
@@ -39,6 +40,10 @@ export function createPublicPageAdapter(input: {
   fetchOptions: PublicFetcherOptions;
   retentionDays?: number;
 }): DiscoveryAdapter {
+  z.string()
+    .regex(/^[a-zA-Z0-9_-]{1,160}$/)
+    .parse(input.sourceId);
+  z.string().trim().min(1).max(1000).parse(input.sourcePolicyRef);
   const targets = targetsSchema.parse(input.targets);
   if (
     new Set(targets.map((target) => target.sourceRecordId)).size !==
@@ -62,17 +67,37 @@ export function createPublicPageAdapter(input: {
     )
     .digest("hex")
     .slice(0, 24)}`;
+  const nextLocalDispatch = new Map<string, number>();
+  const minIntervalMs = input.fetchOptions.minOriginIntervalMs ?? 1000;
   let reservation: ((origin: string) => Promise<void>) | null = null;
   let stepSignal: AbortSignal | null = null;
+  let confirmation: ((origin: string) => Promise<void>) | null = null;
+  let hookFailure: { error?: unknown } | null = null;
   const fetch = createPublicFetcher({
     ...input.fetchOptions,
     beforeRequest: async (request) => {
       const reserve = reservation;
       const signal = stepSignal;
+      const confirm = confirmation;
+      const failure = hookFailure;
       if (!reserve || !signal) throw new Error("source_step_not_active");
-      await reserve(new URL(request.url).origin);
-      await input.fetchOptions.beforeRequest(request);
-      signal.throwIfAborted();
+      try {
+        const origin = new URL(request.url).origin;
+        const residual =
+          (nextLocalDispatch.get(origin) ?? -Infinity) - performance.now();
+        if (residual > 0)
+          await delay(Math.ceil(residual), undefined, { signal });
+        signal.throwIfAborted();
+        await reserve(origin);
+        await input.fetchOptions.beforeRequest(request);
+        signal.throwIfAborted();
+        await confirm?.(origin);
+        signal.throwIfAborted();
+        nextLocalDispatch.set(origin, performance.now() + minIntervalMs);
+      } catch (error) {
+        if (failure) failure.error = error;
+        throw error;
+      }
     },
   });
   return {
@@ -91,17 +116,23 @@ export function createPublicPageAdapter(input: {
       if (!target) throw new Error("target_missing");
       if (reservation) throw new Error("source_step_overlap");
       stepSignal = context.signal;
+      confirmation = context.confirmDispatch ?? null;
       reservation = async (origin) => {
         context.signal.throwIfAborted();
-        await context.reserveRequest(origin);
+        await context.reserveRequest(origin, minIntervalMs);
       };
+      const failure: { error?: unknown } = {};
+      hookFailure = failure;
       let fetched: FetchOutcome;
       try {
         fetched = await fetch(target.url);
       } finally {
         reservation = null;
         stepSignal = null;
+        confirmation = null;
+        hookFailure = null;
       }
+      if (failure.error) throw failure.error;
       if (fetched.kind !== "html") {
         const raw = "retryAfter" in fetched ? fetched.retryAfter : undefined;
         const retryMs =

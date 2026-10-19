@@ -4,20 +4,34 @@ import {
   type DiscoveryRun,
   type DiscoveryState,
   ingestObservation,
+  type PaidAttempt,
+  paidAttemptSchema,
   pruneExpired,
   type SourceProgress,
 } from "./model.js";
+import {
+  type TraversalCheckpoint,
+  traversalCheckpointSchema,
+} from "./provenance.js";
 import type { DiscoveryRepository } from "./repository.js";
 import { type NormalizedObservation, observationSchema } from "./schema.js";
 
 export type AdapterContext = {
   now: Date;
+  currentTime?: () => Date;
+  checkpoint?: TraversalCheckpoint;
+  paidAttempt?: PaidAttempt;
+  beginPaidAttempt?: (attempt: Omit<PaidAttempt, "startedAt">) => Promise<void>;
   signal: AbortSignal;
-  reserveRequest: (origin?: string) => Promise<void>;
+  reserveRequest: (origin?: string, minIntervalMs?: number) => Promise<void>;
+  confirmDispatch?: (origin: string) => Promise<void>;
 };
 export type DiscoveryAdapter = {
   sourceId: string;
   version: string;
+  initialCheckpoint?: TraversalCheckpoint;
+  initializeCheckpoint?: (context: { now: Date }) => TraversalCheckpoint | null;
+  resumeAcrossDays?: boolean;
   step: (
     cursor: string | null,
     context: AdapterContext,
@@ -25,6 +39,8 @@ export type DiscoveryAdapter = {
     observations: NormalizedObservation[];
     nextCursor: string | null;
     done: boolean;
+    checkpoint?: TraversalCheckpoint | null;
+    completedPaidAttemptId?: string;
   }>;
 };
 export class SourceFailure extends Error {
@@ -32,7 +48,11 @@ export class SourceFailure extends Error {
     readonly code:
       | "source_unavailable"
       | "source_blocked"
-      | "source_policy_unresolved",
+      | "source_policy_unresolved"
+      | "source_checkpoint_unavailable"
+      | "source_checkpoint_expired"
+      | "source_search_reconciliation_required"
+      | "source_search_authorization_expired",
     readonly retryAt: string | null = null,
   ) {
     super(code);
@@ -48,6 +68,8 @@ const stepSchema = z
     observations: z.array(observationSchema).max(10),
     nextCursor: z.string().min(1).max(8192).nullable(),
     done: z.boolean(),
+    checkpoint: traversalCheckpointSchema.nullable().optional(),
+    completedPaidAttemptId: z.string().uuid().optional(),
   })
   .superRefine((value, context) => {
     if (value.done !== (value.nextCursor === null))
@@ -69,6 +91,13 @@ function progress(adapter: DiscoveryAdapter): SourceProgress {
     sourceId: adapter.sourceId,
     adapterVersion: adapter.version,
     cursor: null,
+    ...(adapter.initialCheckpoint
+      ? {
+          checkpoint: traversalCheckpointSchema.parse(
+            adapter.initialCheckpoint,
+          ),
+        }
+      : {}),
     status: "pending",
     attempts: 0,
     inFlight: false,
@@ -149,10 +178,40 @@ export async function runDiscovery(input: {
         startedAt: started.toISOString(),
         updatedAt: started.toISOString(),
         status: "running",
-        sources: adapters.map((adapter) => ({
-          ...progress(adapter),
-          retryAt: state.cooldowns[adapter.sourceId] ?? null,
-        })),
+        sources: adapters.map((adapter) => {
+          const previous = [...state.runs]
+            .reverse()
+            .flatMap((entry) => entry.sources)
+            .find((source) => source.sourceId === adapter.sourceId);
+          if (
+            previous?.paidAttempt &&
+            previous.adapterVersion !== adapter.version
+          )
+            throw new Error("paid_attempt_contract_changed");
+          const carry =
+            (adapter.initialCheckpoint ||
+              adapter.initializeCheckpoint ||
+              adapter.resumeAcrossDays) &&
+            previous &&
+            previous.adapterVersion === adapter.version &&
+            previous.status !== "completed";
+          const initial = progress(adapter);
+          if (carry) delete initial.checkpoint;
+          return {
+            ...initial,
+            ...(carry ? { cursor: previous.cursor } : {}),
+            ...(carry && previous.checkpoint
+              ? { checkpoint: structuredClone(previous.checkpoint) }
+              : {}),
+            ...(carry && previous.checkpointInitialized !== undefined
+              ? { checkpointInitialized: previous.checkpointInitialized }
+              : {}),
+            ...(carry && previous.paidAttempt
+              ? { paidAttempt: structuredClone(previous.paidAttempt) }
+              : {}),
+            retryAt: state.cooldowns[adapter.sourceId] ?? null,
+          };
+        }),
       };
       state.runs.push(run);
     } else {
@@ -200,6 +259,21 @@ export async function runDiscovery(input: {
         );
         if (!source) throw new Error("source_missing");
         const current = now();
+        if (source.checkpoint) {
+          const previousPending = source.checkpoint.pending.length;
+          source.checkpoint.pending = source.checkpoint.pending.filter(
+            (entry) => Date.parse(entry.expiresAt) > current.getTime(),
+          );
+          source.checkpoint.expiredTargets =
+            (source.checkpoint.expiredTargets ?? 0) +
+            previousPending -
+            source.checkpoint.pending.length;
+          source.checkpoint.visited = source.checkpoint.visited.filter(
+            (entry) => Date.parse(entry.expiresAt) > current.getTime(),
+          );
+          if (Date.parse(source.checkpoint.expiresAt) <= current.getTime())
+            delete source.checkpoint;
+        }
         if (
           source.status === "completed" ||
           source.attempts >= bounds.maxStepsPerSource ||
@@ -216,8 +290,38 @@ export async function runDiscovery(input: {
       });
       if (!source) break;
       const controller = new AbortController();
+      const pendingDispatch = new Map<string, number[]>();
+      const effectiveRequestTime = () =>
+        Math.max(
+          now().getTime(),
+          started.getTime() + performance.now() - wallStarted,
+        );
       let timer: ReturnType<typeof setTimeout> | undefined;
       try {
+        if (adapter.initializeCheckpoint && !source.checkpointInitialized) {
+          const initialize = adapter.initializeCheckpoint;
+          const initialized = mutate((run) => {
+            const active = run.sources.find(
+              (entry) => entry.sourceId === adapter.sourceId,
+            );
+            if (
+              !active?.inFlight ||
+              active.attemptFence !== source.attemptFence
+            )
+              throw new Error("source_attempt_missing");
+            const checkpoint = initialize({ now: now() });
+            if (checkpoint)
+              active.checkpoint = traversalCheckpointSchema.parse(checkpoint);
+            else delete active.checkpoint;
+            active.checkpointInitialized = true;
+            return active.checkpoint
+              ? structuredClone(active.checkpoint)
+              : null;
+          });
+          source.checkpointInitialized = true;
+          if (initialized) source.checkpoint = initialized;
+          else delete source.checkpoint;
+        }
         const timeout = new Promise<never>((_resolve, reject) => {
           timer = setTimeout(
             () => {
@@ -232,8 +336,35 @@ export async function runDiscovery(input: {
             timeout,
             adapter.step(source.cursor, {
               now: now(),
+              currentTime: now,
+              ...(source.checkpoint
+                ? { checkpoint: structuredClone(source.checkpoint) }
+                : {}),
               signal: controller.signal,
-              reserveRequest: async (origin) => {
+              ...(source.paidAttempt
+                ? { paidAttempt: structuredClone(source.paidAttempt) }
+                : {}),
+              beginPaidAttempt: async (attempt) => {
+                mutate((run, timestamp) => {
+                  const active = run.sources.find(
+                    (entry) => entry.sourceId === adapter.sourceId,
+                  );
+                  if (
+                    controller.signal.aborted ||
+                    !active?.inFlight ||
+                    active.attemptFence !== source.attemptFence ||
+                    active.paidAttempt ||
+                    berlinDay(new Date(timestamp)) !== day ||
+                    elapsed() >= bounds.maxDurationMs
+                  )
+                    throw new Error("paid_attempt_refused");
+                  active.paidAttempt = paidAttemptSchema.parse({
+                    ...attempt,
+                    startedAt: timestamp,
+                  });
+                });
+              },
+              reserveRequest: async (origin, minIntervalMs) => {
                 mutate((run, timestamp, state) => {
                   const active = run.sources.find(
                     (entry) => entry.sourceId === adapter.sourceId,
@@ -248,6 +379,14 @@ export async function runDiscovery(input: {
                     elapsed() >= bounds.maxDurationMs
                   )
                     throw new Error("request_bound_reached");
+                  if (
+                    minIntervalMs !== undefined &&
+                    (origin === undefined ||
+                      !Number.isInteger(minIntervalMs) ||
+                      minIntervalMs < 1 ||
+                      minIntervalMs > 60000)
+                  )
+                    throw new Error("invalid_request_interval");
                   if (origin !== undefined) {
                     const url = new URL(origin);
                     if (
@@ -258,12 +397,55 @@ export async function runDiscovery(input: {
                     const owner = state.originOwners[origin];
                     if (owner && owner !== adapter.sourceId)
                       throw new Error("source_origin_already_owned");
+                    const requestTime = effectiveRequestTime();
+                    const allowed = state.originNextAllowedAt?.[origin];
+                    if (allowed && Date.parse(allowed) > requestTime)
+                      throw new SourceFailure("source_unavailable", allowed);
                     state.originOwners[origin] = adapter.sourceId;
+                    if (minIntervalMs !== undefined) {
+                      state.originNextAllowedAt ??= {};
+                      state.originNextAllowedAt[origin] = new Date(
+                        requestTime + minIntervalMs,
+                      ).toISOString();
+                      pendingDispatch.set(origin, [
+                        ...(pendingDispatch.get(origin) ?? []),
+                        minIntervalMs,
+                      ]);
+                    }
                   }
                   active.requestReservations.push({
                     reservationId: randomUUID(),
                     reservedAt: timestamp,
                   });
+                });
+              },
+              confirmDispatch: async (origin) => {
+                mutate((run, timestamp, state) => {
+                  const active = run.sources.find(
+                    (entry) => entry.sourceId === adapter.sourceId,
+                  );
+                  const intervals = pendingDispatch.get(origin);
+                  const interval = intervals?.[0];
+                  if (
+                    controller.signal.aborted ||
+                    !active?.inFlight ||
+                    active.attemptFence !== source.attemptFence ||
+                    berlinDay(new Date(timestamp)) !== day ||
+                    elapsed() >= bounds.maxDurationMs ||
+                    interval === undefined ||
+                    state.originOwners[origin] !== adapter.sourceId
+                  )
+                    throw new Error("dispatch_confirmation_refused");
+                  state.originNextAllowedAt ??= {};
+                  state.originNextAllowedAt[origin] = new Date(
+                    Math.max(
+                      Date.parse(
+                        state.originNextAllowedAt[origin] ?? timestamp,
+                      ),
+                      effectiveRequestTime() + interval,
+                    ),
+                  ).toISOString();
+                  intervals?.shift();
                 });
               },
             }),
@@ -288,9 +470,22 @@ export async function runDiscovery(input: {
           );
           if (!active?.inFlight || active.attemptFence !== source.attemptFence)
             throw new Error("source_attempt_missing");
+          if (
+            active.paidAttempt &&
+            result.completedPaidAttemptId !== active.paidAttempt.attemptId
+          )
+            throw new Error("paid_attempt_unreconciled");
+          if (result.completedPaidAttemptId) {
+            if (active.paidAttempt?.attemptId !== result.completedPaidAttemptId)
+              throw new Error("paid_attempt_identity_mismatch");
+            delete active.paidAttempt;
+          }
           for (const observation of result.observations)
             ingestObservation(state, observation);
           active.cursor = result.nextCursor;
+          if (result.checkpoint === null) delete active.checkpoint;
+          else if (result.checkpoint) active.checkpoint = result.checkpoint;
+          pruneExpired(state, now());
           active.inFlight = false;
           active.attemptFence = null;
           active.status = result.done ? "completed" : "pending";
@@ -336,4 +531,57 @@ export async function runDiscovery(input: {
   const run = repository.read().runs.find((entry) => entry.runId === runId);
   if (!run) throw new Error("run_missing");
   return run;
+}
+
+/** Manual operator action only, after reconciling the external paid ledger and stopping old workers. */
+export function authorizePaidAttemptRetry(
+  repository: DiscoveryRepository,
+  input: {
+    runId: string;
+    sourceId: string;
+    attemptId: string;
+    evidenceRef: string;
+  },
+  now = new Date(),
+): void {
+  const request = z
+    .strictObject({
+      runId: z.string().uuid(),
+      sourceId: z.string().regex(/^[a-zA-Z0-9_-]{1,160}$/),
+      attemptId: z.string().uuid(),
+      evidenceRef: z.string().regex(/^[a-zA-Z0-9_-]{1,160}$/),
+    })
+    .parse(input);
+  repository.transact((state) => {
+    if (state.runs.some((run) => run.status === "running"))
+      throw new Error("paid_retry_active_run");
+    const latest = [...state.runs]
+      .reverse()
+      .find((run) =>
+        run.sources.some((source) => source.sourceId === request.sourceId),
+      );
+    if (!latest || latest.runId !== request.runId)
+      throw new Error("paid_retry_not_latest");
+    const source = latest.sources.find(
+      (source) => source.sourceId === request.sourceId,
+    );
+    if (
+      !source ||
+      source.inFlight ||
+      source.attemptFence ||
+      source.paidAttempt?.attemptId !== request.attemptId
+    )
+      throw new Error("paid_retry_attempt_mismatch");
+    if (now.getTime() < Date.parse(latest.updatedAt))
+      throw new Error("run_clock_backwards");
+    source.paidRetryAuthorizations ??= [];
+    source.paidRetryAuthorizations.push({
+      attemptId: source.paidAttempt.attemptId,
+      requestRef: source.paidAttempt.requestRef,
+      authorizedAt: now.toISOString(),
+      evidenceRef: request.evidenceRef,
+    });
+    delete source.paidAttempt;
+    latest.updatedAt = now.toISOString();
+  });
 }

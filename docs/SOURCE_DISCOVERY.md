@@ -104,13 +104,17 @@ page is extractable or permits bypassing access controls.
 - **Brave Web Search:** offers programmatic web results, country/language parameters,
   and freshness filters. These can support discovery; they do not prove job location,
   accepted work language, or vacancy publication time. Access is user-reported
-  available; the actual plan and integration remain unverified.
+  available; Search/Postpaid and a private key were subsequently confirmed. The
+  current user instruction allows bounded private execution under
+  [ADR 0016](adr/0016-private-brave-operator-authorization.md), with provider grant
+  explicitly unverified. This is separate from live coverage evidence.
   [Official API reference](https://api-dashboard.search.brave.com/api-reference/web/search/get).
 - **Brave retention and content rights:** its FAQ requires a plan explicitly granting
   storage rights to retain API results, and says API access grants no rights to
   third-party webpages. The published base terms restrict persistent result storage.
-  Check the actual contracted plan and AI-use conditions before designing a persistent
-  shortlist around returned data. Separate search-response retention from original-
+  Wider retention/AI use still needs the applicable provider conditions. The private
+  operator exception retains URL/provenance only for at most seven days, discards
+  provider snippets/raw payloads and sends no results to a model. Separate result retention from original-
   page content retention; do not assume refetching changes rights to copied data.
   [Provider FAQ](https://brave.com/search/api/),
   [published terms](https://api-dashboard.search.brave.com/documentation/resources/terms-of-service).

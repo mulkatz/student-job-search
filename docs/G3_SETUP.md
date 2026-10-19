@@ -1,18 +1,19 @@
 # G3 setup and resumable experiment
 
-Status: partial live extraction pilot recorded, 2026-10-19. G3 is not complete.
-No discovery benchmark has run; partial synthetic model observations exist. Gmail serves Firebase
-Auth login only under [ADR 0010](adr/0010-manual-application-packages.md); no mailbox
-API/OAuth integration is part of current V1/G3. The pilot and separate diagnostics
-are recorded below; they do not pass branch acceptance. The
-seven-day observation window has not started. [FEASIBILITY.md](FEASIBILITY.md)
-remains the experiment contract.
+Status: G3 incomplete, updated 2026-10-19 after local G4. One actual discovery
+date is observed; the seven-day window started at `2026-10-19T19:18:01.181Z` and
+ends on the Berlin date 2026-10-25. Next observation is due 2026-10-20. Partial
+extraction and synthetic model evidence do not pass the full branches. Gmail is
+Firebase Auth identity only (ADR 0010), with no mailbox API/OAuth integration.
+[FEASIBILITY.md](FEASIBILITY.md) remains the experiment contract. Later sections
+preserve chronological checkpoints; the [latest G4 observations](#g4-bounded-search-and-targeted-source-observations)
+supersede their old cumulative counts and unstarted-clock statements.
 
 ## Current readiness
 
 | Branch | Evidence available | Remaining prerequisites or measurements |
 | --- | --- | --- |
-| A: discovery | Twenty frozen non-personal queries; local Brave credential and Search/Postpaid tariff confirmed | Applicable storage/use grant; source-specific rights and up to five useful initial boards; reviewed live runner |
+| A: discovery | Twenty frozen queries executed once; 200 URL leads; separately targeted source-advertised hostel role with unknown freshness/compatibility | Remaining six observation dates; useful/compatible incremental coverage and structured-source comparison; provider grant still unverified under the private operator exception |
 | B: extraction | Ten-target live pilot and frozen, independently reviewed labels; measured JSON-LD-only baseline; corrected access-marker heuristic | Complete 30-URL stratification, at least 30 present decisive values, sufficient retrieved details and a separately versioned next measurement |
 | C: model | Three textual CVs, five packages, six single repairs and one matching case observed in EU; final CV facts correct; two package content findings | Nineteen matching cases, explicit failed-package scoring and complete C report; daily model cap reached on 2026-10-19 |
 | D: manual packages | Five complete proposals available, including two independently reviewed editorial correction versions | Explicit human review of exact full-content hashes; no UI/clipboard acceptance yet |
@@ -27,8 +28,9 @@ actual inference observations are recorded below. Private evidence: `gcp-current
 The local Brave variable was normalized to `BRAVE_API_KEY`; no value was printed.
 The user confirmed Search/Postpaid by text and dashboard screenshot. No explicit
 storage grant was displayed; current public terms/help do not establish an
-applicable exception. Persistent result storage and A remain disabled. Firestore is the
-planned database; it does not confer Brave's contractual storage rights.
+applicable vendor exception. The user subsequently authorized bounded private use
+despite this condition (ADR 0016); URL-only discovery day one is now observed.
+Firestore does not confer Brave's contractual storage rights.
 
 The offline synthetic corpus has three profiles, three textual PDFs, one scan-only
 PDF, one malformed PDF, twenty labeled jobs and five package cases. The five pages
@@ -223,7 +225,8 @@ entitlements, credits, quotas and account-specific billed rates remain unverifie
   forecast at USD 0.50 before account-specific credits, currency and taxes. Do not
   assume credits. Result storage requires an entitlement expressly granting it;
   search access grants no rights to third-party pages. Confirm the actual plan
-  before retaining URLs/snippets/raw results. [Pricing and storage](https://brave.com/search/api/).
+  for general storage use; ADR 0016 records the current bounded private operator
+  exception without claiming that grant. [Pricing and storage](https://brave.com/search/api/).
   Use the documented [Web Search endpoint](https://api-dashboard.search.brave.com/app/documentation/web-search/get-started),
   not an additional LLM-context or Answers product. Respect actual
   [rate-limit headers](https://api-dashboard.search.brave.com/documentation/guides/rate-limiting),
@@ -479,10 +482,13 @@ evaluation/benchmark uses. No applicable exception has been established for this
 account. Do not infer rights from the tariff name, payment or choice of Firestore.
 [Provider help](https://api-dashboard.search.brave.com/documentation/resources/help-feedback),
 [terms](https://api-dashboard.search.brave.com/documentation/resources/terms-of-service).
-An explicit applicable grant or a separately selected permitted source is needed
-before the affected persistent-discovery use. No Brave request, account change,
-purchase or support message was made. This is not a source-coverage failure sample
-or a started seven-day observation window.
+At that checkpoint no Brave request, account change, purchase or support message
+was made, and the discovery window had not started. The user subsequently instructed
+bounded private use without a vendor grant. [ADR 0016](adr/0016-private-brave-operator-authorization.md)
+supersedes the waiting condition only for that explicit private exception. It keeps
+provider permission unverified, URL/provenance retention at most seven days, the
+existing caps and actual-dispatch start of A's seven-day clock. It authorizes no
+provider account change, new subscription or result-to-model processing.
 
 
 ## G4 private source follow-up
@@ -506,3 +512,33 @@ The cumulative G3 ledger now has 24 HTTP attempts (the earlier 22 plus these two
 all settled. Model attempts remain 30 and search/structured attempts remain zero;
 A's discovery clock remains unset. Existing captures, model content failures,
 original reservations and all unfinished G3 branch criteria remain unchanged.
+
+
+## G4 bounded search and targeted source observations
+
+Following the explicit private operator exception in ADR 0016, twenty frozen Brave
+queries ran on 2026-10-19 (ten per stream), retaining 200 URL/provenance leads and
+no snippets/provider titles/raw response bodies. Fourteen subsequent public HTTP
+attempts yielded no specific vacancy details; a same-day completed repeat sent zero
+requests. The generic career-link prioritization was then corrected offline; improved
+live v2 yield is unmeasured. This is not a passed A coverage sample.
+
+A separate reviewed four-target extraction packet used actual retained Brave URLs
+without new search calls or resetting the first run. Four HTTP attempts returned
+three HTML pages and one unavailable result. Inert review kept an unsolicited museum
+page as a lead, an explicitly 2022-expired advert unavailable, and a specific hostel
+cleaner advert as a source observation with freshness/eligibility unknown. Reviewed
+source-specific normalization of the real bytes and authenticated Chromium passed;
+this does not prove generic extractor accuracy or a compatible/current G3 vacancy.
+See [G4 evidence](PLAN.md#g4-discovery-slice), private packet/replay references and
+retention instructions there. All copies expire within original parent retention.
+
+The preserved cumulative ledger now has 42 HTTP, 20 search and 30 model attempts,
+all settled; no outstanding/writer reconciliation or overrun remains. Conservative
+search accounting is EUR 0.20, with prior model accounting EUR 0.052615; these are not
+provider invoices. Existing caps/allocations were unchanged. The first actual search
+dispatch started A at `2026-10-19T19:18:01.181Z`; the seven Berlin calendar dates end
+2026-10-25 and the next observation is due 2026-10-20. Only one live discovery date
+is observed. The extraction cohort, nineteen matching cases, human exact-content
+package review and the full A/B/C/D outcomes remain incomplete. G4 completion does
+not waive these requirements or authorize new subscriptions/deployment/real CV use.

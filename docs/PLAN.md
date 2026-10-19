@@ -8,7 +8,7 @@ Updated: 2026-10-19. Status describes evidence, not estimated progress.
 | G1: feasibility brief | Complete | Accepted baseline, public-fetch policy, bounded experiment and fresh-session handoff. |
 | G2: development foundation | Complete | Reproducible offline TypeScript workspace, synthetic fixtures, verification gate, and configured CI. |
 | G3: feasibility experiment | In progress | Source, web search/page extraction, synthetic model and manual-package evidence; explicit blockers. |
-| G4: discovery slice | In progress | Traceable, deduplicated job discoveries in an authenticated UI and daily pipeline. |
+| G4: discovery slice | Complete locally | Traceable discovery, conservative identities, authenticated table and verified bounded daily-run behavior; market yield remains unproven. |
 | G5: profile and matching | Planned | Approved profiles and evidence-based matching meet the fixture targets. |
 | G6: application assistant | Planned | Fact-grounded email/questionnaire packages in a shared review/copy dialog. |
 | G7: V1 release and handover | Planned | CV, manual-copy application packages and bounded daily discovery meet V1 acceptance. |
@@ -37,12 +37,12 @@ live here until a remote issue tracker exists; an external project board is not
 required. Report blockers with the missing evidence or access and a concrete next
 action. Independent tasks may proceed while an integration is blocked.
 
-The user requested local integration on `main` and a fresh-session G4 handoff.
-Use [START_PROMPT.md](START_PROMPT.md) for that continuation; it preserves G3's
-unfinished evidence and G4's viable-source prerequisite. Only `main` exists locally;
-finished task-owned work is committed there, without an artificial merge or push.
-The handoff documentation and corrected private proposals received independent
-review with no remaining material findings. Human content approval remains pending.
+The user requested integration on `main` and then authorized pushing after G4 is
+complete and verified. Finished task-owned changes are committed there; preserve
+unrelated work and inspect outgoing secrets before the authorized push. The current
+[handoff](START_PROMPT.md) preserves unfinished G3 evidence and G4's explicit local
+limits, with G5 as the next implementation milestone. Human package-content approval
+remains pending; repository publication does not authorize runtime deployment.
 
 ## G0: repository foundation
 
@@ -292,104 +292,132 @@ V1 release readiness. The shared dialog and browser/clipboard checks belong to G
 
 ## G4: discovery slice
 
-Dependencies: G2 and a viable source in G3. G3 remains incomplete and separate.
+Completed locally on 2026-10-19. Dependencies: G2 and the observed viable public
+source path in G3; G3 remains incomplete and separate. Outcome: traceable source
+observations, conservative identity/revisions, authenticated local table and bounded
+Europe/Berlin daily-run behavior. This is an internal V1 milestone, not V1 release,
+production login, recurring market-yield evidence or an installed cloud schedule.
 
-Started 2026-10-19 under [START_PROMPT.md](START_PROMPT.md). Outcome: the first
-traceable, conservative discovery slice with an authenticated local table and
-bounded Berlin daily runs. No deployment or cloud schedule is requested.
+Acceptance: validated source/evidence contracts; repeat ingestion without duplicate
+jobs/revisions; uncertain duplicate links without automatic merges; atomic bounded
+cursors/frontiers, fencing, overlap denial and source-local errors; Auth/server/rules
+owner isolation; real-browser evidence/unknowns/original links; actual source reads
+and repeatable normalization; integrated verification and independent review.
 
-Acceptance: validated source/evidence contracts and immutable changed revisions;
-repeat ingestion without duplicate jobs; uncertainty links without unsafe merging;
-persisted bounded cursors/recovery, overlap protection and source-local errors;
-Firebase Auth plus server/rules owner isolation using two synthetic users;
-real-browser table with field evidence, unknowns and original links; repeatable
-permitted real-source normalization; integrated `npm run verify` and independent
-review with material findings resolved. G5 scores remain unavailable.
+Planning, implementation and independent review were separate. The coordinator
+owned architecture/docs, integration and private operators; the discovery implementer
+owned `packages/discovery` and provenance rendering; the application implementer
+owned server/emulator/browser import work. Material review findings were resolved
+and affected changes re-reviewed. The unrelated concurrent `AGENTS.md` edit remains
+outside task-owned commits. Decisions are in ADRs [0013](adr/0013-discovery-identities-and-recovery.md),
+[0014](adr/0014-local-firebase-authenticated-discovery.md),
+[0015](adr/0015-expiring-discovery-frontiers.md) and
+[0016](adr/0016-private-brave-operator-authorization.md).
 
-Bounded ownership: coordinator owns ADRs 0013/0014, root integration, source-policy
-and private live operator/evidence; separate discovery implementer owns
-`packages/discovery`, application implementer owns `apps/web`, `packages/server`
-and emulator/rules configuration; independent reviewer owns inspection, not code.
-Planning completed before implementation. Shared source identities and local Auth
-contracts are recorded before persistence in [ADR 0013](adr/0013-discovery-identities-and-recovery.md)
-and [ADR 0014](adr/0014-local-firebase-authenticated-discovery.md).
+- [x] Source-pair identities, meaningful immutable revisions, distinct timestamps,
+      conservative duplicate links and strict normalization/evidence contracts.
+- [x] Public-page, frozen permitted-snapshot and fixed-endpoint Brave adapters;
+      search leads remain separate from fetched pages and source-advertised details.
+- [x] Expiring bounded career-link frontiers, cross-domain target/redirect policy,
+      SSRF boundaries, origin ownership/pacing, cooldowns and bounded diagnostics.
+- [x] Daily Berlin runs, atomic cursor/observation commits, overlap/fence recovery,
+      cross-day behavior and fail-closed paid-attempt reconciliation.
+- [x] Local Firebase-authenticated table, exact evidence and source links, unknowns,
+      owner-private server/rules denial and explicit source projection import.
+      Fit stays unavailable until G5; latest checked observation determines order.
+- [x] Actual broad-search leads followed by separately bounded targeted original-page
+      extraction, repeated real-byte normalization and authenticated Chromium proof.
+- [ ] Second permitted adapter, useful incremental/compatible coverage benchmark and
+      recurring daily market yield remain G3/V1 acceptance, not established here.
 
-Source constraint: Brave remains disabled without an applicable storage/use grant.
-Existing G3 employer observations support only bounded anonymous public reads,
-not unrestricted mirroring. Review exact targets and source terms before a private
-real-source observation, enforce at most seven-day retention on all copies and
-reads, preserve G3's cumulative accounting and do not start A's discovery clock.
-Synthetic local progress does not fulfill the real-source exit criterion.
+### Executed verification
 
-- [x] Resolve discovery identities, meaningful-content revisions and timestamps (Q5)
-      in ADR 0013; package/profile state contracts remain G5/G6.
-- [x] Implement one operator-configured public-page adapter, strict normalization,
-      stable source identity, uncertain duplicate links, atomic revisions/cursors,
-      source-local failures and fenced recovery.
-- [x] Demonstrate two permitted private real-source reads, then hash-bound offline
-      normalization with one job/one revision and an authenticated local API import.
-- [ ] Enable broad web-search leads and bounded career-link traversal outside the
-      operator-seeded stream. Brave storage/AI-use rights remain unresolved.
-- [x] Build a local Firebase-authenticated table with original posting/application
-      links, field evidence, unknowns and expandable details. Sort by latest processed
-      observation; fit scores remain unavailable until G5 supplies validated matching.
-- [x] Add local bounded Europe/Berlin daily-run logic, persisted origin ownership,
-      cross-day cooldowns, overlap protection, request reservations and diagnostics.
-      No cloud schedule is installed.
-- [ ] Demonstrate repeatable useful daily live discovery beyond one seeded source;
-      the full G4 exit is not established by two immediate repeat reads.
-- [ ] Enable a second permitted adapter and demonstrate web-discovered vacancies
-      outside the structured-source set before declaring V1 complete.
+The integrated `npm run verify` passed in an isolated checkout without pre-existing
+workspace build outputs, using Node 24.22.0/npm 11.11.0 and local Java 26. Build now
+precedes dependent-workspace type checking; the former order failed in a genuinely
+isolated fresh checkout despite passing with warm local outputs. CI installs Java 21
+and Chromium; no remote CI run is claimed.
 
-Implemented/local verification (2026-10-19): `npm ci` succeeded with the pinned
-Node 24.22.0/npm 11.11.0. The final `npm run verify` passed Biome, strict types,
-97 offline tests (5 core, 67 experiment, 18 discovery, 3 API, 1 links, 3 scanner),
-all five workspace builds and Secretlint over 112 repository files. It also passed
-one real Firebase emulator integration and one Chromium journey. CI now explicitly
-installs Java 21 and Chromium; no remote CI run was observed.
+The gate passed Biome, all five builds, strict source/test types, **143 offline
+tests** (5 core, 67 experiment, 60 discovery, 7 API/import, 1 links, 3 scanner),
+Secretlint over 125 repository files, one real Firebase emulator ownership integration
+and one synthetic Chromium journey. The integration tests actual SDK tokens,
+anonymous/cross-owner denial, expired/invalid/disabled authentication, private
+Firestore/Storage ownership, expiry filtering beyond 101 stale projections, bounded
+physical cleanup and corrupt-owner rejection. Default tests call no paid provider.
 
-The emulator integration exercises actual Auth SDK tokens, server-derived ownership,
-two synthetic owners, anonymous/cross-owner Firestore and Storage denial, expired,
-invalid and disabled authentication, retained jobs beyond 101 expired projections,
-bounded physical cleanup and corrupt stored-owner rejection. Chromium exercises
-login, table, source links, evidence/unknowns and logout without opening application
-links or writing browser forms. The additional manual CUA browser connection was
-unavailable; no manual visual inspection is claimed.
+A separate explicitly opted-in Chromium journey imported the current actual hostel
+projection and passed login, exact title/employer/evidence/revision/provenance,
+unknown conditions, unavailable fit and logout. It blocked external navigation;
+no source/application link, browser form or external submission was opened. Its
+first execution exposed a test locator that included nested location text; the
+locator-only correction passed independent review and the actual-source rerun.
+Manual CUA inspection remained unavailable and is not claimed.
 
-Real-source evidence remains private: `.local/g4/source-probe-v1/` contains two
-separately named live captures of the same existing G3 employer page, one request
-each. `.local/g4/normalization-v2/` binds the final source/build/script/capture hashes
-and replays the actual bytes offline: one stable job, one content revision,
-`newRevision` true then false, unknown decisive conditions and null fit score.
-Earlier v1 evidence is preserved separately. This is a specific observed advert,
-not a language/eligibility/freshness or broad-coverage pass. A separate local import
-and API proof returns 401 anonymously and the exact validated job with an emulator
-Auth token. Synthetic Chromium rendering and real-source API evidence remain distinct.
-All derived source copies retain the seven-day maximum. Preview services were stopped
-without exporting emulator state; private raw/replay evidence needs operator expiry
-cleanup, and production retention operations remain unimplemented.
+### Private source evidence and limits
 
-Independent review resolved and re-reviewed material findings in cross-day and
-cross-adapter backoff, hanging/late adapter work, source-data expiry, current-revision
-retention links, projection query limits/cleanup, email-route display and CI setup.
-Final disclosure: `npm audit` reports seven development-CLI dependency nodes
-(4 moderate/3 high); `npm ls` flags the explicit patched gRPC override against
+The initial slice at `899f581` passed 97 offline tests and synthetic browser/owner
+checks. `.local/g4/source-probe-v1/` preserves two real reads of the previous G3
+employer page; `.local/g4/normalization-v2/` binds actual bytes/operator/build hashes
+and demonstrates one stable job/revision plus authenticated API 401/200 evidence.
+Earlier replay v1 is preserved. These are not broad-coverage observations.
+
+The user then explicitly authorized bounded private Brave use despite an unverified
+provider storage/use grant. ADR 0016 records that operator instruction separately;
+it neither changes vendor terms nor grants rights over third-party pages. No result
+was sent to a model. Raw search responses, snippets and provider titles were discarded;
+only URL/provenance leads are retained privately for at most seven days.
+
+`.local/g4/brave-live-v1/` executed all twenty frozen G3 queries (ten per stream),
+retaining 200 URL leads. Fourteen HTTP attempts produced eight career leads, four
+unavailable observations and **zero vacancy details**. Same-day completed replay
+sent zero additional requests. All attempts settled and paid markers cleared.
+Conservative search accounting is EUR 0.20, not an invoice. Exact executed method
+inputs are archived privately against their hashes.
+
+The v1 selection spent child slots on navigation/publishing links. Traversal v2 now
+ranks likely vacancy anchors using text/path/page context and excludes obvious
+service navigation. Sixty discovery tests include these regressions. Its useful
+live yield has not been measured; do not attribute the later hostel result to it.
+
+A separately reviewed `.local/g4/search-detail-probe-v1/` packet fetched four actual
+retained Brave URLs in four additional HTTP attempts, preserving source ownership,
+pacing, the shared lock, cumulative G3 accounting and parent evidence expiry. It
+neither resets nor resumes the completed v1 daily run. Three pages returned HTML;
+one was unavailable. Independent inert inspection established an unsolicited museum
+lead, an advert explicitly expired in 2022 and a specific hostel cleaner advert.
+Only the last is represented as a source-advertised vacancy detail. Its publication,
+currentness, language/Germany eligibility and unsupported fields remain unknown;
+it is not a confirmed compatible/current G3 coverage count.
+
+`.local/g4/search-normalization-v1/` binds these actual captures to reviewed selectors,
+source/build/operator hashes and original search/query/result/attempt provenance.
+Offline normalization yields three jobs/three revisions: lead, unavailable expired
+advert and observed vacancy detail. Repeat ingestion changes neither job nor revision
+identity (`newRevision` true then false); it is not another live fetch. The hostel
+uses exact source-specific visible selectors, not a generic-extractor accuracy claim.
+Its minimized one-job projection supplied the successful actual-source Chromium run.
+
+All captures, projections, method snapshots and browser failure artifacts inherit
+at most seven-day retention; do not renew evidence by replay. Future operators inherit
+latest packet ownership/pacing and global cooldowns. Emulator preview services stopped
+without data export; operator expiry cleanup remains necessary. Production retention,
+Google login/deployment and CV/package work remain later milestones.
+
+G3 now has **42 HTTP, 20 search and 30 model attempts**, all settled, with no pending
+writer reconciliation or overrun. Search started A at `2026-10-19T19:18:01.181Z`;
+its seven Berlin dates end 2026-10-25 and next observation is due 2026-10-20. Only
+one live discovery date is observed. Nineteen matching cases, the full extraction
+cohort and exact-content human package review remain incomplete; no cap/state reset
+or seven-day waiver occurred. Search's conservative EUR 0.20 and previous model
+EUR 0.052615 remain inside existing allocations/EUR 5 experiment/EUR 50 monthly cap.
+
+Known dependency limitation remains: `npm audit` reports seven development-CLI nodes
+(4 moderate/3 high), and `npm ls` flags the explicit patched gRPC override against
 Firestore's original range. Neither command is claimed to pass; see
-[G4_LOCAL.md](G4_LOCAL.md#dependency-audit-limitation). Behavior verification passed.
-The unrelated concurrent `AGENTS.md` edit is preserved outside task-owned commits.
-
-G4 remains **in progress**, and G3 remains incomplete: no seven-day discovery clock,
-Brave call, additional model use, cloud schedule, deployment, production login or
-real applicant processing was introduced. The G3 ledger now has 24 settled HTTP
-attempts and the unchanged 30 model attempts. This first slice does not complete G4
-or V1. Next bounded task: establish a permitted web-search storage/use route, then
-implement and observe a bounded broad-discovery/career-link run with the same
-identity, policy, retention and recovery contracts. Reuse existing access; no new
-subscription or account/billing change is authorized by this handoff.
-
-Exit: repeatable daily discoveries are traceable and nonduplicated; UI works in a
-real browser and private data is inaccessible to unauthorized users. Synthetic
-emulator/browser evidence establishes the local boundary only, not the whole exit.
+[G4_LOCAL.md](G4_LOCAL.md#dependency-audit-limitation). The behavior gate passes.
+The user authorized pushing main after this completed verification; no deployment,
+new account/subscription, billing/IAM change or real-CV processing is included.
 
 ## G5: profile and matching
 

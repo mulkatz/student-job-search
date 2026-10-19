@@ -101,8 +101,8 @@ no provider credentials, cloud account, `.env` file, or paid/live API. The same 
 requests, including fork contributions; a local pass does not establish a remote
 CI run. No deployment command is provided.
 
-The gate checks runtime versions, formatting, lint, strict types, synthetic tests,
-build output, secrets, Firebase emulator ownership and Chromium browser tests in
+The gate checks runtime versions, formatting and lint, builds workspace dependencies
+before strict source/test types, then checks synthetic tests, secrets, Firebase emulator ownership and Chromium browser tests in
 sequence; a failure stops it. Individual commands:
 
 | Command | Purpose |
@@ -147,7 +147,10 @@ The proposed stack is TypeScript, React, Google Cloud, and Firebase. The initial
 provider route is GCP-managed Gemini, Brave and HTTP/Cheerio. The offline foundation
 uses private core, experiment, discovery and server workspaces plus a React/Vite
 local web application. Deployment tooling remains outside the current slice. The G3 model/region route
-is provisional until actual operator access and terms are checked.
+has actual synthetic EU observations; its full benchmark remains incomplete.
+Local G4 discovery is verified; see [delivery evidence](docs/PLAN.md#g4-discovery-slice)
+and [local usage/source proof](docs/G4_LOCAL.md). Provider rights and recurring useful
+coverage remain distinct from this implementation milestone.
 No cloud resources have been provisioned.
 
 Repository content and commits are written in English; discussion can be German.

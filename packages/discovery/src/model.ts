@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { z } from "zod";
+import { traversalCheckpointSchema } from "./provenance.js";
 import {
   type DiscoveryJob,
   discoveryJobSchema,
@@ -8,10 +9,30 @@ import {
 } from "./schema.js";
 
 const timestamp = z.iso.datetime({ offset: true });
+export const paidAttemptSchema = z.strictObject({
+  attemptId: z.string().uuid(),
+  requestRef: z.string().regex(/^[a-f0-9]{64}$/),
+  startedAt: timestamp,
+});
+export type PaidAttempt = z.infer<typeof paidAttemptSchema>;
 export const sourceProgressSchema = z.strictObject({
   sourceId: z.string().min(1).max(160),
   adapterVersion: z.string().min(1).max(100),
   cursor: z.string().max(8192).nullable(),
+  checkpoint: traversalCheckpointSchema.optional(),
+  checkpointInitialized: z.boolean().optional(),
+  paidAttempt: paidAttemptSchema.optional(),
+  paidRetryAuthorizations: z
+    .array(
+      z.strictObject({
+        attemptId: z.string().uuid(),
+        requestRef: z.string().regex(/^[a-f0-9]{64}$/),
+        authorizedAt: timestamp,
+        evidenceRef: z.string().regex(/^[a-zA-Z0-9_-]{1,160}$/),
+      }),
+    )
+    .max(100)
+    .optional(),
   status: z.enum(["pending", "running", "completed", "failed"]),
   attempts: z.number().int().min(0).max(10000),
   inFlight: z.boolean(),
@@ -45,6 +66,7 @@ export const stateSchema = z.strictObject({
   version: z.literal(1),
   cooldowns: z.record(z.string().min(1).max(160), timestamp),
   originOwners: z.record(z.url(), z.string().min(1).max(160)),
+  originNextAllowedAt: z.record(z.url(), timestamp).optional(),
   jobs: z.array(discoveryJobSchema).max(10000),
   revisions: z
     .array(
@@ -93,6 +115,42 @@ export function revisionIdentity(observation: NormalizedObservation): string {
     retentionUntil: _retentionUntil,
     ...content
   } = observation;
+  if (content.discoveryProvenance) {
+    const provenance = content.discoveryProvenance;
+    const meaningful =
+      provenance.kind === "search_result"
+        ? {
+            kind: provenance.kind,
+            queryRef: provenance.queryRef,
+            resultRef: provenance.resultRef,
+            permissionRef: provenance.permissionRef,
+          }
+        : provenance.kind === "brave_search_result"
+          ? {
+              kind: provenance.kind,
+              queryRef: provenance.queryRef,
+              resultRef: provenance.resultRef,
+              manifestHash: provenance.manifestHash,
+              operatorAuthorizationRef: provenance.operatorAuthorizationRef,
+              providerGrant: provenance.providerGrant,
+              decisionRef: provenance.decisionRef,
+              purpose: provenance.purpose,
+              retain: provenance.retain,
+            }
+          : provenance.kind === "operator_seed"
+            ? {
+                kind: provenance.kind,
+                seedRef: provenance.seedRef,
+                sourcePolicyRef: provenance.sourcePolicyRef,
+              }
+            : {
+                kind: provenance.kind,
+                parentSourceId: provenance.parentSourceId,
+                parentSourceRecordId: provenance.parentSourceRecordId,
+                evidence: provenance.evidence,
+              };
+    return `rev_${hash(stable({ ...content, discoveryProvenance: meaningful }))}`;
+  }
   return `rev_${hash(stable(content))}`;
 }
 function similar(left: DiscoveryJob, right: DiscoveryJob): boolean {
@@ -189,6 +247,28 @@ export function pruneExpired(state: DiscoveryState, now = new Date()): void {
     (revision) =>
       Date.parse(revision.observation.retentionUntil) > now.getTime(),
   );
+  for (const run of state.runs)
+    for (const source of run.sources) {
+      const checkpoint = source.checkpoint;
+      if (!checkpoint) continue;
+      if (Date.parse(checkpoint.expiresAt) <= now.getTime()) {
+        delete source.checkpoint;
+        continue;
+      }
+      const previousPending = checkpoint.pending.length;
+      checkpoint.pending = checkpoint.pending.filter(
+        (entry) => Date.parse(entry.expiresAt) > now.getTime(),
+      );
+      checkpoint.expiredTargets =
+        (checkpoint.expiredTargets ?? 0) +
+        previousPending -
+        checkpoint.pending.length;
+      checkpoint.visited = checkpoint.visited.filter(
+        (entry) => Date.parse(entry.expiresAt) > now.getTime(),
+      );
+      if (!checkpoint.pending.length && !checkpoint.visited.length)
+        delete source.checkpoint;
+    }
   for (const job of state.jobs) {
     if (
       !state.revisions.some(
