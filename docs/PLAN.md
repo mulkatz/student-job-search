@@ -191,6 +191,13 @@ affected code, three captured HTML pages, frozen labels and actual pilot score.
 Earlier 33/47-test gates remain historical evidence; no UI journey or remote CI
 run is claimed.
 
+The user's CaptchaKraken proposal was checked against primary provider documentation
+and the existing access policy. It remains a deferred, untested candidate in
+[EXTRACTION_OPTIONS.md](EXTRACTION_OPTIONS.md#captchakraken-deferred-optional-candidate):
+the pilot has no confirmed real CAPTCHA gate, and research does not supersede
+ADR 0005's stop rule or authorize US processing, purchases or application-form writes.
+The user explicitly deferred solver work until after the current gate.
+
 - [ ] Verify current provider/model/region, source rights/plan and operator access;
       reserve within the experiment caps before live execution.
 - [ ] Review source terms, attribution, storage/retention, quotas, endpoints and
@@ -279,6 +286,14 @@ packages; review every V1 criterion. Discovery alone cannot pass this goal.
 
 Exit: every V1 criterion in `CONCEPT.md` has evidence. Missing CV, package review/copy
 or discovery acceptance keeps V1 incomplete. No multi-user availability is implied.
+
+## Optional follow-up investigations — deferred
+
+- [ ] Reassess a CAPTCHA fallback only if confirmed public-page challenges materially
+      reduce useful discovery. Use the [CaptchaKraken research](EXTRACTION_OPTIONS.md#captchakraken-deferred-optional-candidate)
+      to define a separate bounded task, resolve source/access and US-processing
+      decisions, and compare added verified vacancies against cost and latency.
+      This is outside the current G3 gate and is not an implementation commitment.
 
 ## V2: broader use and user-managed search orders — deferred
 

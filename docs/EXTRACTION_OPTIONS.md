@@ -1,9 +1,9 @@
 # Public-page extraction options
 
-Status: research; HTTP/Cheerio accepted as the initial implementation approach in
-ADR 0004. Fallbacks remain unselected and no integration has been tested.
-Official sources opened and reviewed: 2026-10-19. No provider calls, accounts,
-subscriptions, installations, or real candidate data were used.
+Status: HTTP/Cheerio accepted in ADR 0004; the partial live baseline is recorded in
+[G3_SETUP.md](G3_SETUP.md#first-live-extraction-pilot). Fallbacks remain unselected
+and untested. Official sources reviewed: 2026-10-19. This provider research used
+no provider inference calls, accounts, subscriptions, installations or candidate data.
 
 ## Recommendation for V1
 
@@ -150,3 +150,42 @@ additional unique useful vacancies, unsupported claims, blocked outcomes, latenc
 browser seconds and credits. A provider claim or mock is not coverage evidence.
 Choose a fallback only when its incremental benefit justifies measured total cost;
 if none helps, retain leads and reconsider sources rather than expanding retries.
+
+## CaptchaKraken: deferred optional candidate
+
+Reviewed 2026-10-19 following the user's research. No account, dependency, image
+upload or solver trial was added. Hosted inference supplies answer suggestions;
+our worker would still operate the browser and validate outcomes. The documented
+TypeScript driver invokes a Python subprocess. A direct HTTP client avoids that
+driver dependency but requires our own browser coordination and output validation.
+[Provider API](https://captchakraken.com/docs),
+[driver architecture](https://github.com/CaptchaKraken/CaptchaKraken/blob/main/docs/usage.md).
+
+Published image pricing is USD 0.30 per 1,000 responses; video is USD 1.00.
+Typical 1–2 responses per puzzle are not a limit. The documented five-billable-
+response/ten-served-response attempt bounds require a stable `x-ck-session` across
+rounds. A failed attempt must not start fresh sessions automatically. Web docs
+advertise prepaid purchases from USD 5; actual account credits are unverified.
+Ten URLs do not equal ten responses. [Billing documentation](https://captchakraken.com/docs).
+
+The privacy policy states US processing. Failed or unreported puzzles may be kept
+for 30 days, and selected training examples for as long as used for training;
+per-solve metadata, including hostname, is kept for 12 months. Capture can be
+disabled by contacting the provider; an account-specific confirmation would be
+needed before testing. This differs from the project's EU preference. Only widget
+crops could be considered, never CVs, profiles, credentials or surrounding pages.
+[Privacy policy](https://captchakraken.com/privacy).
+The service terms describe private beta without an SLA and leave target-site
+conditions with the caller. [Service terms](https://captchakraken.com/terms).
+
+The pilot has seven heuristic stops, one diagnosed false positive and no confirmed
+real CAPTCHA gate. First measure the corrected marker detection separately and
+complete source labels; accessible visible-text extraction is also missing.
+ADR 0005 currently stops real challenges, and ADR 0010 keeps application forms
+manual. This research does not change those decisions or authorize purchases or
+US processing. Reconsider a solver only if confirmed read-only public-page gates
+justify an explicit policy decision, a superseding ADR and a bounded comparison.
+That comparison would share the existing at-most-ten unresolved URLs, resource
+and cost caps, including browser subrequests and every solver round. Measure
+additional verified vacancies, field evidence, latency and total cost; a correct
+CAPTCHA answer alone does not establish useful coverage or source permission.
