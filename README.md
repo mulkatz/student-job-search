@@ -91,14 +91,21 @@ CI run. No deployment command is provided.
 The gate checks runtime versions, formatting, lint, strict types, synthetic tests,
 build output, and secrets in sequence; a failure stops it. Individual commands:
 
-| Command                                   | Purpose                                                                               |
-| ----------------------------------------- | ------------------------------------------------------------------------------------- |
-| `npm run format` / `npm run format:check` | Format/check maintained files; historical research documents retain their formatting. |
-| `npm run lint`                            | ESLint, including TypeScript checks.                                                  |
-| `npm run typecheck`                       | Strict TypeScript validation of source and tests.                                     |
-| `npm test`                                | Compile fresh test output and run Node's test runner.                                 |
-| `npm run build`                           | Rebuild the core ESM package and declarations.                                        |
-| `npm run secrets`                         | Secretlint with its recommended maintained rule preset.                               |
+| Command | Purpose |
+| --- | --- |
+| `npm run check` | Biome formatting, lint and import checks without changes. |
+| `npm run format` / `npm run format:check` | Apply/check Biome formatting. |
+| `npm run lint` | Biome lint checks. |
+| `npm run typecheck` | Strict TypeScript validation of source and tests. |
+| `npm test` | Compile fresh test output and run Node's test runner. |
+| `npm run build` | Rebuild the core ESM package and declarations. |
+| `npm run secrets` | Secretlint with its recommended maintained rule preset. |
+
+Biome **2.5.15** checks supported JavaScript, TypeScript and JSON files. Markdown
+and YAML are reviewed manually; the gate does not claim automated formatting or
+lint coverage for them. Strict `tsc` validation remains independent of Biome.
+The tooling choice and its limits are recorded in
+[ADR 0007](docs/adr/0007-biome-formatting-and-linting.md).
 
 `packages/core` contains runtime-validated offline configuration, owner/candidate
 scope checks, and synthetic candidate/job fixtures. Configuration is an explicit
@@ -117,8 +124,8 @@ will be added with the UI and persistence layers; neither exists in G2.
 
 The proposed stack is TypeScript, React, Google Cloud, and Firebase. The initial
 provider route is GCP-managed Gemini, Brave and HTTP/Cheerio. The offline foundation
-uses one private `packages/core` workspace; application
-framework, exact model/region and deployment tooling remain later choices.
+uses one private `packages/core` workspace; application framework, exact model/region
+and deployment tooling remain later choices.
 No cloud resources have been provisioned.
 
 Repository content and commits are written in English; discussion can be German.

@@ -90,6 +90,11 @@ separate reviewer inspects the actual diff and checks. Q5 is resolved only for t
 synthetic owner/candidate boundary; persistence and external-write contracts remain
 for their delivery slices. No browser/emulator layer is implemented in G2.
 
+Tooling update: the user requested Biome instead of Prettier/ESLint during G2.
+The follow-up uses one Biome formatter/linter and keeps strict TypeScript checking
+separate; ADR 0007 records the superseding decision. Clean-checkout and negative
+probes must be repeated against the final tooling before completion.
+
 - [ ] Select and pin maintained runtime/package versions; define workspace structure
       and one package manager. Record significant choices and actual commands.
 - [ ] Set up formatting, linting, strict types, meaningful tests, build, and secret

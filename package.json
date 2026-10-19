@@ -13,23 +13,21 @@
   ],
   "scripts": {
     "check:runtime": "node scripts/check-runtime.mjs",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "lint": "eslint . --max-warnings 0",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "lint": "biome lint . --error-on-warnings",
     "typecheck": "npm run typecheck --workspaces",
-    "test": "npm run test --workspaces",
+    "test": "npm run test --workspaces && node --test scripts/test/*.test.mjs",
     "build": "npm run build --workspaces",
     "secrets": "node scripts/scan-secrets.mjs",
-    "verify": "npm run check:runtime && npm run format:check && npm run lint && npm run typecheck && npm test && npm run build && npm run secrets"
+    "verify": "npm run check:runtime && npm run check && npm run typecheck && npm test && npm run build && npm run secrets",
+    "check": "biome ci . --error-on-warnings"
   },
   "devDependencies": {
-    "@eslint/js": "10.0.1",
+    "@biomejs/biome": "2.5.15",
+    "@secretlint/node": "13.0.7",
     "@secretlint/secretlint-rule-preset-recommend": "13.0.7",
     "@types/node": "24.19.2",
-    "eslint": "10.13.0",
-    "prettier": "3.9.10",
-    "secretlint": "13.0.7",
-    "typescript": "6.0.3",
-    "typescript-eslint": "8.71.2"
+    "typescript": "6.0.3"
   }
 }
