@@ -266,5 +266,12 @@ At the user's request, G6 is complete locally as a deterministic application-dra
 slice under [ADR 0025](docs/adr/0025-private-versioned-application-drafts.md). Five
 full synthetic packages passed independent agent content review, with actual
 Chromium review/copy and private lifecycle checks. G3 source/model quality remains
-open; this does not establish G7 release readiness.
+limited. The sole actual five-package model repair subsequently passed independent
+exact-content review, preserving original failures and assisted field scope.
+G7 local diagnostics, recovery instructions and the fixed 17-criterion release
+audit are implemented under [ADR 0026](docs/adr/0026-operational-handover-and-release-evidence.md).
+[The operating runbook](docs/OPERATIONS.md) and
+[evidence manifest](docs/V1_READINESS.json) distinguish local from required live
+proof. Seven criteria block V1 release; no cloud deployment or live schedule is
+established.
 G2 authorizes no subscriptions, deployment or real CV use.

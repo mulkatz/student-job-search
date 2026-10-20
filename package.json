@@ -26,6 +26,7 @@
     "secrets": "node scripts/scan-secrets.mjs",
     "verify": "npm run check:runtime && npm run check && npm run build && npm run typecheck && npm test && npm run secrets && npm run test:emulators && npm run test:browser",
     "check": "biome ci . --error-on-warnings",
+    "release:check": "npm run build && npm run release:check --workspace=@job-search/server",
     "experiment": "npm run build --workspace=@job-search/experiment && node packages/experiment/dist/cli.js",
     "local:emulators": "firebase emulators:start --project demo-job-search --only auth,firestore,storage",
     "test:emulators": "firebase emulators:exec --project demo-job-search --only auth,firestore,storage \"npm run test:integration --workspace=@job-search/server\"",

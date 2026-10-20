@@ -135,6 +135,38 @@ export function encodeProfileState(state: ProfileState) {
   };
 }
 
+export function decodeSharedJob(
+  value: unknown,
+  documentId: string,
+  now = Date.now(),
+): DiscoveryJob {
+  const projection = sharedProjectionSchema.parse(value);
+  const { retentionUntilEpochMs, ...stored } = projection;
+  const job = storedJobSchema.parse(stored);
+  if (retentionUntilEpochMs !== Date.parse(job.observation.retentionUntil))
+    throw new Error("Invalid projection expiry");
+  if (
+    documentId !== job.jobId ||
+    job.sourceId !== job.observation.sourceId ||
+    job.sourceRecordId !== job.observation.sourceRecordId ||
+    job.jobId !== jobIdentity(job.sourceId, job.sourceRecordId) ||
+    job.currentRevisionId !== revisionIdentity(job.observation)
+  )
+    throw new Error("Invalid projection identity");
+  if (
+    Date.parse(job.observation.observedAt) > now ||
+    Date.parse(job.firstSeenAt) > Date.parse(job.lastSeenAt) ||
+    Date.parse(job.lastSeenAt) > Date.parse(job.lastCheckedAt) ||
+    job.lastCheckedAt !== job.observation.observedAt ||
+    (job.observation.kind !== "unavailable" &&
+      job.lastSeenAt !== job.observation.observedAt)
+  )
+    throw new Error("Invalid projection chronology");
+  if (job.observation.applicationSource)
+    checkedApplicationSource(job, now, true);
+  return job;
+}
+
 export function requireEmulators(environment: NodeJS.ProcessEnv): void {
   if (
     environment.STORAGE_EMULATOR_HOST &&
@@ -285,37 +317,7 @@ export function createEmulatorServices() {
         .limit(100)
         .get();
       return snapshot.docs
-        .map((document) => {
-          const projection = sharedProjectionSchema.parse(document.data());
-          const { retentionUntilEpochMs, ...stored } = projection;
-          const languages = stored.observation.languageRequirements;
-          const job = discoveryJobSchema.parse({
-            ...stored,
-            observation:
-              languages === undefined
-                ? stored.observation
-                : {
-                    ...stored.observation,
-                    languageRequirements:
-                      storedLanguageRequirementsSchema.parse(languages),
-                  },
-          });
-          if (
-            retentionUntilEpochMs !== Date.parse(job.observation.retentionUntil)
-          )
-            throw new Error("Invalid projection expiry");
-          if (
-            document.id !== job.jobId ||
-            job.sourceId !== job.observation.sourceId ||
-            job.sourceRecordId !== job.observation.sourceRecordId ||
-            job.jobId !== jobIdentity(job.sourceId, job.sourceRecordId) ||
-            job.currentRevisionId !== revisionIdentity(job.observation)
-          )
-            throw new Error("Invalid projection identity");
-          if (job.observation.applicationSource)
-            checkedApplicationSource(job, Date.now(), true);
-          return job;
-        })
+        .map((document) => decodeSharedJob(document.data(), document.id))
         .filter(
           (job) => Date.parse(job.observation.retentionUntil) > Date.now(),
         )

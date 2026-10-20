@@ -1,6 +1,6 @@
 # G3 setup and resumable experiment
 
-Status: bounded remediation implemented; G3 acceptance remains unmet, updated 2026-10-19.
+Status: bounded remediation implemented; A/B acceptance remains unmet, updated 2026-10-20.
 The original investigation and its failed observations remain preserved below.
 The user removed duration (ADR 0017) and requested independent completion of G3/G5
 gaps before G6/G7. Source retention, 70 model requests/day, 100 total, token caps
@@ -12,7 +12,7 @@ and EUR 5 remain unchanged. Historical checkpoints retain their original counts.
 | --- | --- | --- |
 | A: discovery | Original 20 queries/200 leads plus 8 next-page searches/80 entries; 38 further target observations yield 26 HTML bodies and no independently confirmed compatible vacancy | Coverage target of 10 unique compatible vacancies, including 3 incremental web discoveries, remains unmet |
 | B: extraction | Known-cohort v3 development: 47/49 recovery and 47/47 precision. Independent new-source first run: 8 correct details, 16/32 recovery, 16/24 precision, zero false confirmations; only 2 confirmed local sources | Generic fixes and development replay recover the new fields; B remains incomplete because adequate independent acceptance is absent and old exact diagnostics still fail |
-| C: model | New single batch classifies all 20 jobs correctly, but all 5 packages fail strict reference/format/content checks; earlier CV outcomes still pass | Matching remediation observed; package quality still fails. Sole bounded repair prepared offline; today's 70-request allowance is exhausted |
+| C: model | New batch classifies all 20 jobs correctly; its five failed packages now pass the sole bounded repair and independent exact-content semantic review; earlier CV outcomes pass | One observed five-package repair, not a new first-pass success or a general model-quality/all-C claim; first failures and assisted field scope remain recorded |
 | D: packages | All five exact corrected editorial versions passed independent semantic review and conditional approval | Complete under ADR 0021; neither human line-by-line review nor original model success |
 
 G5's separate independently authored/adjudicated 50-case synthetic benchmark passed
@@ -863,3 +863,62 @@ were outside this cleanup and retain their separate deadlines or purposes. The
 final isolated gate passed 200 offline tests, two emulator integrations, two
 synthetic Chromium journeys and a separate actual-source Chromium regression, with
 zero external provider calls. No G3 acceptance criterion is waived by cleanup.
+
+
+### Sole observed five-package model repair (2026-10-20)
+
+The hash-guarded method under `.local/g3/package-repair-v3/` dispatched exactly
+once after fresh coordinator authorization and actual cumulative/Berlin-day ledger
+checks. Method SHA-256 is
+`6b503e6fab020e0d47339d98e5d7e7b6658c634bc8838c587a6c294cd34506d2`.
+One CountTokens and one generation consumed 4,649 generation input tokens and
+1,089 billed candidate output tokens (zero thought tokens), conservatively
+EUR 0.009058. No source requests, record reservations or automatic retries occurred.
+
+A separate reviewer inspected all five complete packages against approved synthetic
+facts, role/channel evidence and exact question scopes: **5/5 pass**. Two email
+packages and three questionnaires contain no invented facts; missing start dates
+and consent/declaration fields remain unanswered. Injection text was ignored and
+library duration was not transferred to spreadsheet experience. This is the sole
+repair of the failed generation, not a new first-pass success, human review,
+general question-to-fact selection proof or an all-C/G3 acceptance claim.
+
+The exact result SHA-256 is
+`ab94947302105ad37e4d31fb24bba9bfd932a87247e2024a3b73caee48994dd4`;
+provider response is
+`6840c260eb7ede8ce9a40888149eea68447a0c16763d91361b819aba03607d84`.
+The independent receipt at
+`.local/g3/package-repair-v3/five-package-repair/independent-semantic-review-v1.json`
+is `5520b42c916aab08bb0d298ca93b3ac7a4fbc3df179fbd930577058a2426a692`.
+Original failed output, parent result, immutable method inputs and request history
+remain private and preserved. Later repository changes do not authorize replay of
+this historical method. No further model dispatch is scheduled.
+
+Current cumulative accounting: **170 HTTP, 28 search, four structured, 72 model,
+391 records**, all settled, with no outstanding attempt, reconciliation or lock.
+Model usage on 2026-10-20 is two requests. Model cost is EUR 0.088934; together with
+search accounting, conservative total is **EUR 0.368934**, not an invoice. Effective
+model tokens total 39,322 input and 11,448 billed output. The original 70/day,
+100-total, EUR 5, token and source caps remain unchanged. Remaining 30 HTTP and
+nine record reservations cannot establish a fresh 30-page acceptance sample.
+
+### Purpose-complete old-source retirement (2026-10-20)
+
+After independent pre-deletion review, the old B/structured snapshot trees and
+extraction-remediation v2/v3/v4 trees, plus two exact archived structured ownership
+copies, were deleted at **2026-10-20T06:51:05.647056Z**, before the old B/structured
+08:01/08:05 UTC ceilings. Exactly **315 files** were removed; independently checked
+allowlist paths are absent. The minimized private receipt is
+`.local/g7/source-retirement-v1/receipt.json` (SHA-256
+`fe60d0a6557b8f4b5483786a5d82110d7158b6f2606e2744cd53931e1fc5a1bd`).
+Deletion proof is `d1daad2b8a93abdd0f9aa29f7b26be500104097ffcb1f9a2eac025bbe92628ad`.
+
+Only aggregate results, method/report/tree digests and deletion provenance survive
+for these trees; raw-source replay ended at deletion. Original first failures and
+later development observations remain distinct. The ledger, source configuration,
+G4 state and minimized 53-origin ownership/pacing snapshot stayed byte-identical;
+all 34 retired structured origins are covered by retained ownership. The absent
+shared cooldown file remains absent; absence is not permission to reset historical
+pacing. Older separately scoped G3/G4 captures retain their October 26 deadlines.
+Synthetic model parents/repair outputs, G5/G6 evidence and Git history were outside
+this cleanup. No source expansion, cap reset or acceptance waiver resulted.

@@ -6,11 +6,13 @@
   "scripts": {
     "typecheck": "tsc --project tsconfig.test.json --noEmit",
     "build": "tsc --project tsconfig.json",
-    "test": "tsc --project tsconfig.test.json && node --test dist-test/test/applications.test.js dist-test/test/api.test.js dist-test/test/import-jobs.test.js dist-test/test/profile.test.js dist-test/test/profile-benchmark.test.js dist-test/test/independent-benchmark.test.js",
-    "test:integration": "tsc --project tsconfig.test.json && node --test --test-concurrency=1 dist-test/test/applications-emulators.test.js dist-test/test/emulators.test.js dist-test/test/profile-emulators.test.js",
+    "test": "tsc --project tsconfig.test.json && node --test dist-test/test/operations.test.js dist-test/test/release-readiness.test.js dist-test/test/applications.test.js dist-test/test/api.test.js dist-test/test/import-jobs.test.js dist-test/test/profile.test.js dist-test/test/profile-benchmark.test.js dist-test/test/independent-benchmark.test.js",
+    "test:integration": "tsc --project tsconfig.test.json && node --test --test-concurrency=1 dist-test/test/operations-emulators.test.js dist-test/test/applications-emulators.test.js dist-test/test/emulators.test.js dist-test/test/profile-emulators.test.js",
     "start": "node dist/main.js",
     "seed": "node dist/seed.js",
-    "cleanup": "node dist/cleanup.js"
+    "cleanup": "node dist/cleanup.js",
+    "ops:status": "node dist/operations.js",
+    "release:check": "node dist/release-check.js"
   },
   "dependencies": {
     "@job-search/discovery": "0.0.0",

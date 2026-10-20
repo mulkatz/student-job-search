@@ -232,12 +232,12 @@ test("visible role metadata can supply a missing employer without a domain regis
 test("recruitment prose needs a specific role and never turns general staff invitations into a vacancy", () => {
   const organization = `<script type="application/ld+json">{"@type":"Organization","name":"Synthetic Cafe"}</script>`;
   const result = extractPublicPage(
-    `${organization}<article><p>We are looking for cleaners – part time or full time.</p><p>Applicants must reside in Germany.</p><p>To apply please send your CV to jobs@example.org.</p></article>`,
+    `${organization}<article><p>We're hiring greenhouse assistants – part time.</p><p>Applicants must reside in Germany.</p><p>To apply please send your CV to jobs@example.org.</p></article>`,
     url,
     now,
   );
   assert.equal(result.kind, "job_detail");
-  assert.equal(result.title?.value, "cleaners");
+  assert.equal(result.title?.value, "greenhouse assistants");
   assert.equal(
     result.applicantScope?.value,
     "Applicants must reside in Germany.",
@@ -268,7 +268,7 @@ test("explicit languages retain qualifications while advertisement language and 
   const result = extractPublicPage(
     page(
       posting,
-      `<main><p>Sehr gute Deutschkenntnisse in Wort und Schrift.</p><p>Up to 20 hours per week.</p></main>`,
+      `<main><p>German B2 is mandatory for synthetic discussions and written notes.</p><p>Up to 20 hours per week.</p></main>`,
     ),
     url,
     now,
@@ -277,11 +277,11 @@ test("explicit languages retain qualifications while advertisement language and 
   if (result.workLanguage !== "unknown") {
     assert.equal(
       result.workLanguage.value,
-      "Sehr gute Deutschkenntnisse in Wort und Schrift.",
+      "German B2 is mandatory for synthetic discussions and written notes.",
     );
     assert.equal(
       result.workLanguage.evidence.quote,
-      "Sehr gute Deutschkenntnisse in Wort und Schrift.",
+      "German B2 is mandatory for synthetic discussions and written notes.",
     );
   }
   assert.equal(result.germanyRemoteEligibility, "unknown");
@@ -459,7 +459,7 @@ test("missing generic evidence preserves the reviewed-selector reason without su
 
 test("language facts preserve complete qualifications, alternatives, modality and learning commitments", () => {
   for (const clause of [
-    "Sehr gute Deutschkenntnisse in Wort und Schrift sind erforderlich.",
+    "German C1 is mandatory for synthetic support conversations and written notes.",
     "Good written and spoken English AND Russian are mandatory.",
     "Gute Kenntnisse in Englisch oder Deutsch; Bereitschaft, die jeweils fehlenden Sprachkenntnisse zu erwerben.",
     "English B2 is preferred; German C1 is mandatory.",

@@ -50,7 +50,9 @@ Conservative combined-output reservations and settled usage accounting are
 implemented; EU synthetic inference and usage are observed, with failed first-pass
 content cases. The complete original C sample failed; exact corrected D packages
 passed delegated review under ADR 0021. Remediation matching is 20/20 correct, but
-five new package outputs fail and today's explicit 70-request allowance is full. The local Brave credential
+five new package outputs initially failed. Their sole repair on 2026-10-20 passes
+independent exact-content review; cumulative usage is 72 requests, within unchanged
+70/day and 100-total caps. This is bounded synthetic repair evidence. The local Brave credential
 and Search/Postpaid tariff are confirmed; no applicable storage/use grant is
 established. The current user instruction authorizes bounded private execution
 despite this condition, recorded separately in [ADR 0016](adr/0016-private-brave-operator-authorization.md).
@@ -186,15 +188,16 @@ unavailable or policy-unresolved leads where retention permits, without fabricat
 facts or ready-to-use application packages. Tests must cover the policy when fetches are implemented.
 
 
-## Current quality dependencies before G6/G7
+## Current quality and release dependencies
 
 The user requested autonomous closure of G3/G5 gaps. ADR 0022 delegates exact
 synthetic benchmark adjudication to separate agents, without changing numerical
 targets: the independent 50-case fixture passes. This supersedes the earlier human
 benchmark dependency for that fixture only. ADR 0024 requires complete decisive
 source conditions; legacy missing evidence remains review, and old evaluator
-versions are stale. G3 actual coverage and repaired model-package quality still
-need evidence. No user questionnaire is pending for those technical tasks.
+versions are stale. The sole five-package model repair passes independent exact
+semantic review; source coverage/extraction acceptance and broader model quality
+remain limited. No user questionnaire is pending for those technical tasks.
 
 On 2026-10-20 the user explicitly requested G6 before those G3 gaps close.
 ADR 0025 permits the local deterministic review/copy slice with trusted reviewed
@@ -202,4 +205,10 @@ source specifications and approved facts. Its synthetic usability/ownership
 checks cannot substitute for G3 source/model evidence or G7 release acceptance.
 The local G6 slice is now verified; no remaining product questionnaire is required
 for its technical implementation. Real-source channel reviews and reliable model
-content still require their own evidence.
+content still require their own evidence beyond this bounded repair.
+
+G7 local operations and handover are implemented under ADR 0026. The executable
+17-criterion audit remains blocked on seven source/live criteria. Production
+authentication, recurring scheduling, deployed ownership rules and real-data
+operations are not established; see [the runbook](OPERATIONS.md). No new user
+questionnaire is required for the completed local implementation.

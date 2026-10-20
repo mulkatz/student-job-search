@@ -8,7 +8,9 @@ with conservative identities, bounded runs and a Firebase-emulator table; see
 [local setup and limitations](docs/G4_LOCAL.md). G5 adds local synthetic profiles and
 matching; its independently adjudicated synthetic benchmark passes under ADR 0022.
 G6 implements locally verified application drafts and manual copying under ADR 0025.
-No application is deployed.
+G7 adds bounded local operations and a fail-closed release audit; V1 release remains
+blocked. See [the operating runbook](docs/OPERATIONS.md) and
+[criterion-by-criterion evidence](docs/V1_READINESS.json). No application is deployed.
 Gmail is exclusively a Firebase Auth login identity; mailbox integration is outside
 the current V1/G3 contract ([ADR 0010](docs/adr/0010-manual-application-packages.md)). No cloud resources have been provisioned.
 
@@ -26,6 +28,7 @@ reviewable email/questionnaire packages with manual copying as well as job disco
 - [Completed G2 execution contract](docs/archive/G2_START_PROMPT.md)
 - [Bounded feasibility experiment for G3](docs/FEASIBILITY.md)
 - [G3 setup, private access requirements and observation status](docs/G3_SETUP.md)
+- [Local operations, alerts, recovery and release audit](docs/OPERATIONS.md)
 - [Open decisions and validation needs](docs/OPEN_QUESTIONS.md)
 - [Agent working rules](AGENTS.md); `CLAUDE.md` links to the same file
 - [Development workflow decision](docs/adr/0001-development-workflow.md)
@@ -223,9 +226,10 @@ provider route is GCP-managed Gemini, Brave and HTTP/Cheerio. The offline founda
 uses private core, experiment, discovery and server workspaces plus a React/Vite
 local web application. Deployment tooling remains outside the current slice. The G3 model/region route
 has actual synthetic EU observations. The original full sample failed; a new batch
-classifies all 20 jobs correctly but fails all five packages. The prepared sole
-repair did not dispatch because the 2026-10-19 daily model limit was exhausted.
-Later G3 work must check the retained ledger and exact-method authorization.
+classifies all 20 jobs correctly; its five packages pass their sole bounded repair
+and independent semantic review on 2026-10-20. Original failures and assisted field
+scopes remain recorded; this does not establish general model quality or G3 acceptance.
+No further paid dispatch is scheduled.
 G3 remediation preserves its original negative findings; G5 local profile and
 matching now meet the delegated synthetic benchmark method in ADR 0022.
 Local G4 discovery is verified; see [delivery evidence](docs/PLAN.md#g4-discovery-slice)

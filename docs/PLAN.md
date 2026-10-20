@@ -11,7 +11,7 @@ Updated: 2026-10-20. Status describes evidence, not estimated progress.
 | G4: discovery slice | Complete locally | Traceable discovery, conservative identities, authenticated table and verified bounded daily-run behavior; market yield remains unproven. |
 | G5: profile and matching | Complete locally under delegated synthetic acceptance | Independent 50-case adjudication/evaluation passes; no human, live-market or production claim. |
 | G6: application assistant | Complete locally with deterministic synthetic acceptance | Versioned fact-grounded drafts, exact review, manual copying and owner-private lifecycle; G3 remains open. |
-| G7: V1 release and handover | Planned | CV, manual-copy application packages and bounded daily discovery meet V1 acceptance. |
+| G7: V1 release and handover | In progress; release blocked | Local operations, recovery and evidence audit implemented; missing source/live acceptance prevents V1 release. |
 | V2: broader use and search orders | Deferred | Multi-user onboarding and individually managed search orders/schedules. |
 
 G1–G7 deliver V1. Discovery, matching and application packages remain required
@@ -165,20 +165,24 @@ Source continuation ran eight further next-page searches (80 URL entries/61 new
 target URLs), then three independently reviewed capture packets: 46 observations,
 33 HTML bodies, 66 HTTP/45 new record reservations. Separate source inspection
 still establishes zero compatible vacancies. Latest cumulative usage is 170 HTTP,
-28 search, four structured, 70 model and 391 records, all settled; conservative cost
-EUR 0.359876. All three new source packets and derived copies were deleted early at
+28 search, four structured, 72 model and 391 records, all settled; conservative cost
+EUR 0.368934 after the sole five-package repair on 2026-10-20. All three new
+source packets and derived copies were deleted early at
 21:24:05Z after independent verification. Aggregate metrics/digests, minimized
 ownership and cumulative accounting survive; new raw-source replay is no longer
 available. No source expansion or calendar polling is scheduled.
 
 One further actual generation classifies all 20 synthetic jobs correctly but fails
 all five package boundary/content checks. Its failed output stays preserved. The
-sole five-package repair has stricter schema/offline checks; the explicit
-70/day allowance was full on 2026-10-19, so it did not dispatch. A later attempt
-must derive available caps from the retained ledger. No cap increase or provider
-bypass is implied. The independent G5 synthetic benchmark is accepted under
-ADR 0022; G3 actual coverage and model-package quality remain required for G7/V1
-release. The user subsequently authorized the local deterministic G6 slice below.
+sole five-package repair dispatched once on 2026-10-20 after fresh exact-method
+authorization and actual ledger checks. Two requests consumed EUR 0.009058 in
+conservative accounting. All five exact packages pass independent semantic review;
+original failures and assisted field scope remain recorded. No further model
+retry or cap increase is scheduled. The independent G5 synthetic benchmark is
+accepted under
+ADR 0022; G3 source acceptance and broader model-quality limits remain explicit
+for G7/V1 release. The user subsequently authorized the local deterministic G6
+slice below.
 See [current evidence](G3_SETUP.md#current-findings-and-decisions).
 
 Bounded tasks: the coordinator establishes private operator/provider access and
@@ -605,10 +609,50 @@ G3 coverage/extraction/model acceptance and G7 release remain open.
 Dependencies: all preceding V1 slices, including CV processing and manual-copy
 packages; review every V1 criterion. Discovery alone cannot pass this goal.
 
-- [ ] Verify retention, export/deletion, ownership enforcement and minimal telemetry.
-- [ ] Exercise cost caps, source/authentication failures, alerts and recovery; write a runbook.
-- [ ] Demonstrate the real-browser review/copy-to-manual-application workflow with safe data.
-- [ ] Record acceptance evidence and limitations; scope a separate goal for broader use.
+Started 2026-10-20 at the user's explicit request. The bounded implementation outcome
+is a read-only local operating status, actionable alert/recovery codes, an executable
+17-criterion evidence audit and [the operating runbook](OPERATIONS.md). Separate
+planning, implementation and independent review follow
+[ADR 0026](adr/0026-operational-handover-and-release-evidence.md). The release check
+must remain blocked when local evidence cannot establish a required live condition.
+Acceptance requires bounded/privacy-safe read-only status, actual emulator fault/
+recovery and non-mutation checks, the safe-data browser handover, exact evidence
+scope checks and the integrated verification gate. No deployment, live scheduler,
+new source expansion, real CV processing or broader-user onboarding is authorized
+through this operational slice.
+
+Local implementation acceptance (not full V1 release):
+
+- [x] Verify bounded retention, export/deletion, owner isolation and aggregate-only diagnostics locally.
+- [x] Exercise cap refusal, source/authentication failure, status alerts and recovery; document the runbook.
+- [x] Demonstrate actual Chromium review/copy with synthetic data and manual applicant actions.
+- [x] Record fixed-scope evidence and limitations; keep broader-user onboarding deferred to V2.
+
+Final isolated `npm run verify` passed on 2026-10-20: **223 offline tests**
+(5 core, 104 experiment, 62 discovery, 48 server, one web-link, three scanner),
+**five actual Firebase-emulator integrations** and **three synthetic Chromium
+journeys**, with all builds, strict types, Biome and Secretlint (178 regular files).
+The snapshot contains 179 entries including the unchanged relative CLAUDE.md
+symlink; unrelated AGENTS.md edits were excluded. Evidence is private at
+`.local/g7/verification-v1/`. Independent review includes an actual nonresponsive
+loopback service: the diagnostics CLI exits 2 naturally within its scan/shutdown
+bound, without a parent kill or sensitive output. Emulator checks establish
+read-only behavior, overflow, fault reporting and recovery.
+
+The release manifest records 13 local observations, four unmet criteria and no
+verified-live criterion. The actual root `npm run release:check` command builds successfully and exits 2
+with **seven release blockers**:
+permitted useful sources, useful public-web discovery, extraction acceptance,
+installed daily scheduling, live failure recovery, deployed owner isolation and
+real-data operations. The removed duration test is not reinstated. No deployment,
+cloud/billing change, real CV, remote CI or production success is claimed.
+
+During handover, the sole five-package actual model repair passed independent
+semantic review (two requests, EUR 0.009058 conservatively). Old purpose-complete
+B/structured and development source trees were retired early (315 files), with
+independent pre/post checks, minimized digests and byte-identical cumulative
+accounting/retained origin ownership. These observations do not waive source
+acceptance or authorize further paid dispatch.
 
 Exit: every V1 criterion in `CONCEPT.md` has evidence. Missing CV, package review/copy
 or discovery acceptance keeps V1 incomplete. No multi-user availability is implied.

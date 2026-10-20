@@ -1,0 +1,305 @@
+{
+  "format": "job-search-v1-readiness-v1",
+  "assessedAt": "2026-10-20T06:56:00.000Z",
+  "criteria": [
+    {
+      "id": "c01_permitted_sources",
+      "state": "unmet",
+      "evidence": [
+        {
+          "ref": "docs/G3_SETUP.md",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "operator_record",
+          "limitation": "Actual source access and negative coverage observations; no release acceptance."
+        }
+      ],
+      "limitation": "Two useful permitted live adapters are not established. Bounded private Brave authorization is not a vendor grant."
+    },
+    {
+      "id": "c02_web_discovery",
+      "state": "unmet",
+      "evidence": [
+        {
+          "ref": "docs/G3_SETUP.md",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "operator_record",
+          "limitation": "Search leads and fetched pages are distinct; no market-wide absence claim."
+        }
+      ],
+      "limitation": "Broad public-web discovery is implemented, but the bounded investigation established zero confirmed compatible current vacancies and did not meet the 10 local plus 3 Germany-remote feasibility target."
+    },
+    {
+      "id": "c03_source_states",
+      "state": "unmet",
+      "evidence": [
+        {
+          "ref": "docs/G3_SETUP.md",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "operator_record",
+          "limitation": "First new-source result 16/24 precision and 16/32 recovery; final exposed development 32/32 is not a fresh holdout."
+        }
+      ],
+      "limitation": "Source states are implemented locally. Independent extraction acceptance remains incomplete: new cohort has 8 details and 2 confirmed local sources; exposed repairs are development evidence, and the old unchanged exact diagnostic fails."
+    },
+    {
+      "id": "c04_daily_schedule",
+      "state": "unmet",
+      "evidence": [
+        {
+          "ref": "packages/discovery/test/discovery.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Calendar/idempotency tests do not establish an installed scheduler."
+        }
+      ],
+      "limitation": "Berlin-day bounded runner behavior is tested, but no recurring daily production scheduler or delivered operational alert is installed or observed."
+    },
+    {
+      "id": "c05_idempotent_runs",
+      "state": "verified_local",
+      "evidence": [
+        {
+          "ref": "packages/discovery/test/discovery.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        },
+        {
+          "ref": "packages/server/test/applications.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        }
+      ],
+      "limitation": "Bounded persisted runs and package operations are idempotent with conservative source-pair identities and uncertain duplicate links. This does not establish perfect cross-source canonicalization."
+    },
+    {
+      "id": "c06_profile_approval",
+      "state": "verified_local",
+      "evidence": [
+        {
+          "ref": "packages/server/test/profile.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        },
+        {
+          "ref": "apps/web/test/profile-journey.spec.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        }
+      ],
+      "limitation": "Actual Poppler extraction, correction, immutable approval and invalidation are tested with synthetic PDFs and local authenticated owners; no real CV authorization or production processing."
+    },
+    {
+      "id": "c07_evidence_eligibility",
+      "state": "verified_local",
+      "evidence": [
+        {
+          "ref": "packages/server/test/profile-benchmark.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        },
+        {
+          "ref": "packages/server/test/independent-benchmark.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        }
+      ],
+      "limitation": "Confirmed blockers, missing evidence, fit score and confidence remain distinct under the deterministic evaluator. Synthetic results are not hiring probabilities or legal determinations."
+    },
+    {
+      "id": "c08_labeled_fixture",
+      "state": "verified_local",
+      "evidence": [
+        {
+          "ref": "experiments/g5/independent-benchmark-v2/reviewer-acceptance-v1.json",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "independent_agent_review",
+          "limitation": "Exact synthetic fixture only; prior implementation familiarity disclosed."
+        }
+      ],
+      "limitation": "Independent-agent adjudication accepts exactly 50 synthetic scenarios, 49 distinct jobs and 20 distinct eligible jobs; no human labeling or real-market coverage."
+    },
+    {
+      "id": "c09_fixture_quality",
+      "state": "verified_local",
+      "evidence": [
+        {
+          "ref": "packages/server/test/independent-benchmark.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        }
+      ],
+      "limitation": "The frozen independent synthetic fixture achieves 100 percent eligible-shortlist precision and processing success, exceeding the unchanged 90/95 percent thresholds only for that fixture."
+    },
+    {
+      "id": "c10_grounded_packages",
+      "state": "verified_local",
+      "evidence": [
+        {
+          "ref": ".local/g6/independent-content-review-v1/receipt.json",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "independent_agent_review",
+          "limitation": "Two email and three questionnaire versions; other mappings retain literal values."
+        },
+        {
+          "ref": ".local/g3/package-repair-v3/five-package-repair/independent-semantic-review-v1.json",
+          "recordedAt": "2026-10-20T06:49:26.560Z",
+          "method": "independent_agent_review",
+          "limitation": "One five-package repair, not a new first-pass success or full G3 acceptance."
+        }
+      ],
+      "limitation": "Five complete deterministic synthetic G6 versions passed independent content review. A separate actual model batch repair passes five exact synthetic packages after one repair; original failures and assisted field scopes remain disclosed, without a general model-quality pass."
+    },
+    {
+      "id": "c11_review_copy_dialog",
+      "state": "verified_local",
+      "evidence": [
+        {
+          "ref": "apps/web/test/application-journey.spec.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        }
+      ],
+      "limitation": "Actual Chromium exercises the shared email/questionnaire dialog and exact per-field clipboard bytes. Missing facts remain unanswered."
+    },
+    {
+      "id": "c12_manual_only_actions",
+      "state": "verified_local",
+      "evidence": [
+        {
+          "ref": "apps/web/test/application-journey.spec.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        },
+        {
+          "ref": "packages/server/test/applications.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        }
+      ],
+      "limitation": "No send, submission, autofill or employer-form-write implementation exists. Consents, signatures and declarations remain applicant actions; external links require applicant navigation."
+    },
+    {
+      "id": "c13_failure_recovery",
+      "state": "verified_local",
+      "evidence": [
+        {
+          "ref": "packages/server/test/profile-emulators.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        },
+        {
+          "ref": "apps/web/test/application-journey.spec.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        },
+        {
+          "ref": "packages/discovery/test/discovery.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        }
+      ],
+      "limitation": "Local failure denial, preserved edits and bounded recovery are tested. Anonymous in-memory demo authentication has no persistent prior-owner recovery after signout or refresh; production Google login and persistent-session recovery remain unverified."
+    },
+    {
+      "id": "c14_manual_status",
+      "state": "verified_local",
+      "evidence": [
+        {
+          "ref": "apps/web/test/application-journey.spec.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        }
+      ],
+      "limitation": "Applied and ignored status are applicant reports independent of generation and copying; neither proves delivery or submission."
+    },
+    {
+      "id": "c15_job_table",
+      "state": "verified_local",
+      "evidence": [
+        {
+          "ref": "apps/web/test/profile-journey.spec.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        },
+        {
+          "ref": "apps/web/test/application-journey.spec.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        }
+      ],
+      "limitation": "The authenticated local table sorts current evaluations by fit, explains unknowns, links original sources and opens drafts; normal source-listed links remain unverified."
+    },
+    {
+      "id": "c16_owner_isolation",
+      "state": "verified_local",
+      "evidence": [
+        {
+          "ref": "packages/server/test/profile-emulators.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        },
+        {
+          "ref": "packages/server/test/applications-emulators.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        }
+      ],
+      "limitation": "Actual emulator Auth/API/Firestore/Storage owner isolation and tombstones pass. Production identity configuration and deployed rules have not been exercised against an authorized live target."
+    },
+    {
+      "id": "c17_data_operations",
+      "state": "verified_local",
+      "evidence": [
+        {
+          "ref": "packages/server/test/applications.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        },
+        {
+          "ref": "packages/server/test/profile-emulators.test.ts",
+          "recordedAt": "2026-10-20T03:30:39.968Z",
+          "method": "automated_test",
+          "limitation": "Synthetic local verification only."
+        },
+        {
+          "ref": "docs/adr/0026-operational-handover-and-release-evidence.md",
+          "recordedAt": "2026-10-20T06:49:26.560Z",
+          "method": "operator_record",
+          "limitation": "Local operational handover is separate from release authorization."
+        },
+        {
+          "ref": "packages/server/test/operations.test.ts",
+          "recordedAt": "2026-10-20T06:56:00.000Z",
+          "method": "automated_test",
+          "limitation": "Local aggregate-only bounded status, fault handling and read-only emulator checks; no production operations proof."
+        },
+        {
+          "ref": "packages/server/test/operations-emulators.test.ts",
+          "recordedAt": "2026-10-20T06:56:00.000Z",
+          "method": "automated_test",
+          "limitation": "Local aggregate-only bounded status, fault handling and read-only emulator checks; no production operations proof."
+        }
+      ],
+      "limitation": "Local bounded retention, export, deletion, capacity limits and recovery are implemented and tested. Unattended real-data cleanup, production privacy, persistent identity recovery, delivered alerts and operating readiness are not established."
+    }
+  ]
+}
