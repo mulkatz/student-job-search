@@ -5,7 +5,10 @@ emulators. It cannot deploy or fall through to Application Default Credentials.
 The browser uses temporary anonymous synthetic identities, not a production Google
 login. Gmail/mailbox and application sending remain outside this preview. G5 adds
 local synthetic PDF upload, approved profiles, matching and private lifecycle;
-real CV use is not authorized. Application package copying remains G6.
+real CV use is not authorized. G6 adds the locally verified application review/copy
+dialog; see [application drafts](../README.md#local-application-drafts) for the
+explicit five-source synthetic seed. Source/model and production acceptance remain
+separate from these local journeys.
 
 ## Run the synthetic journey
 

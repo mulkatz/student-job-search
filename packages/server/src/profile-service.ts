@@ -1,6 +1,12 @@
 import { createHash, randomUUID } from "node:crypto";
 import type { DiscoveryJob } from "@job-search/discovery";
 import { z } from "zod";
+import { validateApplicationState } from "./application-domain.js";
+import {
+  assertApplicationCapacity,
+  createApplicationOperations,
+  retainedApplications,
+} from "./application-service.js";
 import { independentBenchmarkEvidence } from "./profile-benchmark-evidence.js";
 import { type AssessmentHook, evaluateProfileJob } from "./profile-matching.js";
 import { contentHash, extractProfilePdf, ProfileError } from "./profile-pdf.js";
@@ -135,6 +141,7 @@ export function validatedProfileState(
     profilePolicy.maximumDocumentBytes
   )
     throw new ProfileError(413, "private_record_limit_reached");
+  validateApplicationState(state);
   return state;
 }
 function requestValue<T>(schema: z.ZodType<T>, input: unknown): T {
@@ -147,7 +154,10 @@ function live(state: ProfileState, now: number): ProfileState {
     throw new ProfileError(410, "owner_data_deleted");
   if (
     !state.assets.some((asset) => Date.parse(asset.expiresAt) > now) &&
-    !state.versions.some((version) => Date.parse(version.expiresAt) > now)
+    !state.versions.some((version) => Date.parse(version.expiresAt) > now) &&
+    !(state.applications ?? []).some(
+      (record) => Date.parse(record.expiresAt) > now,
+    )
   )
     throw new ProfileError(410, "owner_data_expired");
   return state;
@@ -186,6 +196,10 @@ function touch(state: ProfileState, now: number): ProfileState {
     ...state.drafts.map((draft) => draft.expiresAt),
     ...state.versions.map((version) => version.expiresAt),
     ...state.evaluations.map((evaluation) => evaluation.expiresAt),
+    ...(state.applications ?? []).flatMap((record) => [
+      record.expiresAt,
+      ...record.packages.map((pkg) => pkg.expiresAt),
+    ]),
   ];
   return {
     ...state,
@@ -214,12 +228,11 @@ export function createProfileService(
     ownerId: string,
     update: (state: ProfileState | null) => ProfileState,
   ) =>
-    repository.update(ownerId, (state) =>
-      validatedProfileState(
-        update(state ? validatedProfileState(state, ownerId) : null),
-        ownerId,
-      ),
-    );
+    repository.update(ownerId, (state) => {
+      const next = update(state ? validatedProfileState(state, ownerId) : null);
+      assertApplicationCapacity(next);
+      return validatedProfileState(next, ownerId);
+    });
   const requireState = (state: ProfileState | null): ProfileState => {
     if (!state) throw new ProfileError(409, "profile_not_created");
     return live(state, now());
@@ -515,9 +528,18 @@ export function createProfileService(
         )
       )
         throw new ProfileError(410, "evaluation_input_expired");
+      const packageEvaluationIds = new Set(
+        (state.applications ?? []).flatMap((record) =>
+          record.packages.map((pkg) => pkg.evaluationId),
+        ),
+      );
       const merged = new Map(
         state.evaluations
-          .filter((entry) => Date.parse(entry.expiresAt) > now())
+          .filter(
+            (entry) =>
+              Date.parse(entry.expiresAt) > now() ||
+              packageEvaluationIds.has(entry.id),
+          )
           .map((entry) => [entry.id, entry]),
       );
       for (const evaluation of evaluations)
@@ -574,6 +596,9 @@ export function createProfileService(
       exportedAt: iso(now()),
       profile: {
         ...state,
+        ...(state.applications
+          ? { applications: retainedApplications(state, now()) }
+          : {}),
         assets: retainedAssets,
         activeVersionId: versions.some(
           (version) => version.id === state.activeVersionId,
@@ -610,6 +635,7 @@ export function createProfileService(
         state.drafts = [];
         state.versions = [];
         state.evaluations = [];
+        state.applications = [];
         state.activeVersionId = null;
       }
       state.lifecycle = "deleting";
@@ -659,6 +685,7 @@ export function createProfileService(
           drafts: [],
           versions: [],
           evaluations: [],
+          applications: [],
         },
         now(),
       );
@@ -726,6 +753,8 @@ export function createProfileService(
         (draft) =>
           Date.parse(draft.expiresAt) > now() && !removed.has(draft.assetId),
       );
+      if (value.applications)
+        value.applications = retainedApplications(value, now());
       value.versions = value.versions.filter(
         (version) => Date.parse(version.expiresAt) > now(),
       );
@@ -736,12 +765,17 @@ export function createProfileService(
       value.evaluations = value.evaluations.filter(
         (evaluation) => Date.parse(evaluation.expiresAt) > now(),
       );
-      if (!value.assets.length && !value.versions.length)
+      if (
+        !value.assets.length &&
+        !value.versions.length &&
+        !value.applications?.length
+      )
         value.lifecycle = value.cleanupObjects.length ? "deleting" : "deleted";
       return touch(value, now());
     });
   };
   return {
+    ...createApplicationOperations({ checked, change, newState, touch, now }),
     view,
     upload,
     edit,

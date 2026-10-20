@@ -138,6 +138,62 @@ const applicationUrl = z
     if (publicLinkSchema.safeParse(value).success) return true;
     return /^mailto:[^\s@,;?]+@[^\s@,;?]+\.[^\s@,;?]+$/.test(value);
   });
+export const applicationAnswerKindSchema = z.enum([
+  "working_languages",
+  "skills",
+  "employment_preferences",
+  "location_preferences",
+  "weekly_availability",
+  "work_authorization",
+  "unknown",
+  "start_date",
+  "consent",
+  "signature",
+  "declaration",
+]);
+const applicationSourceCommon = {
+  sourceId: identifier,
+  sourceRecordId: z.string().trim().min(1).max(8192),
+  sourceUrl: publicLinkSchema,
+  review: z.strictObject({
+    method: z.enum(["synthetic_operator_fixture", "source_review"]),
+    reviewedAt: timestamp,
+    expiresAt: timestamp,
+    payloadHash: z.string().regex(/^[a-f0-9]{64}$/),
+  }),
+};
+export const applicationSourceSchema = z.discriminatedUnion("kind", [
+  z.strictObject({
+    kind: z.literal("email"),
+    ...applicationSourceCommon,
+    recipient: z.email().max(254),
+    evidence: evidenceSchema,
+  }),
+  z.strictObject({
+    kind: z.literal("questionnaire"),
+    ...applicationSourceCommon,
+    url: publicLinkSchema,
+    evidence: evidenceSchema,
+    fields: z
+      .array(
+        z.strictObject({
+          internalId: z.string().regex(/^[a-zA-Z0-9_-]{1,80}$/),
+          prompt: z.string().trim().min(1).max(1000),
+          evidence: evidenceSchema,
+          required: z.boolean(),
+          answerKind: applicationAnswerKindSchema,
+        }),
+      )
+      .min(1)
+      .max(20)
+      .refine(
+        (fields) =>
+          new Set(fields.map((field) => field.internalId)).size ===
+          fields.length,
+        "Question IDs must be unique",
+      ),
+  }),
+]);
 export const observationSchema = z
   .strictObject({
     sourceId: identifier,
@@ -191,6 +247,7 @@ export const observationSchema = z
         }),
       ])
       .optional(),
+    applicationSource: applicationSourceSchema.optional(),
     applicationLinks: z
       .array(z.strictObject({ url: applicationUrl, evidence: evidenceSchema }))
       .max(100),
@@ -234,6 +291,37 @@ export const observationSchema = z
         path: ["retentionUntil"],
         message: "Observation cannot outlive discovery evidence",
       });
+    if (value.applicationSource) {
+      const source = value.applicationSource;
+      const sourceUrl = value.finalUrl ?? value.originalUrl;
+      const allowedEvidence = new Set([
+        source.sourceUrl,
+        ...(source.kind === "questionnaire" ? [source.url] : []),
+      ]);
+      if (
+        source.sourceId !== value.sourceId ||
+        source.sourceRecordId !== value.sourceRecordId ||
+        source.sourceUrl !== sourceUrl ||
+        Date.parse(source.review.reviewedAt) < Date.parse(value.observedAt) ||
+        Date.parse(source.review.expiresAt) <=
+          Date.parse(source.review.reviewedAt) ||
+        Date.parse(source.review.expiresAt) >
+          Date.parse(value.retentionUntil) ||
+        !allowedEvidence.has(source.evidence.url) ||
+        (source.kind === "questionnaire" &&
+          source.fields.some(
+            (field) =>
+              !allowedEvidence.has(field.evidence.url) ||
+              !field.evidence.quote.includes(field.prompt),
+          ))
+      )
+        context.addIssue({
+          code: "custom",
+          path: ["applicationSource"],
+          message:
+            "Application source review must bind the exact source payload, evidence and retention",
+        });
+    }
     if (value.kind === "vacancy_detail" && (!value.title || !value.employer))
       context.addIssue({
         code: "custom",

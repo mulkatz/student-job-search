@@ -26,6 +26,7 @@ export function ProfilePanel({
   const [dirty, setDirty] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const mounted = useRef(true);
   const uploadId = useRef(crypto.randomUUID());
   const approvalRequest = useRef<unknown>(null);
   const changeCallback = useRef(onChange);
@@ -35,6 +36,7 @@ export function ProfilePanel({
     (version) => version.id === profile.activeVersionId,
   );
   const accept = useCallback((value: unknown) => {
+    if (!mounted.current) return;
     const parsed = profileViewSchema.parse(value);
     setProfile(parsed);
     changeCallback.current(parsed);
@@ -78,6 +80,7 @@ export function ProfilePanel({
     accept(value.profile);
   };
   useEffect(() => {
+    mounted.current = true;
     let active = true;
     (async () => {
       const token = await user.getIdToken();
@@ -94,6 +97,7 @@ export function ProfilePanel({
       if (active) setError("Private profile unavailable. Sign out and retry.");
     });
     return () => {
+      mounted.current = false;
       active = false;
     };
   }, [user, accept]);
@@ -431,7 +435,7 @@ export function ProfilePanel({
           </p>
         </div>
       )}
-      {profile?.lifecycle === "active" && (
+      {(profile?.lifecycle === "active" || profile?.lifecycle === "empty") && (
         <div className="profile-controls">
           <button
             type="button"
@@ -441,6 +445,7 @@ export function ProfilePanel({
               void run(async () => {
                 const response = await request("/api/profile/export");
                 const blob = await response.blob();
+                if (!mounted.current) return;
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement("a");
                 link.href = url;
@@ -459,7 +464,8 @@ export function ProfilePanel({
               disabled={busy}
               onChange={(event) => setDeletion(event.target.checked)}
             />
-            Delete my local PDFs, drafts, profile history and evaluations.
+            Delete my local PDFs, drafts, profile history, evaluations and
+            application history.
           </label>
           <button
             type="button"

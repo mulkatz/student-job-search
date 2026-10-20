@@ -89,7 +89,82 @@ export function apiHandler(dependencies: ApiDependencies) {
     }
     try {
       const profiles = dependencies.profiles;
-      if (profiles && request.method === "GET" && path === "/api/profile") {
+      if (
+        profiles &&
+        request.method === "GET" &&
+        path === "/api/applications"
+      ) {
+        send(200, await profiles.applications(ownerId, dependencies.listJobs));
+      } else if (
+        profiles &&
+        request.method === "POST" &&
+        path === "/api/applications/generate"
+      ) {
+        send(
+          200,
+          await profiles.generateApplication(
+            ownerId,
+            await jsonBody(request),
+            dependencies.listJobs,
+          ),
+        );
+      } else if (
+        profiles &&
+        request.method === "POST" &&
+        path === "/api/applications/edit"
+      ) {
+        send(
+          200,
+          await profiles.editApplication(
+            ownerId,
+            await jsonBody(request),
+            dependencies.listJobs,
+          ),
+        );
+      } else if (
+        profiles &&
+        request.method === "POST" &&
+        path === "/api/applications/review"
+      ) {
+        send(
+          200,
+          await profiles.reviewApplication(
+            ownerId,
+            await jsonBody(request),
+            dependencies.listJobs,
+          ),
+        );
+      } else if (
+        profiles &&
+        request.method === "PATCH" &&
+        path === "/api/applications/status"
+      ) {
+        send(
+          200,
+          await profiles.setApplicationStatus(
+            ownerId,
+            await jsonBody(request),
+            dependencies.listJobs,
+          ),
+        );
+      } else if (
+        profiles &&
+        request.method === "POST" &&
+        path === "/api/applications/copy"
+      ) {
+        send(
+          200,
+          await profiles.copyApplication(
+            ownerId,
+            await jsonBody(request),
+            dependencies.listJobs,
+          ),
+        );
+      } else if (
+        profiles &&
+        request.method === "GET" &&
+        path === "/api/profile"
+      ) {
         send(200, {
           profile: await profiles.view(ownerId, await dependencies.listJobs()),
         });

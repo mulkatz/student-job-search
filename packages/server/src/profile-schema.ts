@@ -1,4 +1,8 @@
 import { z } from "zod";
+import {
+  applicationPolicy,
+  applicationRecordSchema,
+} from "./application-schema.js";
 
 export const currentEvaluatorVersion = "g5-deterministic-v2";
 
@@ -206,6 +210,10 @@ export const profileStateSchema = z.strictObject({
   evaluations: z
     .array(privateEvaluationSchema)
     .max(profilePolicy.maximumEvaluations),
+  applications: z
+    .array(applicationRecordSchema)
+    .max(applicationPolicy.maximumApplications)
+    .optional(),
   createdAt: timestamp,
   updatedAt: timestamp,
   nextCleanupAt: timestamp.nullable(),

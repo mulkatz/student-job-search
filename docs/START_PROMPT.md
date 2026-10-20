@@ -1,9 +1,42 @@
-# Continuation: remaining G3 acceptance gaps before G6/G7
+# Continuation: G6 complete locally; G3 acceptance remains open
 
-Updated 2026-10-19. The user requests autonomous work without further assistance,
-with reasoning no higher than **high**, including agents. G4 and G5 are complete
-locally; G3 coverage/extraction/model acceptance remains unmet after bounded fixes.
-G6/G7 remain planned. V1 is incomplete.
+Updated 2026-10-20. The user explicitly requests G6 now, superseding the previous
+instruction to defer it until G3 closes. Work autonomously with reasoning no higher
+than **high**, including agents. G4 and G5 are complete locally; G3 coverage,
+extraction and model acceptance remain unmet. G6 is complete locally under ADR 0025;
+G7 remains planned and V1 is incomplete.
+
+Read the current G6 section of PLAN and ADR 0025 before further changes. Use separate
+planning, implementation and review agents, bounded file ownership and synthetic
+fixtures. The local engine renders approved facts deterministically; it establishes
+no successful model-generation claim. Source/channel/question verification,
+immutable versions, preserved edits, exact review, server-checked manual copying
+and private export/deletion/retention remain mandatory. G6 used no paid calls.
+
+The final isolated integrated npm run verify passed: 211 offline tests, four real
+Firebase-emulator integrations, three synthetic Chromium journeys, all builds/types,
+Biome and Secretlint (167 files). Actual clipboard, permission/auth failure,
+parallel regeneration/review invalidation, expiry, preserved edits and owner
+deletion/isolation pass. Final evidence is .local/g6/verification-v2; v1 remains
+historical before the expiry metadata/CAS/reference consistency fix. The independent
+five-package content receipt is .local/g6/independent-content-review-v1/receipt.json
+(SHA-256 e172176567b4ef6295da8f3848534541ffd18e9926c4dca7cb4a8e6cc3deba8a).
+Two email and three questionnaire packages contain no unsupported candidate claims;
+three start dates and three applicant-action fields remain blank. This is independent
+agent review and deterministic synthetic verification, not human or live-model proof.
+
+Main implementation: server application-schema/domain/service/fixtures, existing
+profile lifecycle/API, optional discovery applicationSource, and web applications.tsx.
+Trusted source reviews are server-owned; normal applicationLinks remain unverified.
+Only twelve explicit English question formulations get fact rendering; others need
+input. Freeform edited versions remain unverified/noncopyable even after review.
+All version/attempt/review totals are bounded; expiration and tombstones apply to
+applications too. The emulator-only seed --applications supplies five fictional
+sources; see README. No employer-side actions or production deployment exist.
+
+The following G3 handoff preserves the 2026-10-19 historical snapshot. References
+to "today" and zero remaining daily calls mean that date, not a new authorization
+or current-day count. Read actual cumulative/daily state before any later G3 work.
 
 ```text
 Continue in the existing student-job-search repository. Read AGENTS.md, CONCEPT.md,
@@ -47,7 +80,7 @@ proof, real-market coverage or full V1 release. Original50oracle stays regressio
 
 G3 duration was removed under ADR0017; no calendar test/wait is needed. The explicit
 model limit remains70/day,100total,EUR5 and original token caps. CountTokens counts.
-Today70requests are consumed: do not reset history, silently raise limits or switch
+On 2026-10-19 all70 daily requests were consumed: do not reset history, raise limits or switch
 providers to bypass them. Source expansion and calendar polling are stopped.
 
 Original C failed despite all5CV outcomes passing: matching9/10eligible,5/5blocked,
@@ -96,7 +129,9 @@ and all numerical targets remain unchanged. See G3_SETUP for full chronology.
 
 Latest ledger:170HTTP/28search/4structured/70model/391records, all settled with no
 outstanding attempt/lock/fence. Conservative costEUR0.359876, not invoice. Remaining:
-30HTTP/9records, zero models today. Minimized final ownership/pacing is retained at
+30HTTP/9records and zero daily model headroom on 2026-10-19. Derive any later daily
+headroom from the authoritative ledger; a date change is no dispatch authorization.
+Minimized final ownership/pacing is retained at
 .local/g3/extraction/ownership-retained-v1.json; reread shared cooldowns inside the
 source lock and keep the existing technical owner. Do not reset state/source IDs.
 BA/WorkingNomads/TheBarn/Zertificon remain excluded. ADR0016's bounded private Brave
@@ -114,7 +149,8 @@ Old B/structured packets separately expire2026-10-20T08:01/08:05UTC; earlier G4
 captures retain original deadlines. Replay never renews evidence. Synthetic model
 parents and public G5 fixture are separate and must remain for later repair/tests.
 
-Keep G6/G7 planned while material G3 gaps remain. No user questionnaire is pending
+The user subsequently authorized the local G6 slice; keep G7 planned while material
+G3 gaps remain. No user questionnaire is pending
 for routine technical decisions. Report concise German results, verification,
 commit/push status and remaining acceptance limits without false completion.
 ```

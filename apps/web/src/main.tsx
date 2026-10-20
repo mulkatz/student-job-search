@@ -20,6 +20,7 @@ import {
   currentEvaluatorVersion,
   type ProfileView,
 } from "../../../packages/server/dist/profile-schema.js";
+import { ApplicationDialog } from "./applications.js";
 import { safeLink } from "./links.mjs";
 import { ProfilePanel } from "./profile.js";
 import "./style.css";
@@ -342,6 +343,9 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [profile, setProfile] = useState<ProfileView | null>(null);
+  const [applicationJob, setApplicationJob] = useState<DiscoveryJob | null>(
+    null,
+  );
   useEffect(
     () =>
       onAuthStateChanged(auth, (next) => {
@@ -350,6 +354,7 @@ function App() {
         setLoaded(false);
         setError("");
         setProfile(null);
+        setApplicationJob(null);
       }),
     [],
   );
@@ -484,8 +489,13 @@ function App() {
             user={user}
             onChange={(next) => {
               setProfile(next);
-              if (next.lifecycle === "deleted" || next.lifecycle === "deleting")
+              if (
+                next.lifecycle === "deleted" ||
+                next.lifecycle === "deleting"
+              ) {
                 setJobs([]);
+                setApplicationJob(null);
+              }
             }}
           />
           <div className="section-title">
@@ -578,6 +588,21 @@ function App() {
                             <SourceLink url={job.observation.originalUrl}>
                               Original posting
                             </SourceLink>
+                            <p>
+                              <button
+                                type="button"
+                                className="secondary"
+                                disabled={
+                                  !profile ||
+                                  ["deleted", "deleting"].includes(
+                                    profile.lifecycle,
+                                  )
+                                }
+                                onClick={() => setApplicationJob(job)}
+                              >
+                                View application draft
+                              </button>
+                            </p>
                             <br />
                             {job.observation.applicationLinks.length > 0 ? (
                               job.observation.applicationLinks.map((link) => (
@@ -605,6 +630,18 @@ function App() {
           )}
         </>
       )}
+      {user &&
+        applicationJob &&
+        profile &&
+        !["deleted", "deleting"].includes(profile.lifecycle) && (
+          <ApplicationDialog
+            key={`${user.uid}:${applicationJob.jobId}`}
+            user={user}
+            job={applicationJob}
+            profile={profile}
+            onClose={() => setApplicationJob(null)}
+          />
+        )}
       {error && (
         <p className="error" role="alert">
           {error}

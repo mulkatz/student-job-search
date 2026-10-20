@@ -262,4 +262,9 @@ ADR 0016. Local G4 and synthetic G5 profile/matching/lifecycle implementation ar
 under ADRs 0018/0019. The independent 50-case synthetic benchmark
 meets ADR 0022 (50/50 correct; 20 unique eligible); no human or real-market claim.
 V1 coverage/quality acceptance remains incomplete.
+At the user's request, G6 is complete locally as a deterministic application-draft
+slice under [ADR 0025](docs/adr/0025-private-versioned-application-drafts.md). Five
+full synthetic packages passed independent agent content review, with actual
+Chromium review/copy and private lifecycle checks. G3 source/model quality remains
+open; this does not establish G7 release readiness.
 G2 authorizes no subscriptions, deployment or real CV use.

@@ -14,8 +14,17 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 import { z } from "zod";
 import { type ApiDependencies, preferenceSchema } from "./api.js";
+import { checkedApplicationSource } from "./application-domain.js";
+import {
+  applicationPackageSchema,
+  applicationRecordSchema,
+} from "./application-schema.js";
 import { ProfileError } from "./profile-pdf.js";
-import { profilePolicy } from "./profile-schema.js";
+import {
+  type ProfileState,
+  profilePolicy,
+  profileStateSchema,
+} from "./profile-schema.js";
 import {
   assertActiveProfileState,
   createProfileService,
@@ -51,6 +60,80 @@ const sharedProjectionSchema = discoveryJobSchema
     observation: z.record(z.string(), z.unknown()),
     retentionUntilEpochMs: z.number().int().positive(),
   });
+
+const storedJobSchema = discoveryJobSchema
+  .omit({ observation: true })
+  .extend({ observation: z.record(z.string(), z.unknown()) })
+  .transform((value) =>
+    discoveryJobSchema.parse({
+      ...value,
+      observation: {
+        ...value.observation,
+        ...(value.observation.languageRequirements === undefined
+          ? {}
+          : {
+              languageRequirements: storedLanguageRequirementsSchema.parse(
+                value.observation.languageRequirements,
+              ),
+            }),
+      },
+    }),
+  );
+const storedProfileSchema = profileStateSchema
+  .omit({ applications: true })
+  .extend({
+    applications: z
+      .array(
+        applicationRecordSchema.omit({ packages: true }).extend({
+          packages: z.array(
+            applicationPackageSchema
+              .omit({ jobSnapshot: true })
+              .extend({ jobSnapshot: storedJobSchema }),
+          ),
+        }),
+      )
+      .optional(),
+  });
+export function decodeProfileState(
+  value: unknown,
+  ownerId: string,
+): ProfileState {
+  return validatedProfileState(storedProfileSchema.parse(value), ownerId);
+}
+function storedJob(job: DiscoveryJob) {
+  const languages = job.observation.languageRequirements;
+  return {
+    ...job,
+    observation:
+      languages?.status === "complete"
+        ? {
+            ...job.observation,
+            languageRequirements: {
+              ...languages,
+              alternatives: languages.alternatives.map((requirements) => ({
+                requirements,
+              })),
+            },
+          }
+        : job.observation,
+  };
+}
+export function encodeProfileState(state: ProfileState) {
+  return {
+    ...state,
+    ...(state.applications
+      ? {
+          applications: state.applications.map((record) => ({
+            ...record,
+            packages: record.packages.map((pkg) => ({
+              ...pkg,
+              jobSnapshot: storedJob(pkg.jobSnapshot),
+            })),
+          })),
+        }
+      : {}),
+  };
+}
 
 export function requireEmulators(environment: NodeJS.ProcessEnv): void {
   if (
@@ -123,7 +206,7 @@ export function createEmulatorServices() {
       read: async (ownerId) => {
         const snapshot = await profileDocument(ownerId).get();
         return snapshot.exists
-          ? validatedProfileState(snapshot.data(), ownerId)
+          ? decodeProfileState(snapshot.data(), ownerId)
           : null;
       },
       update: async (ownerId, change) =>
@@ -132,10 +215,10 @@ export function createEmulatorServices() {
           const snapshot = await transaction.get(reference);
           const next = change(
             snapshot.exists
-              ? validatedProfileState(snapshot.data(), ownerId)
+              ? decodeProfileState(snapshot.data(), ownerId)
               : null,
           );
-          transaction.set(reference, next);
+          transaction.set(reference, encodeProfileState(next));
           return next;
         }),
       readPreferences: async (ownerId) => {
@@ -229,6 +312,8 @@ export function createEmulatorServices() {
             job.currentRevisionId !== revisionIdentity(job.observation)
           )
             throw new Error("Invalid projection identity");
+          if (job.observation.applicationSource)
+            checkedApplicationSource(job, Date.now(), true);
           return job;
         })
         .filter(
@@ -254,7 +339,11 @@ export function createEmulatorServices() {
       await firestore.runTransaction(async (transaction) => {
         const snapshot = await transaction.get(reference);
         const profile = await transaction.get(profileDocument(ownerId));
-        if (profile.exists) assertActiveProfileState(profile.data(), ownerId);
+        if (profile.exists)
+          assertActiveProfileState(
+            decodeProfileState(profile.data(), ownerId),
+            ownerId,
+          );
         if (!snapshot.exists) transaction.create(reference, value);
       });
       const stored = preferenceSchema.parse((await reference.get()).data());
@@ -275,6 +364,8 @@ export async function persistSharedJobs(
   const validated = jobs.map((job) => discoveryJobSchema.parse(job));
   const batch = firestore.batch();
   for (const job of validated) {
+    if (job.observation.applicationSource)
+      checkedApplicationSource(job, Date.now());
     z.string()
       .regex(/^[a-zA-Z0-9_-]+$/)
       .parse(job.jobId);

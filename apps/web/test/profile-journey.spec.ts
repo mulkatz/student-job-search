@@ -196,7 +196,7 @@ test("synthetic PDF upload, provenance correction, immutable approval, private m
   );
   await panel
     .getByRole("checkbox", {
-      name: "Delete my local PDFs, drafts, profile history and evaluations.",
+      name: "Delete my local PDFs, drafts, profile history, evaluations and application history.",
     })
     .check();
   await panel.getByRole("button", { name: "Delete my local data" }).click();

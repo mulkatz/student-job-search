@@ -110,8 +110,10 @@ questionnaire packages. Review exact full content and record its hash; bind
 questionnaire answers to internal field IDs mapped to source-evidenced question text. Unknown start dates
 remain unanswered, and consents/signatures/declarations require applicant action.
 Pending synthetic profile approval or unreviewed package content keeps this branch
-incomplete. G6 will implement and exercise the shared dialog, per-answer clipboard
-copying and manual application workflow in a real browser; no UI exists now.
+incomplete. G6 now implements the shared dialog, per-answer clipboard copying and
+manual status under ADR 0025. Three actual Chromium journeys and an independent
+review of five complete deterministic synthetic packages pass. This is local UI/
+content evidence; completed G3 fixture reviews alone did not establish those checks.
 
 ## Q5: identity, versions, and state contracts
 
@@ -128,17 +130,20 @@ defines source-pair identities, content revisions, uncertainty links, distinct
 timestamps and bounded local recovery. [ADR 0014](adr/0014-local-firebase-authenticated-discovery.md)
 defines local Firebase authentication, shared source projections and owner-private
 paths/rules. Emulator evidence is separate from production identity-provider and
-private-data lifecycle readiness. Application/package versions and states remain
-G5/G6 decisions.
+private-data lifecycle readiness. Application/package versions and states are
+resolved for the local G6 slice by [ADR 0025](adr/0025-private-versioned-application-drafts.md):
+separate operation attempts, immutable versions and exact-content reviews share
+owner-private transactional lifecycle controls. Manual status remains separate
+from copying.
 
 Resolve the remaining affected contracts through schemas/tests and an ADR, rather
 than copying the original proposal's sample types as final contracts:
 
 - A source-derived hash is a stable source identity, not by itself a cross-source
   canonical job identity. Define canonical IDs, aliases/merges, and revision history.
-- `applications/{candidateId_jobId}` and per-profile-version idempotency need distinct
-  parent/application and package/generation-attempt records. Define which version
-  changes permit a new package and how review hashes and user edits bind to versions.
+- Local application parents, operation attempts, immutable versions, exact review
+  hashes and preserved edits are resolved by ADR 0025 inside owner-private profile
+  state; the original proposal's collection path is not the implemented schema.
 - Content freshness, publication age, source check time, and successful recruitment-
   channel verification are distinct timestamps. A fresh fetch cannot make an old
   listing new or prove its application channel is verified.
@@ -190,3 +195,11 @@ benchmark dependency for that fixture only. ADR 0024 requires complete decisive
 source conditions; legacy missing evidence remains review, and old evaluator
 versions are stale. G3 actual coverage and repaired model-package quality still
 need evidence. No user questionnaire is pending for those technical tasks.
+
+On 2026-10-20 the user explicitly requested G6 before those G3 gaps close.
+ADR 0025 permits the local deterministic review/copy slice with trusted reviewed
+source specifications and approved facts. Its synthetic usability/ownership
+checks cannot substitute for G3 source/model evidence or G7 release acceptance.
+The local G6 slice is now verified; no remaining product questionnaire is required
+for its technical implementation. Real-source channel reviews and reliable model
+content still require their own evidence.

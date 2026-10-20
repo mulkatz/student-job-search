@@ -1,6 +1,6 @@
 # Delivery plan
 
-Updated: 2026-10-19. Status describes evidence, not estimated progress.
+Updated: 2026-10-20. Status describes evidence, not estimated progress.
 
 | Goal | Status | Outcome |
 | --- | --- | --- |
@@ -10,7 +10,7 @@ Updated: 2026-10-19. Status describes evidence, not estimated progress.
 | G3: feasibility experiment | Acceptance gaps remain after bounded remediation | Actual A/B/C findings reject coverage/extraction/model acceptance; corrected D packages approved under delegated review. |
 | G4: discovery slice | Complete locally | Traceable discovery, conservative identities, authenticated table and verified bounded daily-run behavior; market yield remains unproven. |
 | G5: profile and matching | Complete locally under delegated synthetic acceptance | Independent 50-case adjudication/evaluation passes; no human, live-market or production claim. |
-| G6: application assistant | Planned | Fact-grounded email/questionnaire packages in a shared review/copy dialog. |
+| G6: application assistant | Complete locally with deterministic synthetic acceptance | Versioned fact-grounded drafts, exact review, manual copying and owner-private lifecycle; G3 remains open. |
 | G7: V1 release and handover | Planned | CV, manual-copy application packages and bounded daily discovery meet V1 acceptance. |
 | V2: broader use and search orders | Deferred | Multi-user onboarding and individually managed search orders/schedules. |
 
@@ -173,11 +173,13 @@ available. No source expansion or calendar polling is scheduled.
 
 One further actual generation classifies all 20 synthetic jobs correctly but fails
 all five package boundary/content checks. Its failed output stays preserved. The
-sole five-package repair has stricter schema/offline checks; today's explicit
-70/day allowance is full, so it has not dispatched. No cap increase or provider
+sole five-package repair has stricter schema/offline checks; the explicit
+70/day allowance was full on 2026-10-19, so it did not dispatch. A later attempt
+must derive available caps from the retained ledger. No cap increase or provider
 bypass is implied. The independent G5 synthetic benchmark is accepted under
-ADR 0022; G3 actual coverage and model-package quality remain required before
-G6/G7. See [current evidence](G3_SETUP.md#current-findings-and-decisions).
+ADR 0022; G3 actual coverage and model-package quality remain required for G7/V1
+release. The user subsequently authorized the local deterministic G6 slice below.
+See [current evidence](G3_SETUP.md#current-findings-and-decisions).
 
 Bounded tasks: the coordinator establishes private operator/provider access and
 current rights/rates, freezes twenty non-personal queries, and owns live evidence
@@ -527,26 +529,76 @@ Neither development replay closes the material G3 coverage/model acceptance gaps
 Exit: documented benchmark results meet targets and candidate facts remain traceable;
 uncertain eligibility does not become confirmed through scoring.
 
-## G6: application assistant
+## G6: application assistant — complete locally
 
-Dependencies: G5, verified channels and G3's model/manual-package evidence.
+Operational dependencies: G5, verified channels and G3's model/manual-package
+evidence. The local deterministic slice uses reviewed fictional source contracts
+while G3 acceptance remains open.
 
-- [ ] Resolve application/package/generation-attempt identities, immutable versions,
+Started 2026-10-20 at the user's explicit request despite the documented G3 gaps.
+The bounded local outcome is an authenticated email/questionnaire review-and-copy
+journey using deterministic approved-fact rendering, with immutable versions,
+preserved edits, source/channel review and owner-private lifecycle controls.
+[ADR 0025](adr/0025-private-versioned-application-drafts.md) resolves the persistence
+and generation boundary. Separate planning, implementation and independent review
+cover the domain/API and browser journey. Acceptance requires focused adversarial
+checks, the integrated gate, and actual Chromium clipboard behavior. No paid model
+calls, real candidate data, deployment or employer-side action are part of this slice.
+This work does not close G3 model/source acceptance or authorize G7 release.
+
+- [x] Resolve application/package/generation-attempt identities, immutable versions,
       review hashes and preservation of human edits before persistence (Q5).
-- [ ] Generate fact-grounded email subject/body or questionnaire packages; bind every
+- [x] Generate fact-grounded email subject/body or questionnaire packages; bind every
       proposed answer by a stable internal ID to source-evidenced question text and approved candidate facts.
-- [ ] Add “View application draft” to the table, opening one shared review/copy dialog
+- [x] Add “View application draft” to the table, opening one shared review/copy dialog
       with email text or per-field proposed answers and a copy action per answer.
-- [ ] Show `needs_input` for missing facts and `applicant_action_required` for
+- [x] Show `needs_input` for missing facts and `applicant_action_required` for
       consents/signatures/declarations. Unknown start dates stay unanswered.
-- [ ] Exercise the actual dialog and clipboard in a real browser, plus manual
+- [x] Exercise the actual dialog and clipboard in a real browser, plus manual
       applied/ignored status. Verify no autofill, form-write, send or submit paths.
-- [ ] Test interrupted/regenerated packages, preserved edits, ownership and version
+- [x] Test interrupted/regenerated packages, preserved edits, ownership and version
       invalidation; do not imply copying proves an application was sent.
 
 Exit: reviewed packages contain supported claims, missing/action states remain
 explicit, and browser copying works. The applicant alone transfers text, attaches
 files and sends/submits. Gmail is Firebase Auth login only; no Gmail integration.
+
+Verified 2026-10-20 with separate planning, implementation and independent review.
+The deterministic engine renders selected approved facts verbatim with fixed English
+copy. It supports twelve explicit English question formulations; arbitrary questions
+remain unanswered. Server-owned source reviews bind candidate-free channel/question
+payloads to the observation revision. Ordinary links are never promoted by browser
+input. Blocked or unresolved evaluations cannot generate a package. Freeform edits
+create unverified versions; review alone cannot make their claims copyable.
+
+Application parents, operation attempts, immutable versions and exact review hashes
+share the private profile transaction/tombstone. Per owner, cumulative limits are
+20 applications, 40 versions, 100 attempts and 80 reviews, within the existing 700 KiB
+document bound; capacity failures retain history. Expiry is bounded by the earliest
+source/profile/evaluation/seven-day deadline. Export/deletion/cleanup include drafts;
+manual status also works before a CV or generation. Copy authorization rechecks
+current inputs, and the browser rejects delayed, altered or expired copy responses.
+
+An independent agent inspected all five full production-generated synthetic versions
+(two email, three questionnaire): zero unsupported candidate claims or invented
+channels; three unknown start dates and three applicant-action fields stay blank.
+The private exact-version content receipt has SHA-256
+`e172176567b4ef6295da8f3848534541ffd18e9926c4dca7cb4a8e6cc3deba8a`.
+This is independent agent review, not human labeling or real-source/model acceptance.
+The reviewed questionnaire answers cover language, skills and hours; other supported
+mappings retain literal approved values and have no wider semantic/usability claim.
+
+The integrated `npm run verify` passed in an isolated checkout without warm workspace
+outputs: **211 offline tests**, **four real emulator integrations**, **three Chromium
+journeys**, plus all builds, strict types, Biome and secret scanning (167 files).
+Actual clipboard bytes, permission/auth failures, exact review after parallel
+regeneration, preserved edits, expiry and owner deletion/isolation are exercised.
+The final expiry regression also hides expired attempt metadata and dangling version
+pointers, then permits regeneration against renewed evidence without dropping old
+edits; cleanup removes expired package/evaluation references together.
+The guide's `seed --applications` supplies five fictional source contracts for local
+inspection. No paid provider, employer-side write, deployment or real CV was used.
+G3 coverage/extraction/model acceptance and G7 release remain open.
 
 ## G7: V1 release and operational handover
 

@@ -6,7 +6,9 @@ Germany. Review the evidence, prepare an application, and send it yourself.
 **Status:** G2 is complete. G3 source/model acceptance remains unmet after bounded remediation; see [current results](docs/G3_SETUP.md). G4 implements a local discovery slice,
 with conservative identities, bounded runs and a Firebase-emulator table; see
 [local setup and limitations](docs/G4_LOCAL.md). G5 adds local synthetic profiles and
-matching; its independently adjudicated synthetic benchmark passes under ADR 0022. No application is deployed.
+matching; its independently adjudicated synthetic benchmark passes under ADR 0022.
+G6 implements locally verified application drafts and manual copying under ADR 0025.
+No application is deployed.
 Gmail is exclusively a Firebase Auth login identity; mailbox integration is outside
 the current V1/G3 contract ([ADR 0010](docs/adr/0010-manual-application-packages.md)). No cloud resources have been provisioned.
 
@@ -178,6 +180,42 @@ are reproducible offline.
 Human review was not performed. Live-model quality, real-market coverage, production
 operation and real CV use remain separate.
 
+## Local application drafts
+
+“View application draft” opens one review/copy dialog for email or questionnaire
+content. Generation requires an approved profile, a current supported evaluation
+and an explicitly reviewed source contract. Ordinary source-listed application
+links remain unverified. The local engine uses fixed English templates and approved
+facts; it calls no model or external application service.
+The five reviewed examples cover language, skill and hours answers. Other supported
+question mappings retain literal approved values, including authorization codes;
+their broader wording/usability is not established by this five-package review.
+
+Review the full package and its evidence before copying a subject, body or individual
+answer. Missing answers remain blank; consents, signatures and declarations require
+applicant action. Copying checks the current inputs again and never changes manual
+applied/ignored status. The applicant alone transfers text, attaches files and
+sends or submits.
+
+Edits and regeneration create separate versions. Earlier content remains available;
+freeform edits are unverified and cannot become ready solely through review. Package
+text expires with its earliest source, profile, evaluation or seven-day deadline.
+Private export, deletion and bounded cleanup include application history. G3 source
+and model quality gaps and G7 release acceptance remain separate from this local
+workflow; no real CV or production use is enabled.
+
+With the local emulators and loopback environment from
+[the setup guide](docs/G4_LOCAL.md) running, seed five reviewed fictional sources:
+
+```sh
+npm run seed --workspace=@job-search/server -- --applications
+```
+
+Reload the discoveries, upload and approve a synthetic profile, then match the
+jobs before generating drafts. The fixtures contain two email routes and three
+questionnaires; their `.example` contacts are test data. The default one-job seed
+keeps its unverified application link and cannot establish a ready package.
+
 ## Development status
 
 The proposed stack is TypeScript, React, Google Cloud, and Firebase. The initial
@@ -186,7 +224,8 @@ uses private core, experiment, discovery and server workspaces plus a React/Vite
 local web application. Deployment tooling remains outside the current slice. The G3 model/region route
 has actual synthetic EU observations. The original full sample failed; a new batch
 classifies all 20 jobs correctly but fails all five packages. The prepared sole
-repair has not dispatched because the explicit daily model limit is exhausted.
+repair did not dispatch because the 2026-10-19 daily model limit was exhausted.
+Later G3 work must check the retained ledger and exact-method authorization.
 G3 remediation preserves its original negative findings; G5 local profile and
 matching now meet the delegated synthetic benchmark method in ADR 0022.
 Local G4 discovery is verified; see [delivery evidence](docs/PLAN.md#g4-discovery-slice)

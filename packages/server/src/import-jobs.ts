@@ -8,6 +8,7 @@ import {
   jobIdentity,
   revisionIdentity,
 } from "@job-search/discovery";
+import { checkedApplicationSource } from "./application-domain.js";
 
 const maximumBytes = 4 * 1024 * 1024;
 const defaultProjectRoot = fileURLToPath(new URL("../../../", import.meta.url));
@@ -133,6 +134,7 @@ export async function readPrivateDiscoveryJobs(
   const ids = new Set<string>();
   for (const job of jobs) {
     const observation = job.observation;
+    if (observation.applicationSource) checkedApplicationSource(job, now);
     if (
       ids.has(job.jobId) ||
       job.sourceId !== observation.sourceId ||
