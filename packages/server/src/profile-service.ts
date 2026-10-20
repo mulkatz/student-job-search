@@ -15,6 +15,7 @@ import {
   type PrivateEvaluation,
   type ProfileFact,
   type ProfileState,
+  type ProfileVersion,
   type ProfileView,
   profileApprovalSchema,
   profileEditSchema,
@@ -45,6 +46,27 @@ export interface ProfileAssets {
 }
 const iso = (now: number) => new Date(now).toISOString();
 const benchmark = independentBenchmarkEvidence;
+function factSource(fact: ProfileFact) {
+  return fact.provenance.kind === "pdf_quote"
+    ? fact.provenance
+    : fact.provenance.priorSource;
+}
+function versionIdentity(
+  ownerId: string,
+  generation: string,
+  operationId: string,
+  profileHash: string,
+  sourceAssets?: ProfileVersion["sourceAssets"],
+  sourceAssetHash?: string,
+): string {
+  return contentHash([
+    ownerId,
+    generation,
+    operationId,
+    profileHash,
+    ...(sourceAssets ? [{ sourceAssets, sourceAssetHash }] : []),
+  ]);
+}
 export function validatedProfileState(
   input: unknown,
   ownerId: string,
@@ -53,6 +75,11 @@ export function validatedProfileState(
   if (!result.success || result.data.ownerId !== ownerId)
     throw new ProfileError(503, "private_record_invalid");
   const state = result.data;
+  if (
+    Buffer.byteLength(JSON.stringify(state)) >
+    profilePolicy.maximumDocumentBytes
+  )
+    throw new ProfileError(413, "private_record_limit_reached");
   const retained = (start: string, end: string, maximum: number) =>
     Date.parse(end) > Date.parse(start) &&
     Date.parse(end) - Date.parse(start) <= maximum;
@@ -75,14 +102,41 @@ export function validatedProfileState(
         version.ownerId !== ownerId ||
         version.profileHash !== contentHash(version.facts) ||
         version.id !==
-          contentHash([
+          versionIdentity(
             ownerId,
             state.generation,
             version.operationId,
             version.profileHash,
-          ]) ||
+            version.sourceAssets,
+            version.sourceAssetHash,
+          ) ||
         new Set(version.facts.map((fact) => fact.id)).size !==
           version.facts.length ||
+        (version.sourceAssets !== undefined &&
+          (new Set(version.sourceAssets.map((asset) => asset.id)).size !==
+            version.sourceAssets.length ||
+            !version.sourceAssets.some(
+              (asset) => asset.hash === version.sourceAssetHash,
+            ) ||
+            version.sourceAssets.some((source) => {
+              const asset = state.assets.find(
+                (entry) => entry.id === source.id,
+              );
+              return (
+                asset !== undefined &&
+                (asset.status !== "ready" || asset.hash !== source.hash)
+              );
+            }) ||
+            version.facts.some((fact) => {
+              const source = factSource(fact);
+              return (
+                source !== undefined &&
+                (!source.sourceAssetId ||
+                  !version.sourceAssets?.some(
+                    (asset) => asset.id === source.sourceAssetId,
+                  ))
+              );
+            }))) ||
         !retained(
           version.approvedAt,
           version.expiresAt,
@@ -106,16 +160,43 @@ export function validatedProfileState(
         ) ||
         new Set(draft.facts.map((fact) => fact.id)).size !==
           draft.facts.length ||
-        draft.facts.some(
-          (fact) =>
-            fact.provenance.kind === "pdf_quote" &&
+        new Set(
+          draft.pages.map(
+            (page) => `${page.sourceAssetId ?? draft.assetId}:${page.page}`,
+          ),
+        ).size !== draft.pages.length ||
+        draft.pages.reduce((length, page) => length + page.text.length, 0) >
+          profilePolicy.maximumText ||
+        (draft.sourceAssetIds !== undefined &&
+          (new Set(draft.sourceAssetIds).size !== draft.sourceAssetIds.length ||
+            !draft.sourceAssetIds.includes(draft.assetId) ||
+            draft.sourceAssetIds.some(
+              (id) =>
+                !state.assets.some(
+                  (asset) =>
+                    asset.id === id &&
+                    asset.status === "ready" &&
+                    Date.parse(asset.expiresAt) >= Date.parse(draft.expiresAt),
+                ),
+            ) ||
+            draft.pages.some(
+              (page) =>
+                !page.sourceAssetId ||
+                !draft.sourceAssetIds?.includes(page.sourceAssetId),
+            ))) ||
+        draft.facts.some((fact) => {
+          const source = factSource(fact);
+          return (
+            source !== undefined &&
             !draft.pages.some(
               (page) =>
-                fact.provenance.kind === "pdf_quote" &&
-                page.page === fact.provenance.page &&
-                page.text.includes(fact.provenance.quote),
-            ),
-        ),
+                page.page === source.page &&
+                (page.sourceAssetId ?? draft.assetId) ===
+                  (source.sourceAssetId ?? draft.assetId) &&
+                page.text.includes(source.quote),
+            )
+          );
+        }),
     ) ||
     state.evaluations.some(
       (evaluation) =>
@@ -136,11 +217,6 @@ export function validatedProfileState(
       !state.versions.some((version) => version.id === state.activeVersionId))
   )
     throw new ProfileError(503, "private_record_invalid");
-  if (
-    Buffer.byteLength(JSON.stringify(state)) >
-    profilePolicy.maximumDocumentBytes
-  )
-    throw new ProfileError(413, "private_record_limit_reached");
   validateApplicationState(state);
   return state;
 }
@@ -217,7 +293,11 @@ function touch(state: ProfileState, now: number): ProfileState {
 export function createProfileService(
   repository: ProfileRepository,
   assets: ProfileAssets,
-  options: { now?: () => number; assessmentHook?: AssessmentHook } = {},
+  options: {
+    now?: () => number;
+    assessmentHook?: AssessmentHook;
+    realProfileProcessing?: boolean;
+  } = {},
 ) {
   const now = options.now ?? Date.now;
   const checked = async (ownerId: string) => {
@@ -343,7 +423,9 @@ export function createProfileService(
     try {
       await assets.create(ownerId, reserved.generation, operationId, bytes);
       storageSettled = true;
-      const extracted = await extractProfilePdf(bytes);
+      const extracted = await extractProfilePdf(bytes, {
+        realProfileProcessing: options.realProfileProcessing ?? false,
+      });
       await change(ownerId, (value) => {
         const state = requireState(value);
         if (state.generation !== reserved.generation)
@@ -355,13 +437,81 @@ export function createProfileService(
         )
           throw new ProfileError(409, "upload_reservation_expired");
         asset.status = "ready";
+        const previous = options.realProfileProcessing
+          ? state.drafts.findLast(
+              (draft) =>
+                Date.parse(draft.expiresAt) > now() &&
+                ["text_extracted", "needs_review"].includes(draft.outcome),
+            )
+          : undefined;
+        const includePrevious =
+          previous &&
+          ["text_extracted", "needs_review"].includes(extracted.outcome);
+        const sourceAssetIds = includePrevious
+          ? [...(previous.sourceAssetIds ?? [previous.assetId]), operationId]
+          : [operationId];
+        const pages = options.realProfileProcessing
+          ? [
+              ...(includePrevious
+                ? previous.pages.map((page) => ({
+                    ...page,
+                    sourceAssetId: page.sourceAssetId ?? previous.assetId,
+                  }))
+                : []),
+              ...extracted.pages.map((page) => ({
+                ...page,
+                sourceAssetId: operationId,
+              })),
+            ]
+          : extracted.pages;
+        const facts = options.realProfileProcessing
+          ? [
+              ...(includePrevious ? previous.facts : []),
+              ...extracted.facts.map(
+                (fact): ProfileFact => ({
+                  ...fact,
+                  id: `fact_${contentHash([operationId, fact.id]).slice(0, 32)}`,
+                  provenance:
+                    fact.provenance.kind === "pdf_quote"
+                      ? { ...fact.provenance, sourceAssetId: operationId }
+                      : fact.provenance,
+                }),
+              ),
+            ]
+          : extracted.facts;
+        if (
+          sourceAssetIds.length > profilePolicy.maximumAssets ||
+          facts.length > 20 ||
+          pages.length > 30 ||
+          pages.reduce((length, page) => length + page.text.length, 0) >
+            profilePolicy.maximumText
+        )
+          throw new ProfileError(413, "combined_profile_limit_reached");
+        if (
+          sourceAssetIds.some(
+            (id) =>
+              !state.assets.some(
+                (source) =>
+                  source.id === id &&
+                  source.status === "ready" &&
+                  Date.parse(source.expiresAt) > now(),
+              ),
+          )
+        )
+          throw new ProfileError(409, "source_asset_unavailable");
         state.drafts.push({
           id: operationId,
           assetId: operationId,
           revision: 0,
           ...extracted,
+          pages,
+          facts,
+          ...(options.realProfileProcessing ? { sourceAssetIds } : {}),
           createdAt: iso(now()),
-          expiresAt: asset.expiresAt,
+          expiresAt:
+            includePrevious && previous.expiresAt < asset.expiresAt
+              ? previous.expiresAt
+              : asset.expiresAt,
         });
         return touch(state, now());
       });
@@ -421,6 +571,9 @@ export function createProfileService(
         const priorSource =
           previous?.provenance.kind === "pdf_quote"
             ? {
+                ...(previous.provenance.sourceAssetId
+                  ? { sourceAssetId: previous.provenance.sourceAssetId }
+                  : {}),
                 page: previous.provenance.page,
                 quote: previous.provenance.quote,
               }
@@ -472,22 +625,38 @@ export function createProfileService(
         (entry) => entry.id === draft.assetId && entry.status === "ready",
       );
       if (!asset) throw new ProfileError(409, "source_asset_unavailable");
+      const sourceAssets = (draft.sourceAssetIds ?? [draft.assetId]).map(
+        (id) => {
+          const source = state.assets.find(
+            (entry) =>
+              entry.id === id &&
+              entry.status === "ready" &&
+              Date.parse(entry.expiresAt) > now(),
+          );
+          if (!source) throw new ProfileError(409, "source_asset_unavailable");
+          return { id: source.id, hash: source.hash };
+        },
+      );
       const profileHash = contentHash(draft.facts);
+      const approvedTime = now();
       const version = profileVersionSchema.parse({
-        id: contentHash([
+        id: versionIdentity(
           ownerId,
           state.generation,
           request.operationId,
           profileHash,
-        ]),
+          draft.sourceAssetIds ? sourceAssets : undefined,
+          asset.hash,
+        ),
         ownerId,
         draftId: draft.id,
         draftRevision: draft.revision,
         facts: structuredClone(draft.facts),
         profileHash,
         sourceAssetHash: asset.hash,
-        approvedAt: iso(now()),
-        expiresAt: iso(now() + profilePolicy.profileRetentionMs),
+        ...(draft.sourceAssetIds ? { sourceAssets } : {}),
+        approvedAt: iso(approvedTime),
+        expiresAt: iso(approvedTime + profilePolicy.profileRetentionMs),
         operationId: request.operationId,
         approvalRequestHash: requestHash,
       });

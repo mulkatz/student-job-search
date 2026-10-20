@@ -8,16 +8,24 @@ import {
   profileViewSchema,
 } from "../../../packages/server/dist/profile-schema.js";
 
+import { ProfileQuestionnaire } from "./profile-questionnaire.js";
+
 type EditFact = Pick<ProfileFact, "id" | "category" | "value">;
 export function ProfilePanel({
   user,
   onChange,
+  local,
+  realProfileProcessing,
+  refreshKey,
 }: {
   user: User;
+  local: boolean;
+  realProfileProcessing: boolean;
+  refreshKey: number;
   onChange: (profile: ProfileView) => void;
 }) {
   const [profile, setProfile] = useState<ProfileView | null>(null);
-  const [selected, setSelected] = useState<File | null>(null);
+  const [selected, setSelected] = useState<File[]>([]);
   const [synthetic, setSynthetic] = useState(false);
   const [facts, setFacts] = useState<EditFact[]>([]);
   const [attestation, setAttestation] = useState("");
@@ -27,7 +35,7 @@ export function ProfilePanel({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const mounted = useRef(true);
-  const uploadId = useRef(crypto.randomUUID());
+  const uploadIds = useRef(new Map<File, string>());
   const approvalRequest = useRef<unknown>(null);
   const changeCallback = useRef(onChange);
   changeCallback.current = onChange;
@@ -79,6 +87,7 @@ export function ProfilePanel({
       throw new Error("Invalid private profile response");
     accept(value.profile);
   };
+  // biome-ignore lint/correctness/useExhaustiveDependencies: A completed search invalidates the owner's private evaluations.
   useEffect(() => {
     mounted.current = true;
     let active = true;
@@ -100,7 +109,7 @@ export function ProfilePanel({
       mounted.current = false;
       active = false;
     };
-  }, [user, accept]);
+  }, [user, accept, refreshKey]);
   const run = async (operation: () => Promise<void>) => {
     setBusy(true);
     setError("");
@@ -154,8 +163,10 @@ export function ProfilePanel({
         <h2>Private profile</h2>
         <p role="status">
           {profile.lifecycle === "deleted"
-            ? "Local profile deletion complete. Sign out to end this session."
-            : "Local deletion is in progress. Private reads are blocked; retry deletion to finish cleanup."}
+            ? local
+              ? "Profile deletion complete. Sign out to end this session."
+              : "Your profile data was deleted. A new intake requires operator reconciliation; signing in again does not reset deletion."
+            : "Deletion is in progress. Private reads are blocked; retry deletion to finish cleanup."}
         </p>
         {profile.lifecycle === "deleting" && (
           <button
@@ -173,12 +184,18 @@ export function ProfilePanel({
       </section>
     );
   return (
-    <section className="profile-panel" aria-label="Private synthetic profile">
-      <h2>Your private profile</h2>
+    <section
+      className="profile-panel"
+      aria-label={local ? "Private synthetic profile" : "Private profile"}
+    >
+      <h2>
+        {local ? "Your private profile" : "1. Add your profile documents"}
+      </h2>
       <p>
-        Local synthetic testing only. Upload text is a draft until you review
-        and approve it. Approved facts stay private and expire after 90 days;
-        original PDFs and drafts expire after 7 days.
+        {local ? "Local synthetic testing only. " : "Private CV processing. "}
+        Upload text is a draft until you review and approve it. Approved facts
+        stay private and expire after 90 days; original PDFs and drafts expire
+        after 7 days.
       </p>
       <label className="check">
         <input
@@ -187,43 +204,103 @@ export function ProfilePanel({
           onChange={(event) => setSynthetic(event.target.checked)}
           disabled={busy}
         />
-        This PDF contains synthetic test facts, with a SYNTHETIC label.
+        {local
+          ? "This PDF contains synthetic test facts, with a SYNTHETIC label."
+          : "I consent to private processing of these documents, reviewed the retention periods above, and understand I must review and approve extracted facts."}
       </label>
       <label>
-        Synthetic PDF (maximum 2 MiB, 10 pages)
+        {local
+          ? "Synthetic PDF (maximum 2 MiB, 10 pages)"
+          : "CV or work/project-list PDFs (up to 3; each maximum 2 MiB, 10 pages)"}
         <input
           type="file"
           accept="application/pdf,.pdf"
+          multiple={!local}
           disabled={busy}
           onChange={(event) => {
-            setSelected(event.target.files?.[0] ?? null);
-            uploadId.current = crypto.randomUUID();
+            setSelected(
+              Array.from(event.target.files ?? []).slice(0, local ? 1 : 3),
+            );
+            uploadIds.current = new Map(
+              Array.from(event.target.files ?? []).map((file) => [
+                file,
+                crypto.randomUUID(),
+              ]),
+            );
           }}
         />
       </label>
       <button
         type="button"
-        disabled={busy || !selected || !synthetic}
+        disabled={
+          busy ||
+          selected.length === 0 ||
+          !synthetic ||
+          (!local && !realProfileProcessing)
+        }
         onClick={() =>
           void run(async () => {
-            if (!selected) return;
-            await request("/api/profile/upload", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/pdf",
-                "X-Operation-Id": uploadId.current,
-              },
-              body: selected,
-            });
-            await refresh();
+            if (!selected.length) return;
+            for (const file of selected) {
+              await request("/api/profile/upload", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/pdf",
+                  "X-Operation-Id":
+                    uploadIds.current.get(file) ?? crypto.randomUUID(),
+                  ...(!local
+                    ? { "X-Applicant-Consent": "reviewed-private-processing" }
+                    : {}),
+                },
+                body: file,
+              });
+              await refresh();
+              setSelected((remaining) =>
+                remaining.filter((item) => item !== file),
+              );
+              uploadIds.current.delete(file);
+            }
           })
         }
       >
-        Upload synthetic PDF
+        {local ? "Upload synthetic PDF" : "Upload profile documents"}
       </button>
+      {!local && !realProfileProcessing && (
+        <p role="status">
+          CV processing is currently unavailable for this pilot.
+        </p>
+      )}
+      {!local && draft && (
+        <ProfileQuestionnaire
+          busy={busy}
+          facts={facts}
+          onSave={(next) =>
+            run(async () => {
+              await request("/api/profile/draft", {
+                method: "PATCH",
+                ...json({
+                  draftId: draft.id,
+                  expectedRevision: draft.revision,
+                  facts: next.map((fact) => ({
+                    ...fact,
+                    attestation:
+                      "I confirmed this fact or preference in the profile questionnaire.",
+                  })),
+                }),
+              });
+              approvalRequest.current = null;
+              await refresh();
+            })
+          }
+        />
+      )}
       {draft && (
         <div className="profile-draft">
-          <h3>Review extracted draft</h3>
+          <h3>
+            {local
+              ? "Review extracted draft"
+              : "3. Review and approve combined facts"}
+          </h3>
           <p>
             Extraction: {draft.outcome.replaceAll("_", " ")} · draft revision{" "}
             {draft.revision}
@@ -231,8 +308,13 @@ export function ProfilePanel({
           <details>
             <summary>Extracted page text</summary>
             {draft.pages.map((page) => (
-              <div key={page.page}>
-                <strong>Page {page.page}</strong>
+              <div key={`${page.sourceAssetId ?? draft.assetId}:${page.page}`}>
+                <strong>
+                  {page.sourceAssetId && draft.sourceAssetIds
+                    ? `Document ${draft.sourceAssetIds.indexOf(page.sourceAssetId) + 1} · `
+                    : ""}
+                  Page {page.page}
+                </strong>
                 <pre>
                   {page.text ||
                     "No extractable text. OCR is unavailable; attest corrections explicitly."}
@@ -312,6 +394,9 @@ export function ProfilePanel({
                     )}
                     {source?.kind === "pdf_quote" ? (
                       <small>
+                        {source.sourceAssetId && draft.sourceAssetIds
+                          ? `Document ${draft.sourceAssetIds.indexOf(source.sourceAssetId) + 1} · `
+                          : ""}
                         PDF page {source.page}: {source.quote}
                       </small>
                     ) : source?.kind === "user_attestation" ? (
@@ -373,8 +458,9 @@ export function ProfilePanel({
                   disabled={busy || dirty || !facts.length}
                   onChange={(event) => setApproval(event.target.checked)}
                 />
-                I reviewed these synthetic facts and explicitly approve a new
-                immutable profile version.
+                {local
+                  ? "I reviewed these synthetic facts and explicitly approve a new immutable profile version."
+                  : "I reviewed these facts and explicitly approve a new immutable profile version."}
               </label>
               <button
                 type="button"
@@ -428,10 +514,8 @@ export function ProfilePanel({
           <p>
             Fit measures approved-skill overlap with the evidenced title.
             Evidence confidence measures supported conditions; neither is a
-            hiring probability or legal determination. Independent agent review
-            accepted the 50-case synthetic benchmark (49 distinct jobs). Human
-            review was not performed. Real-market results and full release
-            readiness remain unestablished.
+            hiring probability or legal determination. Missing source evidence
+            remains unknown and needs your review.
           </p>
         </div>
       )}
@@ -449,13 +533,15 @@ export function ProfilePanel({
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement("a");
                 link.href = url;
-                link.download = "synthetic-owner-export.json";
+                link.download = local
+                  ? "synthetic-owner-export.json"
+                  : "private-profile-export.json";
                 link.click();
                 setTimeout(() => URL.revokeObjectURL(url), 1000);
               })
             }
           >
-            Export my local data
+            {local ? "Export my local data" : "Export my data"}
           </button>
           <label className="check">
             <input
@@ -464,8 +550,9 @@ export function ProfilePanel({
               disabled={busy}
               onChange={(event) => setDeletion(event.target.checked)}
             />
-            Delete my local PDFs, drafts, profile history, evaluations and
-            application history.
+            {local
+              ? "Delete my local PDFs, drafts, profile history, evaluations and application history."
+              : "Delete my PDFs, drafts, profile history, evaluations and application history."}
           </label>
           <button
             type="button"
@@ -478,11 +565,11 @@ export function ProfilePanel({
               })
             }
           >
-            Delete my local data
+            {local ? "Delete my local data" : "Delete my data"}
           </button>
         </div>
       )}
-      {busy && <p role="status">Updating your private local data…</p>}
+      {busy && <p role="status">Updating your private data…</p>}
       {error && (
         <p role="alert" className="error">
           {error}

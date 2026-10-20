@@ -1,7 +1,37 @@
-# Continuation: G7 local handover implemented; V1 release blocked
+# Continuation: private Firebase pilot and compact table; V1 acceptance separate
 
-Updated 2026-10-20. The user requests autonomous implementation of G7 and authorized
-pushing verified task-owned changes to main. Use reasoning no higher than **high**,
+Updated 2026-10-20. The user now explicitly requests a compact nine-column job
+table, CV or up to three PDFs followed by a questionnaire, real-source dry runs
+of up to 30 potential opportunities, and deployment at student-job-search.web.app
+excluded from Google indexing. This authorizes the bounded private pilot and
+consented real-PDF processing under ADRs0027/0028, superseding the prior deployment
+prohibition for that pilot. Verified task-owned pushes to main remain authorized.
+
+Private pilot implementation includes production ADC/verified-Google allowlist,
+revoked-token checks, strict emulator separation, reviewed multi-PDF provenance,
+private persistent statuses, noindex metadata/headers, deny-all deployed client
+rules and a durable bounded CloudRun search job. Pilot search has its own ledger:
+EUR1 reserved/run,EUR5 search/month,20search120HTTP300observations30rows0model/run.
+The EUR50 total monthly operating constraint remains; application reservations are
+not a provider billing hard stop. Original G3 caps and evidence remain unchanged.
+Real search needs an actual applicant-approved profile; none may be invented.
+PDFs are parsed locally; raw text/contacts/names never become search queries.
+The private pilot is deployed at https://student-job-search.web.app. Authenticated
+Cloud Scheduler cleanup runs at 03:00 Europe/Berlin; no daily discovery schedule
+is installed. See OPERATIONS.md for intake, truthful source states, cleanup and the
+terminal deletion/re-intake limitation. Main UI is compact; evidence stays on demand.
+
+Use the latest isolated pilot verification and actual deployment evidence in
+.local/pilot/, not historical G7 checks, for this new slice. Versions1/2 retain
+failed browser observations; version3 adds single-clock profile approval and its
+regression after a real90day+1ms boundary failure. Version4 passes the complete
+gate: 239 offline tests, nine emulator integrations, five synthetic Chromium
+journeys, zero skipped, Secretlint203 regular files. Post-gate index configuration
+is separately checked against live Firestore and maintenance. Live login rendering,
+noindex, unauthorized denial and exact served v4 asset hashes are verified. No real
+Google sign-in, applicant upload or source search was performed. Do not invent
+30 jobs or promote the V1 manifest from these infrastructure observations.
+Use reasoning no higher than **high**,
 including separate planning, implementation and independent review agents. Preserve
 the unrelated unstaged AGENTS.md policy edit. Do not create a native Goal unless
 explicitly requested. Read AGENTS.md, CONCEPT.md, PLAN.md, OPERATIONS.md and relevant
@@ -18,7 +48,8 @@ real-data operations. Local evidence must never promote these to live proof.
 The read-only operations CLI uses explicit loopback emulators, bounded scans,
 aggregate alert codes, monotonic deadlines and bounded shutdown. It writes no
 records and never reports all-clear for incomplete/unavailable scans. No public
-diagnostics endpoint, notification sender or unattended production cleanup exists.
+diagnostics endpoint or notification sender exists. The private pilot has separately
+authenticated daily bounded cleanup.
 Follow OPERATIONS.md for synthetic seed, status, cleanup, failure handling and the
 release audit. Anonymous in-memory demo authentication cannot recover an old owner
 after refresh/signout; a fresh sign-in is a new owner. Export is not a backup restore.
@@ -78,6 +109,8 @@ Evidence: .local/g7/verification-v1/ (179snapshot entries including CLAUDEsymlin
 Run the documented isolated npm run verify gate before commits, inspect staged
 content and scan outgoing history. See PLAN.md for the latest actual verification;
 remote CI, npm audit and production integrations must not be claimed without proof.
-No cloud deployment, subscription/top-up, billing/IAM changes, real CV or broader
-onboarding is authorized. No routine user questionnaire is pending. Finish concise
+The requested private Firebase pilot deployment, necessary scoped cloud setup and
+consented real-PDF intake are authorized. No subscription/top-up or broader-user
+onboarding is authorized. The next applicant action is Google sign-in, PDF/questionnaire review, immutable
+profile approval and Run 30-job dry run in the deployed UI. Finish concise
 German updates with actual verification, commit/push and material release limits.

@@ -1,6 +1,6 @@
 # Open decisions and validation needs
 
-Updated: 2026-10-19. These are unresolved items, not an approval checklist for
+Updated: 2026-10-20. These are unresolved items, not an approval checklist for
 routine work. Resolve technical details autonomously within agreed scope; ask for
 product choices, unavailable access, consent, or unapproved spending when needed.
 Keep personal candidate answers in private configuration rather than this file.
@@ -208,7 +208,27 @@ for its technical implementation. Real-source channel reviews and reliable model
 content still require their own evidence beyond this bounded repair.
 
 G7 local operations and handover are implemented under ADR 0026. The executable
-17-criterion audit remains blocked on seven source/live criteria. Production
-authentication, recurring scheduling, deployed ownership rules and real-data
-operations are not established; see [the runbook](OPERATIONS.md). No new user
+17-criterion audit remains blocked on seven source/live criteria. The private pilot
+has configured Google authentication, deployed deny-all client rules and verified
+daily cleanup invocation. Actual owner sign-in/recovery and real-data operational
+acceptance remain unobserved; daily discovery scheduling is absent. See
+[the runbook](OPERATIONS.md). No new user
 questionnaire is required for the completed local implementation.
+
+
+## Private pilot authorization and remaining observations
+
+The user explicitly authorizes deployment at `student-job-search.web.app`, excluded
+from indexing, and consented real-PDF/profile intake under ADRs0027/0028. No personal
+facts are supplied in chat or assumed: the applicant uploads up to three PDFs,
+reviews page text, completes the questionnaire and approves an immutable profile.
+Source runs then use controlled generic preferences/skills vocabulary, without
+CV prose, names, contacts or authorization declarations. No real-CV model dispatch
+is configured. The private pilot is allowlisted, without broader-user onboarding.
+
+Original G3 source/extraction evidence remains negative/incomplete. A new pilot
+ledger uses finite per-run/month search reservations without resetting G3 history.
+An actual applicant-approved profile and that person's Google sign-in are required
+to establish the live personalized journey. Synthetic browser tests, enabled Auth,
+a deployed shell and unauthenticated denials alone cannot establish it. Installed
+daily scheduling and full V1 source acceptance remain separate work.

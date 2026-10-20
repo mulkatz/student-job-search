@@ -69,6 +69,7 @@ function poppler(
 
 export async function extractProfilePdf(
   bytes: Buffer,
+  options: { realProfileProcessing?: boolean } = {},
 ): Promise<Pick<ProfileDraft, "outcome" | "pages" | "facts">> {
   if (bytes.length > profilePolicy.maximumPdfBytes)
     throw new ProfileError(413, "pdf_too_large");
@@ -103,8 +104,8 @@ export async function extractProfilePdf(
     }));
     if (!pages.some((page) => page.text.trim().length >= 20))
       return { outcome: "needs_review", pages, facts: [] };
-    // This local preview is deliberately not authorized for real applicant inputs.
-    if (!text.includes("SYNTHETIC"))
+    // Real processing is enabled only by the explicitly configured private pilot.
+    if (!options.realProfileProcessing && !text.includes("SYNTHETIC"))
       return { outcome: "synthetic_only", pages: [], facts: [] };
     const facts: ProfileFact[] = [];
     const labels = new Map<string, ProfileFact["category"]>([

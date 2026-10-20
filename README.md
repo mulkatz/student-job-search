@@ -8,11 +8,14 @@ with conservative identities, bounded runs and a Firebase-emulator table; see
 [local setup and limitations](docs/G4_LOCAL.md). G5 adds local synthetic profiles and
 matching; its independently adjudicated synthetic benchmark passes under ADR 0022.
 G6 implements locally verified application drafts and manual copying under ADR 0025.
+The compact table now separates company, industry, hours, workplace, fit and actions;
+profile documents and preferences are reviewed before a real-source dry run.
 G7 adds bounded local operations and a fail-closed release audit; V1 release remains
 blocked. See [the operating runbook](docs/OPERATIONS.md) and
-[criterion-by-criterion evidence](docs/V1_READINESS.json). No application is deployed.
+[criterion-by-criterion evidence](docs/V1_READINESS.json). The private Firebase pilot is deployed at [student-job-search.web.app](https://student-job-search.web.app);
+see [pilot intake and run instructions](docs/OPERATIONS.md#private-firebase-pilot).
 Gmail is exclusively a Firebase Auth login identity; mailbox integration is outside
-the current V1/G3 contract ([ADR 0010](docs/adr/0010-manual-application-packages.md)). No cloud resources have been provisioned.
+the current V1/G3 contract ([ADR 0010](docs/adr/0010-manual-application-packages.md)).
 
 The first pilot serves one person. Candidate data has explicit ownership from the
 start so other people can use the tool later without rebuilding the core model.
@@ -106,7 +109,7 @@ and the first emulator start download public tooling artifacts. After those
 artifacts are cached, checks use synthetic local data and loopback services, with
 no provider credentials, cloud account, `.env` file, or paid/live API. The same gate is configured in GitHub Actions for pushes and pull
 requests, including fork contributions; a local pass does not establish a remote
-CI run. No deployment command is provided.
+CI run. Private deployment and maintenance are documented in the operating runbook.
 
 The gate checks runtime versions, formatting and lint, builds workspace dependencies
 before strict source/test types, then checks synthetic tests, secrets, Firebase emulator ownership and Chromium browser tests in
@@ -235,7 +238,7 @@ matching now meet the delegated synthetic benchmark method in ADR 0022.
 Local G4 discovery is verified; see [delivery evidence](docs/PLAN.md#g4-discovery-slice)
 and [local usage/source proof](docs/G4_LOCAL.md). Provider rights and recurring useful
 coverage remain distinct from this implementation milestone.
-No cloud resources have been provisioned.
+The private pilot is deployed; real applicant sign-in, document approval and source yield still need observation.
 
 Repository content and commits are written in English; discussion can be German.
 Use atomic semantic commits, such as `docs: define source feasibility criteria`.

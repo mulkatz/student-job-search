@@ -272,6 +272,20 @@ G7 local diagnostics, recovery instructions and the fixed 17-criterion release
 audit are implemented under [ADR 0026](docs/adr/0026-operational-handover-and-release-evidence.md).
 [The operating runbook](docs/OPERATIONS.md) and
 [evidence manifest](docs/V1_READINESS.json) distinguish local from required live
-proof. Seven criteria block V1 release; no cloud deployment or live schedule is
-established.
+proof. Seven criteria still block V1 release; the private pilot deployment below
+does not establish daily discovery or real applicant/source acceptance.
 G2 authorizes no subscriptions, deployment or real CV use.
+
+
+On 2026-10-20 the user authorized a private Firebase pilot at
+`student-job-search.web.app`, with noindex metadata/headers, Google authentication,
+reviewed intake of up to three PDFs plus questionnaire, compact job-table actions
+and a bounded real-source dry run targeting up to 30 potential opportunities.
+[ADR 0027](docs/adr/0027-private-pilot-deployment-and-profile-intake.md) and
+[ADR 0028](docs/adr/0028-bounded-private-pilot-search-runs.md) define this extension.
+This supersedes the earlier pilot deployment prohibition; it does not waive source
+quality, useful coverage, installed scheduling or remaining V1 acceptance. The
+[operating runbook](docs/OPERATIONS.md#private-firebase-pilot) defines real intake,
+manual actions, finite budgets and authenticated daily physical cleanup. The private
+pilot is deployed with deny-all client rules and verified noindex headers; actual
+Google-account intake and real-source yield remain unobserved.

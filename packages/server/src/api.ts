@@ -11,7 +11,13 @@ export const preferenceSchema = z.strictObject({
 });
 export type Preferences = z.infer<typeof preferenceSchema>;
 export interface ApiDependencies {
+  mode?: "synthetic-emulators-only" | "private-pilot";
+  realProfileProcessing?: boolean;
   profiles?: ProfileService;
+  pilotSearchLifecycle?: {
+    exportOwner(ownerId: string): Promise<unknown>;
+    deleteOwner(ownerId: string): Promise<void>;
+  };
   verifyToken(token: string): Promise<{ uid: string }>;
   listJobs(): Promise<DiscoveryJob[]>;
   getPreferences(ownerId: string): Promise<Preferences | null>;
@@ -62,13 +68,17 @@ export function apiHandler(dependencies: ApiDependencies) {
     response.setHeader("Content-Type", "application/json");
     response.setHeader("Cache-Control", "no-store");
     response.setHeader("X-Content-Type-Options", "nosniff");
+    response.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
     const send = (status: number, value: unknown) => {
       response.writeHead(status);
       response.end(JSON.stringify(value));
     };
     const path = request.url;
     if (request.method === "GET" && path === "/api/health") {
-      send(200, { mode: "synthetic-emulators-only" });
+      send(200, {
+        mode: dependencies.mode ?? "synthetic-emulators-only",
+        realProfileProcessing: dependencies.realProfileProcessing ?? false,
+      });
       return;
     }
     const bearer = request.headers.authorization;
@@ -175,6 +185,13 @@ export function apiHandler(dependencies: ApiDependencies) {
       ) {
         if (request.headers["content-type"] !== "application/pdf")
           throw new ProfileError(415, "pdf_required");
+        if (
+          dependencies.mode === "private-pilot" &&
+          (!dependencies.realProfileProcessing ||
+            request.headers["x-applicant-consent"] !==
+              "reviewed-private-processing")
+        )
+          throw new ProfileError(403, "private_processing_consent_required");
         const operation = requestValue(
           z.string().uuid(),
           request.headers["x-operation-id"],
@@ -229,18 +246,27 @@ export function apiHandler(dependencies: ApiDependencies) {
         request.method === "GET" &&
         path === "/api/profile/export"
       ) {
+        const pilotSearch =
+          await dependencies.pilotSearchLifecycle?.exportOwner(ownerId);
+        // Read sensitive files last so a slow auxiliary export cannot outlive PDF expiry or deletion.
         const exported = await profiles.exportOwner(ownerId);
         response.setHeader(
           "Content-Disposition",
-          'attachment; filename="synthetic-owner-export.json"',
+          'attachment; filename="owner-export.json"',
         );
-        send(200, exported);
+        send(
+          200,
+          dependencies.pilotSearchLifecycle
+            ? { ...exported, pilotSearch }
+            : exported,
+        );
       } else if (
         profiles &&
         request.method === "DELETE" &&
         path === "/api/profile"
       ) {
         const lifecycle = await profiles.deleteOwner(ownerId);
+        await dependencies.pilotSearchLifecycle?.deleteOwner(ownerId);
         send(lifecycle === "deleted" ? 200 : 202, { lifecycle });
       } else if (request.method === "GET" && path === "/api/jobs") {
         if (profiles) await profiles.requireActive(ownerId);
@@ -254,6 +280,10 @@ export function apiHandler(dependencies: ApiDependencies) {
         request.method === "POST" &&
         path === "/api/demo/preferences"
       ) {
+        if (dependencies.mode === "private-pilot") {
+          send(404, { error: "Not found" });
+          return;
+        }
         // No owner or candidate facts are accepted from the browser.
         if (
           request.headers["transfer-encoding"] ||
@@ -272,7 +302,7 @@ export function apiHandler(dependencies: ApiDependencies) {
     } catch (error: unknown) {
       if (error instanceof ProfileError)
         send(error.status, { error: error.code });
-      else send(503, { error: "Local data unavailable; retry later" });
+      else send(503, { error: "Data unavailable; retry later" });
     }
   };
 }

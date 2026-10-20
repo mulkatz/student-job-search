@@ -25,6 +25,7 @@ export default defineConfig({
         "journey.spec.ts",
         "profile-journey.spec.ts",
         "application-journey.spec.ts",
+        "table-journey.spec.ts",
       ],
   fullyParallel: false,
   workers: 1,

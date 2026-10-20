@@ -41,9 +41,10 @@ The user requested integration on `main` and then authorized pushing after G4 is
 complete and verified. Finished task-owned changes are committed there; preserve
 unrelated work and inspect outgoing secrets before the authorized push. The current
 [handoff](START_PROMPT.md) preserves unfinished G3 evidence and G4's explicit local
-limits, with G5 implementation in progress. The five synthetic packages now have
-delegated semantic review and exact-version
-operator approval; repository publication does not authorize runtime deployment.
+limits and the separately authorized deployed private pilot. G5/G6 meet their local
+synthetic acceptance; five repaired model packages have delegated semantic review.
+Repository publication alone does not authorize runtime deployment; the user's
+October20 pilot request supplies that separate authorization.
 
 ## G0: repository foundation
 
@@ -656,6 +657,51 @@ acceptance or authorize further paid dispatch.
 
 Exit: every V1 criterion in `CONCEPT.md` has evidence. Missing CV, package review/copy
 or discovery acceptance keeps V1 incomplete. No multi-user availability is implied.
+
+## Private pilot and compact table — deployed; applicant/source acceptance open
+
+Started 2026-10-20 at the user's explicit request after UI review. Outcome: a
+compact company/hours/location/fit/actions table; reviewed CV or up to three PDFs
+plus questionnaire; owner-private deployed Firebase pilot at
+`student-job-search.web.app`, excluded from indexing; bounded real-source dry runs
+requesting up to 30 potential opportunities. See ADR 0027. This authorization
+supersedes the prior prohibition on this pilot deployment and real-data intake.
+
+Acceptance: accessible nine-column table and fit explanation, persistent private
+Ignore/Applied controls, original Apply navigation only, traceable combined PDF
+review and explicit approval, verified-Google allowlisted access, strict emulator/
+production separation, noindex shell/API, bounded paid work and truthful source
+states. Run the integrated gate and independent security/usability review before
+deployment; then verify the live headers and unauthenticated denial. Preserve G3
+history and its caps; the pilot's separately bounded ledger cannot waive V1 gaps.
+
+Implemented the nine-column compact table, keyboard/touch fit evidence, reversible
+owner-private statuses, reviewed multi-document intake/questionnaire, production
+Google allowlist and bounded queued search. Industry remains unknown without
+source evidence; initials avoid external logo requests. Ordinary PDF prose needs
+manual fact review; no semantic model extraction or automatic channel certification.
+
+Isolated verification v4 passed the complete `npm run verify`: 239 offline tests,
+nine real emulator integrations, five actual synthetic Chromium journeys, zero
+skips, builds/types/Biome and Secretlint203 regular files (204 snapshot entries).
+Earlier failed gates remain retained; the approval clock-boundary regression is
+fixed. Live checks are separate from mocked Google/provider UI journeys.
+
+The authorized private pilot is deployed at https://student-job-search.web.app.
+Actual Cloud Build succeeded; API/search/cleanup use the reviewed immutable image.
+Deny-all client rules, private storage, scoped identities, service maximum one,
+verified noindex shell/API and unauthenticated 401s were inspected. Deployed HTML,
+JS and CSS exactly match v4; desktop/mobile login renders without script errors.
+A first real cleanup exposed a missing collection-group index; its declarative
+configuration was added after v4 and separately deployed/checked READY. Maintenance
+and its daily 03:00 Europe/Berlin Scheduler authentication chain are checked live;
+this schedule performs cleanup only, never discovery.
+
+Real Google-account sign-in, real documents and an approved-profile source run
+remain unobserved. The applicant can now upload/review/approve and request up to
+30 fetched opportunities; fewer results, unknown eligibility or unavailable drafts
+must remain explicit. Deletion is terminal pending safe operator reconciliation.
+The seven V1 release blockers are not promoted by this infrastructure deployment.
 
 ## Optional follow-up investigations — deferred
 

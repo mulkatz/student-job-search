@@ -44,6 +44,7 @@ test("synthetic PDF upload, provenance correction, immutable approval, private m
   await page.goto("/");
   await page.getByRole("button", { name: "Sign in to local demo" }).click();
   const panel = page.getByRole("region", { name: "Private synthetic profile" });
+  await page.locator(".profile-disclosure > summary").click();
   await expect(panel).toBeVisible();
   await expect(page.getByRole("row").nth(1).getByRole("heading")).toHaveText(
     "Working Student — Analytics",
@@ -86,33 +87,28 @@ test("synthetic PDF upload, provenance correction, immutable approval, private m
       exact: true,
     }),
   });
-  await expect(
-    supported
-      .locator(".job-row > div")
-      .nth(2)
-      .getByText("100/100", { exact: true }),
-  ).toBeVisible();
-  await expect(
-    supported
-      .locator(".job-row > div")
-      .nth(2)
-      .getByText("eligible", { exact: true }),
-  ).toBeVisible();
-  await expect(
-    supported
-      .locator(".job-row > div")
-      .nth(2)
-      .getByText("Evidence confidence: 100%", { exact: true }),
-  ).toBeVisible();
+  const fit = supported.locator(".fit-trigger");
+  await expect(fit).toHaveText("100%ⓘ");
+  await fit.focus();
+  await expect(page.getByRole("tooltip")).toContainText(
+    "Eligibility: eligible",
+  );
+  await expect(page.getByRole("tooltip")).toContainText(
+    "Evidence confidence: 100%",
+  );
+  await fit.press("Escape");
   await expect(page.getByRole("row").nth(1).getByRole("heading")).toHaveText(
     "Synthetic Data Analysis Assistant",
   );
-  await supported.getByText("Evidence & details", { exact: true }).click();
+  await supported.getByRole("button", { name: "Evidence & details" }).click();
+  const supportedDetails = supported.locator("..").locator(".job-evidence");
   await expect(
-    supported.getByText("Complete language requirements", { exact: true }),
+    supportedDetails.getByText("Complete language requirements", {
+      exact: true,
+    }),
   ).toBeVisible();
   await expect(
-    supported
+    supportedDetails
       .getByText(
         "English is the only required working language. No other languages are required.",
         { exact: true },
@@ -120,10 +116,10 @@ test("synthetic PDF upload, provenance correction, immutable approval, private m
       .first(),
   ).toBeVisible();
   await expect(
-    supported.getByText("Complete work arrangements", { exact: true }),
+    supportedDetails.getByText("Complete work arrangements", { exact: true }),
   ).toBeVisible();
   await expect(
-    supported.getByText("on site · Berlin, DE", { exact: true }),
+    supportedDetails.getByText("on site · Berlin, DE", { exact: true }),
   ).toBeVisible();
   const row = page.getByRole("row").filter({
     has: page.getByRole("heading", {
@@ -131,19 +127,21 @@ test("synthetic PDF upload, provenance correction, immutable approval, private m
       exact: true,
     }),
   });
+  await row.locator(".fit-trigger").focus();
+  await expect(page.getByRole("tooltip")).toContainText(
+    "Eligibility: needs review",
+  );
+  await row.locator(".fit-trigger").press("Escape");
+  await row.getByRole("button", { name: "Evidence & details" }).click();
+  const rowDetails = row.locator("..").locator(".job-evidence");
   await expect(
-    row
-      .locator(".job-row > div")
-      .nth(2)
-      .getByText("needs review", { exact: true }),
-  ).toBeVisible();
-  await row.getByText("Evidence & details", { exact: true }).click();
-  await expect(
-    row.getByText("language requirements incomplete · unknown", {
+    rowDetails.getByText("language requirements incomplete · unknown", {
       exact: true,
     }),
   ).toBeVisible();
-  await expect(row.getByText(/Evidence confidence:/).first()).toBeVisible();
+  await expect(
+    rowDetails.getByText(/Evidence confidence:/).first(),
+  ).toBeVisible();
   await page.screenshot({
     path: test.info().outputPath("profile-review.png"),
     fullPage: true,
@@ -162,7 +160,9 @@ test("synthetic PDF upload, provenance correction, immutable approval, private m
     firstVersion ?? "",
   );
   await expect(
-    row.getByText("Stale · profile or job version changed", { exact: true }),
+    rowDetails.getByText("Stale · profile or job version changed", {
+      exact: true,
+    }),
   ).toBeVisible();
   const downloadPromise = page.waitForEvent("download");
   await panel.getByRole("button", { name: "Export my local data" }).click();
@@ -201,9 +201,7 @@ test("synthetic PDF upload, provenance correction, immutable approval, private m
     .check();
   await panel.getByRole("button", { name: "Delete my local data" }).click();
   await expect(
-    page.getByText(
-      "Local profile deletion complete. Sign out to end this session.",
-    ),
+    page.getByText("Profile deletion complete. Sign out to end this session."),
   ).toBeVisible();
   await expect(page.getByTestId("active-profile-version")).toHaveCount(0);
   await expect(page.getByRole("table")).toHaveCount(0);

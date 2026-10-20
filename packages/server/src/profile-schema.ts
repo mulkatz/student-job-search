@@ -27,9 +27,11 @@ export const factCategorySchema = z.enum([
   "weekly_availability_hours",
   "work_authorization",
   "other",
+  "search_preference",
 ]);
 export const factIdSchema = z.string().regex(/^[a-zA-Z0-9_-]{1,80}$/);
 const sourceQuoteSchema = z.strictObject({
+  sourceAssetId: z.string().uuid().optional(),
   page: z.number().int().min(1).max(10),
   quote: z.string().min(1).max(1000),
 });
@@ -80,6 +82,7 @@ export const profileAssetSchema = z.strictObject({
 export const profileDraftSchema = z.strictObject({
   id: z.string().uuid(),
   assetId: z.string().uuid(),
+  sourceAssetIds: z.array(z.string().uuid()).min(1).max(3).optional(),
   revision: z.number().int().min(0),
   outcome: z.enum([
     "text_extracted",
@@ -92,11 +95,12 @@ export const profileDraftSchema = z.strictObject({
   pages: z
     .array(
       z.strictObject({
+        sourceAssetId: z.string().uuid().optional(),
         page: z.number().int().min(1).max(10),
         text: z.string().max(profilePolicy.maximumText),
       }),
     )
-    .max(10),
+    .max(30),
   facts: z.array(profileFactSchema).max(20),
   createdAt: timestamp,
   expiresAt: timestamp,
@@ -110,6 +114,11 @@ export const profileVersionSchema = z.strictObject({
   facts: z.array(profileFactSchema).min(1).max(20),
   profileHash: digest,
   sourceAssetHash: digest,
+  sourceAssets: z
+    .array(z.strictObject({ id: z.string().uuid(), hash: digest }))
+    .min(1)
+    .max(3)
+    .optional(),
   approvedAt: timestamp,
   expiresAt: timestamp,
   operationId: z.string().uuid(),

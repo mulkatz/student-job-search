@@ -143,13 +143,15 @@ export function renderApplication(
     };
     const facts = profile.facts.filter(
       (fact) =>
-        fact.category !== "work_authorization" && fact.category !== "other",
+        fact.category !== "work_authorization" &&
+        fact.category !== "other" &&
+        fact.category !== "search_preference",
     );
     return {
       content: {
         kind: "email",
         subject: `Application for ${job.observation.title.value}`,
-        body: `Dear hiring team,\n\nI would like to apply for ${job.observation.title.value} at ${job.observation.employer.value}.\n\nMy background and preferences:\n${facts.map((fact) => `- ${fact.category === "work_authorization" || fact.category === "other" ? "" : labels[fact.category]}: ${fact.value}`).join("\n")}\n\nThank you for considering my application.`,
+        body: `Dear hiring team,\n\nI would like to apply for ${job.observation.title.value} at ${job.observation.employer.value}.\n\nMy background and preferences:\n${facts.map((fact) => `- ${fact.category === "work_authorization" || fact.category === "other" || fact.category === "search_preference" ? "" : labels[fact.category]}: ${fact.value}`).join("\n")}\n\nThank you for considering my application.`,
       },
       factIds: facts.map((fact) => fact.id),
     };

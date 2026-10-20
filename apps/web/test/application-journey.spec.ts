@@ -41,12 +41,15 @@ test("five synthetic email/questionnaire packages support exact review, real cli
     const panel = page.getByRole("region", {
       name: "Private synthetic profile",
     });
+    await page.locator(".profile-disclosure > summary").click();
     await expect(panel).toBeVisible();
     const open = async (title: string) => {
       const row = page.getByRole("row").filter({
         has: page.getByRole("heading", { name: title, exact: true }),
       });
-      await row.getByRole("button", { name: "View application draft" }).click();
+      await row
+        .getByRole("button", { name: "View Draft", exact: true })
+        .click();
       const dialog = page.getByRole("dialog", { name: "Application draft" });
       await expect(dialog).toBeVisible();
       await expect(

@@ -34,6 +34,7 @@ artifacts/
 
 # Local cloud/emulator and infrastructure state
 .firebase/
+.firebaserc
 firebase-debug.log*
 firestore-debug.log*
 ui-debug.log*

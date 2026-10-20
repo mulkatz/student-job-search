@@ -12,13 +12,18 @@ test("synthetic local sign-in, evidence, original link, unknowns and sign-out", 
   await expect(page.getByRole("table")).toHaveCount(0);
   await page.getByRole("button", { name: "Sign in to local demo" }).click();
   await expect(page.getByRole("table")).toBeVisible();
-  await expect(page.getByText("Unavailable", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Unavailable", exact: true }),
+  ).toBeVisible();
   const application = page.getByRole("link", {
-    name: "Source-listed link · unverified",
+    name: "Apply",
+    exact: true,
   });
   await expect(application).toHaveAttribute("href", /^https:\/\//);
   await expect(application).toHaveAttribute("rel", "noopener noreferrer");
-  await page.getByText("Evidence & details", { exact: true }).click();
+  await page
+    .getByRole("button", { name: "Evidence & details", exact: true })
+    .click();
   await expect(
     page.getByText("Unknown · confirmation needed").first(),
   ).toBeVisible();

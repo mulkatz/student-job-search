@@ -1,11 +1,67 @@
 {
-  "firestore": { "rules": "firestore.rules" },
-  "storage": { "rules": "storage.rules" },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
   "emulators": {
-    "auth": { "host": "127.0.0.1", "port": 9099 },
-    "firestore": { "host": "127.0.0.1", "port": 8080 },
-    "storage": { "host": "127.0.0.1", "port": 9199 },
-    "ui": { "enabled": false },
+    "auth": {
+      "host": "127.0.0.1",
+      "port": 9099
+    },
+    "firestore": {
+      "host": "127.0.0.1",
+      "port": 8080
+    },
+    "storage": {
+      "host": "127.0.0.1",
+      "port": 9199
+    },
+    "ui": {
+      "enabled": false
+    },
     "singleProjectMode": true
+  },
+  "hosting": {
+    "site": "student-job-search",
+    "public": "apps/web/dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex, nofollow, noarchive, nosnippet"
+          },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "strict-origin-when-cross-origin"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "no-store"
+          }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/**",
+        "run": {
+          "serviceId": "job-search-api",
+          "region": "europe-west3"
+        }
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   }
 }

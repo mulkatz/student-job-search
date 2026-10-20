@@ -1155,3 +1155,26 @@ test("a Germany work-permission declaration cannot establish authorization for a
     "legacy DE remote flag does not cover a foreign on-site match",
   );
 });
+
+test("profile approval uses one instant when the clock advances between reads", async () => {
+  let time = fixtureNow;
+  const { service, states } = memory({ now: () => time++ });
+  const owner = "advancing-clock-owner";
+  const draftId = randomUUID();
+  await service.upload(owner, draftId, syntheticPdf());
+  await service.approve(owner, {
+    draftId,
+    expectedRevision: 0,
+    expectedActiveVersionId: null,
+    operationId: randomUUID(),
+    confirmFacts: true,
+  });
+  const view = await service.view(owner, []);
+  assert.ok(view.activeVersionId);
+  const version = states.get(owner)?.versions[0];
+  assert.ok(version);
+  assert.equal(
+    Date.parse(version.expiresAt) - Date.parse(version.approvedAt),
+    profilePolicy.profileRetentionMs,
+  );
+});
